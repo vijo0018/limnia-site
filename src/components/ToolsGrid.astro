@@ -1,0 +1,28 @@
+---
+const tools = [
+  { name: 'Pen', color: '#32b4ff' },
+  { name: 'Highlighter', color: '#ffdc28' },
+  { name: 'Eraser', color: '#ff6464' },
+  { name: 'Line', color: '#32b4ff' },
+  { name: 'Arrow', color: '#32b4ff' },
+  { name: 'Rectangle', color: '#32b4ff' },
+  { name: 'Circle', color: '#32b4ff' },
+  { name: 'Text', color: '#b48cff' },
+  { name: 'Laser Pointer', color: '#ff3c3c' },
+  { name: 'Spotlight', color: '#fff1a8' },
+];
+---
+
+<div class="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-5">
+  {
+    tools.map((tool) => (
+      <div class="flex items-center gap-2.5 rounded-lg border border-border bg-chrome px-3 py-3 text-sm">
+        <span
+          class="h-2 w-2 flex-none rounded-full"
+          style={`background:${tool.color}`}
+        />
+        {tool.name}
+      </div>
+    ))
+  }
+</div>

@@ -1,0 +1,159 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CTAButton from '../components/CTAButton.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import FreeVsPro from '../components/FreeVsPro.astro';
+import ShortcutsTable from '../components/ShortcutsTable.astro';
+---
+
+<Layout>
+  <main class="mx-auto max-w-5xl px-6 pt-14 pb-20">
+    {/* Hero */}
+    <section class="pt-8 pb-12 text-center">
+      <div
+        class="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.08em] text-muted"
+      >
+        <span
+          class="h-2.5 w-2.5 rounded-full bg-accent shadow-[0_0_12px_var(--color-accent)]"
+        ></span>
+        OmniDraw
+      </div>
+      <h1
+        class="mt-4 text-[clamp(38px,6vw,56px)] leading-[1.08] font-bold tracking-tight"
+      >
+        Draw on your screen, instantly.
+      </h1>
+      <p class="mx-auto mt-3 max-w-xl text-[clamp(17px,2.2vw,20px)] text-muted">
+        A tiny Windows overlay for presenters, educators, and anyone who needs to
+        circle something <em>right now</em>. Press a hotkey, annotate, vanish.
+      </p>
+      <div class="mt-7 flex flex-wrap justify-center gap-3">
+        <CTAButton
+          href="https://github.com/vijo0018/omnidraw/releases/latest"
+          variant="primary"
+        >
+          ⬇ Download for Windows
+        </CTAButton>
+        <CTAButton
+          href="https://github.com/vijo0018/omnidraw"
+          variant="ghost"
+          external
+        >
+          View on GitHub
+        </CTAButton>
+      </div>
+      <p class="mt-3 text-xs text-muted">Free. No account. ~2 MB.</p>
+    </section>
+
+    {/* Demo */}
+    <div
+      class="rounded-2xl border border-border bg-chrome p-3.5 shadow-[var(--shadow-card)]"
+    >
+      <div
+        class="relative flex aspect-video items-center justify-center overflow-hidden rounded-lg text-sm text-muted"
+        style="background: repeating-linear-gradient(45deg, #151518 0 12px, #1a1a1d 12px 24px)"
+      >
+        <span class="opacity-60">Hero demo GIF lands here</span>
+        <span
+          class="absolute right-3.5 bottom-3 text-[11px] uppercase tracking-widest text-[#55555a]"
+          >demo.gif</span
+        >
+      </div>
+      <div class="px-1 pt-3 text-center text-sm text-muted">
+        Toggle with <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>D</kbd> — draw — toggle off.
+        That's it.
+      </div>
+    </div>
+
+    {/* Pillars */}
+    <section class="mt-16">
+      <h2 class="mb-6 text-xl font-semibold tracking-tight">
+        Built for the moment you need it
+      </h2>
+      <div class="grid gap-3 sm:grid-cols-3">
+        <FeatureCard title="Invisible until needed">
+          Clicks pass straight through until you toggle draw mode. The tool never
+          fights your actual work.
+        </FeatureCard>
+        <FeatureCard title="Instant and responsive">
+          Software-rendered, no GPU, no startup delay. Every stroke lands when
+          your hand expects it.
+        </FeatureCard>
+        <FeatureCard title="Works on anything behind it">
+          High-contrast palette and dark chrome stay readable over white slides,
+          dark code, photos — anything.
+        </FeatureCard>
+      </div>
+    </section>
+
+    {/* Tools */}
+    <section id="tools" class="mt-16 scroll-mt-20">
+      <h2 class="mb-6 text-xl font-semibold tracking-tight">
+        Ten tools, one toolbar
+      </h2>
+      <ToolsGrid />
+    </section>
+
+    {/* Free vs Pro — the headline of this site */}
+    <FreeVsPro />
+
+    {/* Shortcuts */}
+    <section class="mt-20">
+      <h2 class="mb-6 text-xl font-semibold tracking-tight">
+        Keyboard shortcuts
+      </h2>
+      <ShortcutsTable />
+    </section>
+
+    {/* How it works */}
+    <section class="mt-16">
+      <h2 class="mb-4 text-xl font-semibold tracking-tight">How it works</h2>
+      <p class="max-w-2xl text-muted">
+        OmniDraw creates a fullscreen layered window that covers every monitor.
+        Pixels with alpha = 0 are completely click-through, so the overlay is
+        effectively invisible. Toggle draw mode and the canvas fills with a
+        minimal alpha value to catch mouse input — toggle off and it disappears
+        again. Pure Win32, no GPU, no framework.
+      </p>
+      <div class="mt-4 flex flex-wrap gap-2 text-xs">
+        <span
+          class="rounded-full border border-border bg-chrome px-3 py-1 text-muted"
+          >🦀 Made in Rust</span
+        >
+        <span
+          class="rounded-full border border-border bg-chrome px-3 py-1 text-muted"
+          >Runs on Win32</span
+        >
+        <span
+          class="rounded-full border border-border bg-chrome px-3 py-1 text-muted"
+          >No telemetry</span
+        >
+        <span
+          class="rounded-full border border-border bg-chrome px-3 py-1 text-muted"
+          >~2 MB install</span
+        >
+      </div>
+    </section>
+
+    {/* Support */}
+    <section class="mt-16">
+      <h2 class="mb-3 text-xl font-semibold tracking-tight">
+        Support development
+      </h2>
+      <p class="mb-5 max-w-2xl text-muted">
+        OmniDraw is free and always will be. If it earns its place in your
+        workflow, a tip helps cover the code-signing certificate so Windows keeps
+        marking the installer as safe.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <CTAButton href="https://github.com/sponsors/vijo0018" variant="ghost" external>
+          ♥ Sponsor on GitHub
+        </CTAButton>
+        <CTAButton href="https://ko-fi.com/vijo0018" variant="ghost" external>
+          ☕ Buy me a coffee
+        </CTAButton>
+      </div>
+    </section>
+  </main>
+</Layout>

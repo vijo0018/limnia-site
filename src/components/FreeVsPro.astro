@@ -1,0 +1,110 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const freeFeatures = [
+  '10 drawing tools',
+  '14-color palette + custom picker',
+  'Undo/Redo (20 steps)',
+  'PNG export + clipboard copy',
+  'Multi-monitor support',
+  'Eyedropper & color presets (v1.1)',
+  'Custom hotkeys, grid, ruler (v1.2)',
+];
+
+const proFeatures = [
+  'Everything in Free, plus:',
+  'Screen recording + GIF creation',
+  'Region capture + system audio',
+  'Whiteboard & Blackboard modes',
+  'Zoom / magnifier + freeze-frame',
+  'Stamps & shape library',
+  'Text formatting + pressure sensitivity',
+  'Webcam PiP, presenter timer, blur (v2.1)',
+];
+---
+
+<section id="pricing" class="mt-20 scroll-mt-20">
+  <div class="mb-10 text-center">
+    <h2 class="m-0 text-3xl font-semibold tracking-tight sm:text-4xl">
+      One tool. Two tiers.
+    </h2>
+    <p class="mx-auto mt-3 max-w-xl text-muted">
+      The free tier covers every feature shipped today — forever. Pro unlocks
+      heavier tools for creators, teachers, and streamers.
+    </p>
+  </div>
+
+  <div class="grid gap-6 md:grid-cols-2">
+    {/* Free card */}
+    <div class="flex flex-col rounded-2xl border border-border bg-chrome p-8">
+      <div class="mb-6">
+        <h3 class="m-0 text-xl font-semibold text-text">OmniDraw Free</h3>
+        <p class="mt-1 text-sm text-muted">Forever free. No account.</p>
+      </div>
+      <div class="mb-6 flex items-baseline gap-2">
+        <span class="text-5xl font-bold tracking-tight">$0</span>
+        <span class="text-sm text-muted">/ always</span>
+      </div>
+      <ul class="mb-8 flex-1 space-y-2.5 text-sm">
+        {
+          freeFeatures.map((f) => (
+            <li class="flex gap-2">
+              <span class="select-none text-accent">✓</span>
+              <span>{f}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <a
+        href="https://github.com/vijo0018/omnidraw/releases/latest"
+        class="block rounded-lg border border-border bg-chrome-2 px-5 py-3 text-center text-sm font-semibold text-text no-underline transition-colors hover:bg-[#323236]"
+      >
+        Download Free
+      </a>
+    </div>
+
+    {/* Pro card — accented */}
+    <div
+      class="relative flex flex-col overflow-hidden rounded-2xl border border-accent/40 bg-gradient-to-br from-[#12222e] via-chrome to-chrome p-8 shadow-[0_0_48px_rgba(50,180,255,0.12)]"
+    >
+      <div
+        class="absolute -top-16 -right-16 h-40 w-40 rounded-full bg-accent/15 blur-3xl"
+      >
+      </div>
+      <div class="relative">
+        <div class="mb-6">
+          <div class="mb-3 flex items-center gap-2">
+            <h3 class="m-0 text-xl font-semibold text-text">OmniDraw Pro</h3>
+            <span
+              class="rounded-full border border-accent/40 bg-accent/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-accent"
+              >Coming Q3 2026</span
+            >
+          </div>
+          <p class="mt-1 text-sm text-muted">
+            Heavier tools for teachers, streamers, creators.
+          </p>
+        </div>
+        <div class="mb-6 flex items-baseline gap-2">
+          <span class="text-5xl font-bold tracking-tight">$9.99</span>
+          <span class="text-sm text-muted">one-time</span>
+        </div>
+        <ul class="mb-8 flex-1 space-y-2.5 text-sm">
+          {
+            proFeatures.map((f, i) => (
+              <li class="flex gap-2">
+                <span class="select-none text-accent">{i === 0 ? '→' : '✓'}</span>
+                <span class={i === 0 ? 'text-muted italic' : ''}>{f}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <a
+          href={`${base}/pro`}
+          class="block rounded-lg bg-accent px-5 py-3 text-center text-sm font-semibold text-[#002238] no-underline transition-colors hover:bg-accent-hover"
+        >
+          Get notified at launch
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

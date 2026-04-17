@@ -1,0 +1,57 @@
+---
+const shortcuts = [
+  { keys: ['Ctrl', 'Shift', 'D'], action: 'Toggle draw mode' },
+  { keys: ['Esc'], action: 'Exit draw mode / cancel stroke' },
+  { keys: ['Ctrl', 'Shift', 'S'], action: 'Save canvas as PNG' },
+  { keys: ['Ctrl', 'Shift', 'C'], action: 'Clear canvas' },
+  { keys: ['Ctrl', 'Z'], action: 'Undo', more: 'Redo with Ctrl + Shift + Z' },
+  { keys: ['F1'], action: 'Help' },
+];
+---
+
+<div
+  class="overflow-hidden rounded-xl border border-border bg-chrome"
+>
+  <table class="w-full border-collapse text-sm">
+    <thead>
+      <tr>
+        <th
+          class="border-b border-border bg-[#17171a] px-4 py-3 text-left text-muted font-medium"
+        >
+          Shortcut
+        </th>
+        <th
+          class="border-b border-border bg-[#17171a] px-4 py-3 text-left text-muted font-medium"
+        >
+          Action
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        shortcuts.map((row, i) => (
+          <tr>
+            <td
+              class={`px-4 py-3 ${i < shortcuts.length - 1 ? 'border-b border-border' : ''}`}
+            >
+              {row.keys.map((k, idx) => (
+                <>
+                  {idx > 0 && <span class="text-muted"> + </span>}
+                  <kbd>{k}</kbd>
+                </>
+              ))}
+            </td>
+            <td
+              class={`px-4 py-3 text-muted ${i < shortcuts.length - 1 ? 'border-b border-border' : ''}`}
+            >
+              {row.action}
+              {row.more && (
+                <span class="ml-2 text-xs opacity-70">({row.more})</span>
+              )}
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

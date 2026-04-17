@@ -1,0 +1,45 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<header
+  class="sticky top-0 z-50 border-b border-border bg-bg/80 backdrop-blur-md"
+>
+  <nav
+    class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4"
+  >
+    <a
+      href={`${base}/`}
+      class="flex items-center gap-2 text-sm font-bold uppercase tracking-[0.08em] text-muted no-underline hover:text-text"
+    >
+      <span
+        class="h-2.5 w-2.5 rounded-full bg-accent shadow-[0_0_12px_var(--color-accent)]"
+      ></span>
+      OmniDraw
+    </a>
+
+    <div class="flex items-center gap-5 text-sm">
+      <a
+        href={`${base}/#tools`}
+        class="hidden text-muted no-underline hover:text-text sm:inline"
+        >Tools</a
+      >
+      <a
+        href={`${base}/#pricing`}
+        class="hidden text-muted no-underline hover:text-text sm:inline"
+        >Free vs Pro</a
+      >
+      <a
+        href="https://github.com/vijo0018/omnidraw"
+        class="hidden text-muted no-underline hover:text-text md:inline"
+        >GitHub</a
+      >
+      <a
+        href="https://github.com/vijo0018/omnidraw/releases/latest"
+        class="rounded-lg bg-accent px-4 py-2 font-semibold text-[#002238] no-underline transition-colors hover:bg-accent-hover"
+      >
+        Download
+      </a>
+    </div>
+  </nav>
+</header>
