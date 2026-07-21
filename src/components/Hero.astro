@@ -1,0 +1,193 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const installerHref = `${base}/downloads/LimniaSetup.exe`;
+const changelogHref = `${base}/changelog`;
+---
+
+<section class="relative pt-16 pb-24 sm:pt-20 sm:pb-28">
+  {/* Asymmetric grid — left-leaning, 8/4 split at lg */}
+  <div class="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-6 sm:px-10 lg:grid-cols-12 lg:gap-12">
+    <div class="lg:col-span-8">
+      {/* Status row — real metadata, not decoration */}
+      <div
+        class="reveal reveal-1 inline-flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint"
+      >
+        <span class="relative inline-flex items-center gap-2">
+          <span class="relative inline-block h-1.5 w-1.5 rounded-full bg-pen">
+            <span
+              class="absolute inset-0 animate-ping rounded-full bg-pen opacity-70"
+              style="animation-duration: 2s"></span>
+          </span>
+          <span class="text-ink">live</span>
+        </span>
+        <span class="text-ink-faint/50">/</span>
+        <span>v1.0.0 · stable</span>
+        <span class="text-ink-faint/50">/</span>
+        <span>~2 MB</span>
+        <span class="text-ink-faint/50">/</span>
+        <span class="hidden sm:inline">windows x64</span>
+      </div>
+
+      {/* Headline — the poster moment.
+          Bricolage at large opsz becomes characterful. */}
+      <h1
+        class="reveal reveal-2 mt-6 font-display font-semibold leading-[0.92] tracking-[-0.035em] text-ink text-balance"
+        style="font-size: clamp(48px, 8.4vw, 108px); font-variation-settings: 'opsz' 96;"
+      >
+        Draw on<br />
+        your screen.
+      </h1>
+
+      <p
+        class="reveal reveal-3 mt-7 max-w-xl text-[17px] leading-[1.55] text-ink-muted sm:text-[19px]"
+      >
+        A 2&thinsp;MB Windows overlay for presenters, educators, and creators.
+        Press a hotkey, annotate any pixel,
+        <em class="not-italic text-ink">vanish.</em>
+      </p>
+
+      {/* CTAs — left-aligned. Three states: primary, ghost, demo trigger. */}
+      <div class="reveal reveal-4 mt-9 flex flex-wrap items-center gap-3">
+        <a
+          href={installerHref}
+          class="group inline-flex items-center gap-2.5 rounded-md bg-ink px-5 py-3 text-[14px] font-semibold text-surface transition-colors hover:bg-pen"
+        >
+          Download for Windows
+          <span
+            class="font-mono text-[11px] font-medium opacity-60 transition-transform group-hover:translate-y-0.5"
+            >↓</span
+          >
+        </a>
+        <a
+          href={changelogHref}
+          class="group inline-flex items-center gap-2.5 rounded-md border border-line px-5 py-3 text-[14px] font-medium text-ink transition-colors hover:border-line-strong hover:bg-surface-raised"
+        >
+          Read the changelog
+          <span class="font-mono text-[11px] opacity-60 transition-transform group-hover:translate-x-0.5"
+            >→</span
+          >
+        </a>
+        <button
+          type="button"
+          data-demo-trigger
+          class="group inline-flex items-center gap-2 rounded-md px-3 py-3 text-[14px] font-medium text-ink-muted transition-colors hover:text-ink"
+        >
+          <span
+            class="inline-block h-1.5 w-1.5 rounded-full bg-pen group-hover:animate-pulse"
+          ></span>
+          Try the demo
+        </button>
+      </div>
+
+      {/* The hint that points to the signature moment */}
+      <p
+        class="reveal reveal-5 mt-7 flex flex-wrap items-center gap-x-2 gap-y-2 font-mono text-[12.5px] text-ink-faint"
+      >
+        <span>or press</span>
+        <span class="inline-flex items-center gap-1">
+          <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>D</kbd>
+        </span>
+        <span>to draw on this page</span>
+      </p>
+    </div>
+
+    {/* Right column — quiet visual that mirrors the icon language.
+        A schematic "transparent overlay" diagram. */}
+    <div class="reveal reveal-3 lg:col-span-4">
+      <div class="relative">
+        {/* Layered "windows" demonstrating click-through */}
+        <svg
+          viewBox="0 0 320 280"
+          class="h-auto w-full max-w-sm lg:max-w-full"
+          aria-hidden="true"
+        >
+          <defs>
+            <pattern id="dot-grid" width="14" height="14" patternUnits="userSpaceOnUse">
+              <circle cx="1" cy="1" r="0.8" fill="oklch(48% 0.012 240)" opacity="0.5" />
+            </pattern>
+            <linearGradient id="overlay-grad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#32b4ff" stop-opacity="0.18" />
+              <stop offset="100%" stop-color="#32b4ff" stop-opacity="0.04" />
+            </linearGradient>
+          </defs>
+
+          {/* Bottom layer: "your work" — dotted outline */}
+          <g>
+            <rect
+              x="14" y="14" width="240" height="180"
+              rx="10" fill="url(#dot-grid)"
+              stroke="oklch(40% 0.015 240)" stroke-width="1" stroke-dasharray="3 3"
+            />
+            <text
+              x="26" y="36" font-family="Geist Mono" font-size="9.5"
+              fill="oklch(48% 0.012 240)" letter-spacing="0.5"
+            >your.work</text>
+          </g>
+
+          {/* Top layer: limnia overlay — cyan-tinted, with a hand-drawn arrow */}
+          <g>
+            <rect
+              x="58" y="80" width="240" height="180"
+              rx="10" fill="url(#overlay-grad)"
+              stroke="#32b4ff" stroke-width="1.2" stroke-opacity="0.5"
+            />
+            <text
+              x="70" y="102" font-family="Geist Mono" font-size="9.5"
+              fill="#32b4ff" letter-spacing="0.5"
+            >limnia.overlay · α=0</text>
+
+            {/* Hand-drawn cyan annotation: arrow pointing at something */}
+            <path
+              d="M 100 180 Q 145 130, 215 158 L 205 148 M 215 158 L 200 168"
+              stroke="#32b4ff" stroke-width="2.5" fill="none"
+              stroke-linecap="round" stroke-linejoin="round"
+            />
+            {/* Circled emphasis */}
+            <ellipse
+              cx="225" cy="160" rx="22" ry="14"
+              fill="none" stroke="#32b4ff" stroke-width="2"
+              stroke-dasharray="0" transform="rotate(-8 225 160)"
+            />
+          </g>
+
+          {/* Annotation labels */}
+          <g font-family="Geist Mono" font-size="8.5" fill="oklch(48% 0.012 240)">
+            <line x1="270" y1="105" x2="290" y2="80" stroke="oklch(40% 0.015 240)" stroke-width="0.8" />
+            <text x="240" y="74" text-anchor="end">click-through</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('[data-demo-trigger]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        (window as any).limniaDemo?.toggle();
+      });
+    });
+  </script>
+</section>
+
+{/* Stats strip — sits below hero, above first content section.
+    Reads like a build manifest: small mono, dot separators. */}
+<div class="border-y border-line bg-surface-sunken/60">
+  <div
+    class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-8 gap-y-3 px-6 py-4 font-mono text-[11.5px] uppercase tracking-[0.1em] text-ink-faint sm:px-10"
+  >
+    <span class="flex items-center gap-2">
+      <span class="text-pen">▲</span> Made in Rust
+    </span>
+    <span class="text-ink-faint/40">·</span>
+    <span>Pure Win32</span>
+    <span class="text-ink-faint/40">·</span>
+    <span>No GPU</span>
+    <span class="text-ink-faint/40">·</span>
+    <span>No telemetry</span>
+    <span class="text-ink-faint/40">·</span>
+    <span>~2 MB install</span>
+    <span class="text-ink-faint/40">·</span>
+    <span>Windows 10 / 11</span>
+    <span class="ml-auto hidden text-ink-muted sm:inline">$0 · forever free</span>
+  </div>
+</div>

@@ -1,0 +1,227 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// The structural / brand sections (stack, principles, what's-coming) are
+// drafted from screen_draw/docs/ROADMAP.md context. The personal-voice
+// sections (intro, why-built-it, before-this) are placeholders for you
+// to rewrite in your own voice. Search for [YOUR ...] to find them.
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout
+  title="Limnia · About"
+  description="Who built Limnia and why."
+>
+  <main class="relative z-10">
+    <section class="mx-auto max-w-6xl px-6 pt-20 pb-24 sm:px-10 sm:pt-28">
+      <header class="mb-14 grid grid-cols-1 gap-6 md:grid-cols-12">
+        <div class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-faint md:col-span-3">
+          / about
+        </div>
+        <div class="md:col-span-9">
+          <h1 class="font-display text-[40px] font-semibold leading-[1.03] tracking-[-0.03em] text-ink sm:text-[56px]">
+            About.
+          </h1>
+          <p class="mt-4 max-w-2xl text-[17px] leading-[1.6] text-ink-muted">
+            What Limnia is, who made it, what's next.
+          </p>
+        </div>
+      </header>
+
+      <article class="mx-auto grid max-w-5xl grid-cols-1 gap-12 lg:grid-cols-12">
+
+        {/* ─── Main column: prose ─── */}
+        <div class="space-y-12 lg:col-span-8">
+
+          <section>
+            <p class="font-mono text-[11.5px] uppercase tracking-[0.18em] text-ink-faint">
+              hi
+            </p>
+            <h2 class="mt-3 font-display text-[28px] font-semibold tracking-[-0.02em] text-ink">
+              I'm [YOUR NAME].
+            </h2>
+            <p class="mt-4 text-[16.5px] leading-[1.65] text-ink-muted">
+              [WRITE YOUR INTRO HERE. 2 to 4 sentences. Who you are, where
+              you're based, what you do when you're not building Limnia.
+              First person. Conversational. The README sets the tone.]
+            </p>
+          </section>
+
+          <section>
+            <p class="font-mono text-[11.5px] uppercase tracking-[0.18em] text-ink-faint">
+              why this exists
+            </p>
+            <h2 class="mt-3 font-display text-[28px] font-semibold tracking-[-0.02em] text-ink">
+              The thing I needed didn't exist.
+            </h2>
+            <p class="mt-4 text-[16.5px] leading-[1.65] text-ink-muted">
+              [REPLACE WITH YOUR ACTUAL STORY. The problem you hit that made
+              you build Limnia. Specific moment if there was one (a
+              presentation? a code review? a video tutorial you were making?).
+              Two to four paragraphs. The README is too short for this. Go
+              into the texture of "why am I writing my own screen tool in
+              Rust in 2026?"]
+            </p>
+            <p class="mt-4 text-[16.5px] leading-[1.65] text-ink-muted">
+              [The existing tools in this category (Epic Pen, ZoomIt,
+              ShareX) each do parts of what Limnia does. What was missing
+              for you? What did you want that none of them gave you?]
+            </p>
+          </section>
+
+          <section>
+            <p class="font-mono text-[11.5px] uppercase tracking-[0.18em] text-ink-faint">
+              what it's made of
+            </p>
+            <h2 class="mt-3 font-display text-[28px] font-semibold tracking-[-0.02em] text-ink">
+              <span class="text-pen">Rust</span>, Win32, and a lot of
+              respect for your screen.
+            </h2>
+            <p class="mt-4 text-[16.5px] leading-[1.65] text-ink-muted">
+              Limnia is written in Rust against the raw Windows API.
+              No Electron. No web view. No GPU. The whole binary is
+              <span class="font-mono text-[14.5px] text-ink">~2 MB</span>.
+              Settings live in a JSON file in your AppData folder. Crashes
+              write to a local log file you choose whether to share. Nothing
+              else gets written; nothing leaves the machine.
+            </p>
+            <p class="mt-4 text-[16.5px] leading-[1.65] text-ink-muted">
+              The source is closed. That's a deliberate choice. Solo-dev
+              overhead of dual-repo + license management is meaningful, and
+              the closest comparables in this category (Epic Pen, ZoomIt) are
+              also closed. The
+              <a href={`${base}/changelog`} class="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-pen">changelog</a>
+              is public so you can see exactly what shipped and when.
+            </p>
+          </section>
+
+          <section>
+            <p class="font-mono text-[11.5px] uppercase tracking-[0.18em] text-ink-faint">
+              what's coming
+            </p>
+            <h2 class="mt-3 font-display text-[28px] font-semibold tracking-[-0.02em] text-ink">
+              Free stays free. Pro is additive.
+            </h2>
+            <p class="mt-4 text-[16.5px] leading-[1.65] text-ink-muted">
+              Every feature shipped today stays in the free tier, forever.
+              The Pro tier ($9.99 one-time, shipping Q3 2026) adds heavier
+              tools for specific audiences: recording for streamers,
+              whiteboard modes for teachers, a presenter timer for speakers.
+              None of it changes what Free does.
+            </p>
+            <p class="mt-4 text-[16.5px] leading-[1.65] text-ink-muted">
+              The
+              <a href={`${base}/#pricing`} class="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-pen">pricing page</a>
+              has the full feature split. There are no subscriptions, no
+              cloud services, and no plans for either. If you need Limnia
+              for commercial work (client deliverables, paid courses), a
+              separate Commercial Use License will exist alongside Pro.
+            </p>
+          </section>
+
+          <section>
+            <p class="font-mono text-[11.5px] uppercase tracking-[0.18em] text-ink-faint">
+              before this
+            </p>
+            <h2 class="mt-3 font-display text-[28px] font-semibold tracking-[-0.02em] text-ink">
+              [OPTIONAL. What else have you built?]
+            </h2>
+            <p class="mt-4 text-[16.5px] leading-[1.65] text-ink-muted">
+              [REPLACE OR DELETE THIS WHOLE SECTION. If you've shipped other
+              indie tools, side projects, or open source that's worth
+              mentioning, link them here. Two to four lines, no more.
+              This is a credibility signal, not a CV. Links to GitHub,
+              previous work, anything that says "this person builds things
+              and ships them."]
+            </p>
+          </section>
+
+        </div>
+
+        {/* ─── Sidebar: contact + support ─── */}
+        <aside class="space-y-8 lg:col-span-4">
+          <div class="rounded-xl border border-line bg-surface-raised p-6">
+            <p class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-faint">
+              contact
+            </p>
+            <ul class="mt-4 space-y-3 font-mono text-[12.5px]">
+              <li class="grid grid-cols-[5rem_1fr] items-baseline gap-2">
+                <span class="uppercase tracking-[0.12em] text-ink-faint">email</span>
+                <a href="mailto:[YOUR_SUPPORT_EMAIL]" class="text-ink hover:text-pen">[YOUR_SUPPORT_EMAIL]</a>
+              </li>
+              <li class="grid grid-cols-[5rem_1fr] items-baseline gap-2">
+                <span class="uppercase tracking-[0.12em] text-ink-faint">issues</span>
+                <a href="https://github.com/vijo0018/limnia-site/issues" target="_blank" rel="noopener noreferrer" class="text-ink hover:text-pen">github / issues <span class="opacity-60">↗</span></a>
+              </li>
+              <li class="grid grid-cols-[5rem_1fr] items-baseline gap-2">
+                <span class="uppercase tracking-[0.12em] text-ink-faint">press</span>
+                <a href="mailto:[YOUR_SUPPORT_EMAIL]?subject=Press inquiry · Limnia" class="text-ink hover:text-pen">press@inquiry</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="rounded-xl border border-line bg-surface-raised p-6">
+            <p class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-faint">
+              support development
+            </p>
+            <p class="mt-3 text-[14px] leading-[1.55] text-ink-muted">
+              If Limnia earns its place in your workflow, a tip funds the
+              code-signing certificate and the cups of coffee that go into
+              the next release.
+            </p>
+            <div class="mt-4 grid gap-2">
+              <a
+                href="https://github.com/sponsors/vijo0018"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group flex items-center justify-between rounded-md border border-line bg-surface px-4 py-2.5 text-[13.5px] text-ink transition-colors hover:border-laser/40 hover:bg-laser/5"
+              >
+                <span class="flex items-center gap-2">
+                  <span class="text-laser">♥</span>
+                  Sponsor on GitHub
+                </span>
+                <span class="font-mono text-[11px] opacity-60 transition-transform group-hover:translate-x-0.5">↗</span>
+              </a>
+              <a
+                href="https://ko-fi.com/vijo0018"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group flex items-center justify-between rounded-md border border-line bg-surface px-4 py-2.5 text-[13.5px] text-ink transition-colors hover:border-highlight/40 hover:bg-highlight/5"
+              >
+                <span class="flex items-center gap-2">
+                  <span class="text-highlight">☕</span>
+                  Buy a coffee
+                </span>
+                <span class="font-mono text-[11px] opacity-60 transition-transform group-hover:translate-x-0.5">↗</span>
+              </a>
+            </div>
+            <p class="mt-3 font-mono text-[10.5px] uppercase tracking-[0.12em] text-ink-faint">
+              ♥ donor before pro ships? pro is yours at launch.
+            </p>
+          </div>
+
+          <div class="rounded-xl border border-line bg-surface-raised p-6">
+            <p class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-faint">
+              press kit
+            </p>
+            <p class="mt-3 text-[14px] leading-[1.55] text-ink-muted">
+              Logos, screenshots, and pre-written copy for journalists and
+              bloggers.
+            </p>
+            <a
+              href={`${base}/press/`}
+              class="mt-4 inline-flex items-center gap-1.5 font-mono text-[12px] text-ink hover:text-pen"
+            >
+              /press <span class="opacity-60">→</span>
+            </a>
+            <p class="mt-2 font-mono text-[10.5px] text-ink-faint">
+              (kit folder TBD; see notes inline in <code class="text-ink">about.astro</code>)
+            </p>
+          </div>
+        </aside>
+
+      </article>
+    </section>
+  </main>
+</Layout>

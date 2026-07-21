@@ -1,0 +1,87 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout
+  title="404 · Limnia"
+  description="That page doesn't exist on this site."
+>
+  <main class="relative z-10">
+    <section class="mx-auto flex min-h-[70vh] max-w-6xl flex-col justify-center px-6 py-24 sm:px-10">
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-12">
+        <div
+          class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-faint md:col-span-3"
+        >
+          / 404
+        </div>
+        <div class="md:col-span-9">
+          <p
+            class="font-mono text-[12px] uppercase tracking-[0.14em] text-ink-faint"
+          >
+            request failed · status 404
+          </p>
+          <h1
+            class="mt-3 font-display font-semibold leading-[0.92] tracking-[-0.035em] text-ink"
+            style="font-size: clamp(56px, 9vw, 128px);"
+          >
+            Nothing here.
+          </h1>
+          <p
+            class="mt-6 max-w-xl text-[17px] leading-[1.55] text-ink-muted"
+          >
+            That URL doesn't exist on this site. The page may have moved, or
+            the link may have been wrong from the start. Try one of these
+            instead.
+          </p>
+
+          <div class="mt-8 grid max-w-xl gap-3 font-mono text-[13px]">
+            <a
+              href={`${base}/`}
+              class="group flex items-center justify-between rounded-md border border-line bg-surface-raised px-4 py-3 text-ink transition-colors hover:border-line-strong hover:bg-surface"
+            >
+              <span class="flex items-center gap-3">
+                <span class="text-ink-faint">/</span>
+                home
+              </span>
+              <span class="opacity-50 transition-transform group-hover:translate-x-0.5">→</span>
+            </a>
+            <a
+              href={`${base}/changelog`}
+              class="group flex items-center justify-between rounded-md border border-line bg-surface-raised px-4 py-3 text-ink transition-colors hover:border-line-strong hover:bg-surface"
+            >
+              <span class="flex items-center gap-3">
+                <span class="text-ink-faint">/</span>
+                changelog
+              </span>
+              <span class="opacity-50 transition-transform group-hover:translate-x-0.5">→</span>
+            </a>
+            <a
+              href={`${base}/#pricing`}
+              class="group flex items-center justify-between rounded-md border border-line bg-surface-raised px-4 py-3 text-ink transition-colors hover:border-line-strong hover:bg-surface"
+            >
+              <span class="flex items-center gap-3">
+                <span class="text-ink-faint">/</span>
+                pricing
+              </span>
+              <span class="opacity-50 transition-transform group-hover:translate-x-0.5">→</span>
+            </a>
+            <a
+              href="https://github.com/vijo0018/limnia-site/issues"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group flex items-center justify-between rounded-md border border-line bg-surface-raised px-4 py-3 text-ink-muted transition-colors hover:border-line-strong hover:bg-surface hover:text-ink"
+            >
+              <span class="flex items-center gap-3">
+                <span class="text-ink-faint">↗</span>
+                report a broken link
+              </span>
+              <span class="opacity-50 transition-transform group-hover:translate-x-0.5">↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>

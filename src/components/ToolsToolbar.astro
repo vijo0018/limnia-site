@@ -1,0 +1,209 @@
+---
+// Each tool group mirrors the actual Limnia toolbar layout.
+// Colors map to the tool's in-product color — the palette is the brand.
+type Tool = {
+  id: string;
+  name: string;
+  key: string;
+  color: string;
+  icon: string; // SVG <path>/<g> markup, 20x20 viewBox
+};
+
+const freehand: Tool[] = [
+  {
+    id: 'pen',
+    name: 'Pen',
+    key: 'P',
+    color: '#32b4ff',
+    icon: '<path d="M3 17l3.5-1L15 7.5l-2-2L4.5 14 3 17z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M13.5 6l2-2 2 2-2 2-2-2z" stroke="currentColor" stroke-width="1.5" fill="none"/>',
+  },
+  {
+    id: 'highlight',
+    name: 'Highlighter',
+    key: 'H',
+    color: '#ffdc28',
+    icon: '<path d="M5 15l8-8 4 4-8 8H5v-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M3 17h7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>',
+  },
+  {
+    id: 'eraser',
+    name: 'Eraser',
+    key: 'E',
+    color: '#ff6464',
+    icon: '<path d="M4 14l7-7 5 5-7 7H5l-1-1v-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M9 9l5 5" stroke="currentColor" stroke-width="1.5"/>',
+  },
+];
+
+const shapes: Tool[] = [
+  {
+    id: 'line',
+    name: 'Line',
+    key: 'L',
+    color: '#32b4ff',
+    icon: '<path d="M4 16L16 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+  },
+  {
+    id: 'arrow',
+    name: 'Arrow',
+    key: 'A',
+    color: '#32b4ff',
+    icon: '<path d="M4 16L15 5M15 5H8M15 5v7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+  },
+  {
+    id: 'rect',
+    name: 'Rectangle',
+    key: 'R',
+    color: '#32b4ff',
+    icon: '<rect x="4" y="5" width="12" height="10" rx="1" stroke="currentColor" stroke-width="1.6" fill="none"/>',
+  },
+  {
+    id: 'circle',
+    name: 'Circle',
+    key: 'C',
+    color: '#32b4ff',
+    icon: '<circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1.6" fill="none"/>',
+  },
+];
+
+const text: Tool[] = [
+  {
+    id: 'text',
+    name: 'Text',
+    key: 'T',
+    color: '#b48cff',
+    icon: '<path d="M5 5h10M10 5v11M7 16h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+  },
+];
+
+const live: Tool[] = [
+  {
+    id: 'laser',
+    name: 'Laser Pointer',
+    key: 'X',
+    color: '#ff3c3c',
+    icon: '<circle cx="10" cy="10" r="3" fill="currentColor"/><circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1" opacity="0.4" fill="none"/>',
+  },
+  {
+    id: 'spotlight',
+    name: 'Spotlight',
+    key: 'S',
+    color: '#fff1a8',
+    icon: '<circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="10" cy="10" r="2" fill="currentColor"/>',
+  },
+];
+
+const groups = [
+  { label: 'freehand', tools: freehand },
+  { label: 'shapes', tools: shapes },
+  { label: 'text', tools: text },
+  { label: 'live', tools: live },
+];
+---
+
+<section id="tools" class="mx-auto max-w-6xl scroll-mt-24 px-6 pt-24 pb-8 sm:px-10 sm:pt-32">
+  <header class="mb-12 grid grid-cols-1 gap-6 md:grid-cols-12">
+    <div
+      class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-faint md:col-span-3"
+    >
+      § 02 / tools
+    </div>
+    <div class="md:col-span-9">
+      <h2
+        class="font-display text-[34px] font-semibold leading-[1.05] tracking-[-0.025em] text-ink sm:text-[42px]"
+      >
+        Ten tools, one toolbar.
+      </h2>
+      <p class="mt-3 max-w-lg text-[16px] leading-[1.55] text-ink-muted">
+        A color-coded palette mirrored straight from the product. Every tool is a
+        single keystroke away. The toolbar you see here is the toolbar in the app.
+      </p>
+    </div>
+  </header>
+
+  {/* Toolbar mockup — floating chrome, with a subtle baseline shadow
+      and a "DRAW" status pill on the left mimicking the product's mode indicator. */}
+  <div class="relative">
+    <div
+      class="relative overflow-x-auto rounded-xl border border-line bg-surface-raised shadow-[0_20px_60px_-20px_oklch(0%_0_0/0.6)]"
+    >
+      <div class="flex min-w-max items-stretch">
+        {/* Mode indicator — left cap */}
+        <div
+          class="flex items-center gap-2 border-r border-line px-5 py-4"
+        >
+          <span class="relative inline-block h-1.5 w-1.5 rounded-full bg-pen">
+            <span
+              class="absolute inset-0 animate-ping rounded-full bg-pen opacity-60"
+              style="animation-duration: 2s"></span>
+          </span>
+          <span
+            class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-muted"
+          >draw</span>
+        </div>
+
+        {/* Tool groups — each tool is icon + persistent key label.
+            No hover tooltips: they'd overflow the scroll container,
+            and showing the keystroke always matches "keyboard-first" intent. */}
+        {groups.map((group, gi) => (
+          <div
+            class:list={[
+              'flex items-stretch gap-1 px-3 py-3',
+              gi < groups.length - 1 ? 'border-r border-line' : '',
+            ]}
+          >
+            {group.tools.map((t, ti) => (
+              <div class="flex flex-col items-center gap-1">
+                <button
+                  type="button"
+                  class:list={[
+                    'flex h-11 min-w-11 items-center justify-center rounded-md border transition-colors duration-150',
+                    gi === 0 && ti === 0
+                      ? 'border-pen/50 bg-pen/10'
+                      : 'border-transparent hover:border-line hover:bg-surface',
+                  ]}
+                  aria-label={`${t.name} (${t.key})`}
+                  style={`color: ${t.color}`}
+                >
+                  <svg viewBox="0 0 20 20" class="h-5 w-5" set:html={t.icon} />
+                </button>
+                <span
+                  class="font-mono text-[9.5px] font-medium uppercase tracking-[0.14em] text-ink-faint"
+                  aria-hidden="true"
+                >
+                  {t.key}
+                </span>
+              </div>
+            ))}
+          </div>
+        ))}
+
+        {/* Color swatch on the right — legend link */}
+        <div class="ml-auto hidden items-center gap-2 border-l border-line px-5 py-4 md:flex">
+          <span class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-faint">14</span>
+          <div class="flex gap-1">
+            <span class="h-3.5 w-3.5 rounded-[3px] bg-pen"></span>
+            <span class="h-3.5 w-3.5 rounded-[3px]" style="background: #ffdc28"></span>
+            <span class="h-3.5 w-3.5 rounded-[3px]" style="background: #ff3c3c"></span>
+            <span class="h-3.5 w-3.5 rounded-[3px]" style="background: #b48cff"></span>
+            <span class="h-3.5 w-3.5 rounded-[3px]" style="background: #fff1a8"></span>
+            <span class="h-3.5 w-3.5 rounded-[3px]" style="background: #7cff9d"></span>
+            <span class="h-3.5 w-3.5 rounded-[3px]" style="background: #ffffff"></span>
+            <span class="h-3.5 w-3.5 rounded-[3px] border border-line" style="background: #0c0c0e"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Legend below the toolbar */}
+    <div
+      class="mt-6 grid grid-cols-2 gap-x-8 gap-y-2 font-mono text-[11.5px] text-ink-faint sm:grid-cols-4"
+    >
+      {groups.map((group) => (
+        <div class="flex items-baseline gap-2">
+          <span class="uppercase tracking-[0.12em]">{group.label}</span>
+          <span class="flex-1 border-b border-dashed border-line"></span>
+          <span>{String(group.tools.length).padStart(2, '0')}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

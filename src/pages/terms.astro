@@ -1,0 +1,202 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// AI-drafted starter template. Have a lawyer review before relying on this
+// for a paid product launch — especially section 9 (governing law), which
+// depends on your jurisdiction. Placeholders to fill before publishing are
+// marked [LIKE THIS].
+const effectiveDate = '2026-04-18';
+const lastReviewed = '2026-04-18';
+---
+
+<Layout
+  title="Limnia · Terms of Use"
+  description="The license you agree to by installing or using Limnia."
+>
+  <main class="relative z-10">
+    <section class="mx-auto max-w-6xl px-6 pt-20 pb-24 sm:px-10 sm:pt-28">
+      <header class="mb-14 grid grid-cols-1 gap-6 md:grid-cols-12">
+        <div class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-faint md:col-span-3">
+          / terms
+        </div>
+        <div class="md:col-span-9">
+          <h1 class="font-display text-[40px] font-semibold leading-[1.03] tracking-[-0.03em] text-ink sm:text-[56px]">
+            Terms of use.
+          </h1>
+          <p class="mt-4 max-w-2xl text-[17px] leading-[1.6] text-ink-muted">
+            By installing or using Limnia, you agree to these terms. Plain
+            English where possible, legalese where required.
+          </p>
+          <dl class="mt-6 inline-grid grid-cols-[8rem_1fr] gap-x-3 gap-y-1 font-mono text-[12px] uppercase tracking-[0.12em]">
+            <dt class="text-ink-faint">effective</dt><dd class="text-ink">{effectiveDate}</dd>
+            <dt class="text-ink-faint">last reviewed</dt><dd class="text-ink">{lastReviewed}</dd>
+          </dl>
+        </div>
+      </header>
+
+      <article class="mx-auto max-w-3xl space-y-12 text-[16.5px] leading-[1.65] text-ink-muted">
+
+        <section>
+          <h2 class="font-display text-[24px] font-semibold tracking-[-0.02em] text-ink">
+            1. License
+          </h2>
+          <ul class="mt-3 grid gap-3 pl-0">
+            <li class="grid grid-cols-1 gap-1">
+              <span class="font-mono text-[12.5px] text-pen">Free tier</span>
+              <span>Limnia Free is provided at no cost for personal and internal business use. You may install and use it on as many devices as you control. The free tier covers every feature shipped today, forever.</span>
+            </li>
+            <li class="grid grid-cols-1 gap-1">
+              <span class="font-mono text-[12.5px] text-highlight">Pro tier (when available)</span>
+              <span>A one-time purchase grants a personal license to use Limnia Pro on devices you own or control. Each license is for one user.</span>
+            </li>
+            <li class="grid grid-cols-1 gap-1">
+              <span class="font-mono text-[12.5px] text-highlight">Commercial Use License (when available)</span>
+              <span>A separate one-time SKU permits commercial / business use beyond internal personal productivity (consulting deliverables, recorded courses for sale, agency work, etc.).</span>
+            </li>
+            <li class="grid grid-cols-1 gap-1">
+              <span class="font-mono text-[12.5px] text-highlight">Team License (when available)</span>
+              <span>A multi-seat SKU for businesses with 5+ named users.</span>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="font-display text-[24px] font-semibold tracking-[-0.02em] text-ink">
+            2. What you may not do
+          </h2>
+          <ul class="mt-3 grid gap-2 pl-0">
+            {[
+              'Reverse-engineer, decompile, or disassemble Limnia, except where law explicitly permits.',
+              'Redistribute, sublicense, sell, or rent the binary or any modified version.',
+              'Remove or obscure copyright notices, license keys, or branding.',
+              'Use Limnia to violate third-party rights, for example by circumventing DRM, recording copyrighted material without permission, or capturing private information without consent. Limnia is a tool; how you use it is your responsibility.',
+            ].map((item) => (
+              <li class="grid grid-cols-[1.25rem_1fr] items-baseline gap-2">
+                <span class="font-mono text-[12px] text-ink-faint">▸</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="font-display text-[24px] font-semibold tracking-[-0.02em] text-ink">
+            3. Intellectual property
+          </h2>
+          <p class="mt-3">
+            The Limnia name, logo, and source code are owned by
+            <span class="text-ink">[YOUR FULL NAME / BUSINESS NAME]</span>. The
+            installer and binary are licensed to you under these terms; the code
+            is closed source.
+          </p>
+          <p class="mt-3">
+            Limnia includes open-source dependencies, each retaining its
+            original license. The full list is in the in-app About dialog and
+            attribution file shipped with the installer.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-[24px] font-semibold tracking-[-0.02em] text-ink">
+            4. No warranty
+          </h2>
+          <p class="mt-3 uppercase tracking-[0.02em] text-ink">
+            Limnia is provided "as is", without warranty of any kind, express
+            or implied, including but not limited to warranties of
+            merchantability, fitness for a particular purpose, and
+            non-infringement. We do not warrant that Limnia will be
+            error-free or uninterrupted, or that it will meet your requirements.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-[24px] font-semibold tracking-[-0.02em] text-ink">
+            5. Limitation of liability
+          </h2>
+          <p class="mt-3 uppercase tracking-[0.02em] text-ink">
+            To the maximum extent permitted by applicable law, in no event will
+            we be liable for any indirect, incidental, special, consequential,
+            or punitive damages, or any loss of profits or revenue, arising
+            from your use of Limnia. Our total cumulative liability for any
+            claim relating to Limnia will not exceed the amount you paid for
+            it in the twelve months before the claim arose. The free tier was
+            provided at no cost, so liability for free-tier use is $0.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-[24px] font-semibold tracking-[-0.02em] text-ink">
+            6. Refunds (Pro tier)
+          </h2>
+          <p class="mt-3">
+            Refunds for Pro purchases are handled by the payment processor
+            (Lemon Squeezy or Microsoft Store, depending on where you bought).
+            Their refund windows and policies apply. Generally: a 30-day refund
+            window for direct purchases via Lemon Squeezy. Contact the relevant
+            processor directly for refund requests.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-[24px] font-semibold tracking-[-0.02em] text-ink">
+            7. Termination
+          </h2>
+          <p class="mt-3">
+            Your license terminates automatically if you materially violate
+            these terms. You may stop using Limnia at any time by
+            uninstalling. Termination of a Pro license does not entitle you to
+            a refund beyond what the payment processor's policy allows.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-[24px] font-semibold tracking-[-0.02em] text-ink">
+            8. Changes to these terms
+          </h2>
+          <p class="mt-3">
+            We may update these terms. Material changes will update the
+            effective date at the top and be noted in the
+            <a href="/limnia-site/changelog" class="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-pen">changelog</a>.
+            Continued use of Limnia after the effective date of a change
+            constitutes acceptance of the new terms.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-[24px] font-semibold tracking-[-0.02em] text-ink">
+            9. Governing law
+          </h2>
+          <p class="mt-3">
+            These terms are governed by the laws of
+            <span class="text-ink">[YOUR JURISDICTION, e.g. "Norway" or "the State of California, USA"]</span>,
+            without regard to conflict of law principles. Any dispute arising
+            out of or related to these terms will be resolved in the courts of
+            <span class="text-ink">[YOUR JURISDICTION]</span>.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-[24px] font-semibold tracking-[-0.02em] text-ink">
+            10. Contact
+          </h2>
+          <ul class="mt-3 grid gap-2 pl-0">
+            <li class="grid grid-cols-[6rem_1fr] items-baseline gap-3 font-mono text-[13px]">
+              <span class="uppercase tracking-[0.12em] text-ink-faint">email</span>
+              <a href="mailto:[YOUR_SUPPORT_EMAIL]" class="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-pen">[YOUR_SUPPORT_EMAIL]</a>
+            </li>
+            <li class="grid grid-cols-[6rem_1fr] items-baseline gap-3 font-mono text-[13px]">
+              <span class="uppercase tracking-[0.12em] text-ink-faint">issues</span>
+              <a href="https://github.com/vijo0018/limnia-site/issues" target="_blank" rel="noopener noreferrer" class="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-pen">github.com/vijo0018/limnia-site/issues</a>
+            </li>
+          </ul>
+        </section>
+
+        <p class="border-t border-line pt-8 font-mono text-[11.5px] text-ink-faint">
+          Limnia is operated by [YOUR FULL NAME / BUSINESS NAME], based in
+          [YOUR COUNTRY / STATE].
+        </p>
+
+      </article>
+    </section>
+  </main>
+</Layout>

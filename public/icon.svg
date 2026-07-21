@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#2c2c30"/>
+      <stop offset="100%" stop-color="#1a1a1c"/>
+    </linearGradient>
+    <linearGradient id="stroke" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1e9bff"/>
+      <stop offset="100%" stop-color="#60cbff"/>
+    </linearGradient>
+    <linearGradient id="marker" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fafafc"/>
+      <stop offset="100%" stop-color="#bcbcc2"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+  </defs>
+
+  <!-- Rounded dark background -->
+  <rect width="256" height="256" rx="56" fill="url(#bg)"/>
+
+  <!-- Subtle top highlight -->
+  <path d="M 56 0 H 200 A 56 56 0 0 1 256 56 V 78 H 0 V 56 A 56 56 0 0 1 56 0 Z"
+        fill="#ffffff" opacity="0.035"/>
+
+  <!-- Soft cyan glow behind the O -->
+  <path d="M 120 58 A 72 72 0 1 0 144 62"
+        stroke="#32b4ff" stroke-width="36" stroke-linecap="round"
+        fill="none" opacity="0.28" filter="url(#glow)"/>
+
+  <!-- The signature O: almost-closed stroke -->
+  <path d="M 120 58 A 72 72 0 1 0 144 62"
+        stroke="url(#stroke)" stroke-width="26" stroke-linecap="round"
+        fill="none"/>
+
+  <!-- Marker at the end of the stroke (top-right, rotated as if just lifted) -->
+  <g transform="translate(144, 62) rotate(-22)">
+    <!-- Body -->
+    <rect x="-17" y="-50" width="34" height="42" rx="7" fill="url(#marker)"/>
+    <!-- Barrel line detail -->
+    <line x1="-12" y1="-42" x2="12" y2="-42" stroke="#9a9aa0" stroke-width="1.5"/>
+    <!-- Ferrule -->
+    <rect x="-17" y="-12" width="34" height="5" fill="#8a8a90"/>
+    <!-- Tip (cyan) -->
+    <polygon points="-10,-7 10,-7 0,10" fill="#1e9bff"/>
+  </g>
+</svg>

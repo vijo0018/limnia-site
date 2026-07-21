@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Open Graph image for Limnia landing page. 1200x630 (the spec for
+  Facebook/Twitter/LinkedIn/Discord cards).
+
+  This SVG is referenced from <meta property="og:image"> in Layout.astro.
+  Most platforms today render SVG OG images directly. If a target platform
+  (older Slack, some CMS embeds) requires PNG, convert with:
+    npx svgexport public/og.svg public/og.png 1200:630
+  ...and add og.png as a secondary og:image meta tag.
+
+  Fonts use system fallbacks (not Google Fonts) so SVG rasterizers render
+  reliably across platforms. The look stays close to Bricolage even with
+  Segoe UI / SF Pro because of weight + letter-spacing.
+-->
+<svg width="1200" height="630" viewBox="0 0 1200 630"
+     xmlns="http://www.w3.org/2000/svg"
+     font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif">
+  <defs>
+    <radialGradient id="bg" cx="40%" cy="0%" r="90%">
+      <stop offset="0%" stop-color="#1d1d20"/>
+      <stop offset="55%" stop-color="#131316"/>
+      <stop offset="100%" stop-color="#0c0c0e"/>
+    </radialGradient>
+
+    <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#26262a"/>
+    </pattern>
+
+    <linearGradient id="markerStroke" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1e9bff"/>
+      <stop offset="100%" stop-color="#60cbff"/>
+    </linearGradient>
+
+    <filter id="penGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+  </defs>
+
+  <!-- Background: warm-tinted dark + subtle dot grid -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#dots)" opacity="0.55"/>
+
+  <!-- Top-left: brand mark + version stamp -->
+  <g transform="translate(72, 64)">
+    <rect width="40" height="40" rx="9" fill="#1d1d20"/>
+    <!-- Mini marker O (lifted from the favicon, simplified) -->
+    <path d="M 13 26 A 8 8 0 1 0 17 12"
+          stroke="url(#markerStroke)" stroke-width="3.5"
+          fill="none" stroke-linecap="round"/>
+    <text x="58" y="27" font-size="22" font-weight="700" fill="#eeeeee" letter-spacing="-0.3">
+      Limnia
+    </text>
+    <text x="170" y="25" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace"
+          font-size="12" letter-spacing="2.4" fill="#5a5a60">
+      V1.0.0 / STABLE
+    </text>
+  </g>
+
+  <!-- Headline — poster scale -->
+  <g fill="#f3f3f5" font-weight="700" letter-spacing="-5">
+    <text x="72" y="320" font-size="128">Draw on</text>
+    <text x="72" y="448" font-size="128">your screen.</text>
+  </g>
+
+  <!-- Hand-drawn cyan underline beneath headline (with glow) -->
+  <g>
+    <path d="M 75 478 Q 240 498, 410 482 Q 545 470, 685 492"
+          stroke="#32b4ff" stroke-width="9" stroke-linecap="round"
+          fill="none" filter="url(#penGlow)" opacity="0.45"/>
+    <path d="M 75 478 Q 240 498, 410 482 Q 545 470, 685 492"
+          stroke="#32b4ff" stroke-width="5" stroke-linecap="round"
+          fill="none"/>
+  </g>
+
+  <!-- Right side: lifted marker (drawing the underline) -->
+  <g transform="translate(900, 230)">
+    <g transform="rotate(-22)" filter="url(#penGlow)" opacity="0.25">
+      <rect x="-32" y="-94" width="64" height="84" rx="15" fill="#32b4ff"/>
+    </g>
+    <g transform="rotate(-22)">
+      <!-- Marker body -->
+      <rect x="-32" y="-94" width="64" height="84" rx="15" fill="#3a3a3d"/>
+      <!-- Highlight band -->
+      <rect x="-32" y="-94" width="64" height="20" rx="15" fill="#454548"/>
+      <!-- Detail line -->
+      <line x1="-22" y1="-80" x2="22" y2="-80" stroke="#5a5a60" stroke-width="2"/>
+      <line x1="-22" y1="-72" x2="0" y2="-72" stroke="#5a5a60" stroke-width="1.5" opacity="0.6"/>
+      <!-- Ferrule -->
+      <rect x="-32" y="-22" width="64" height="10" fill="#5a5a60"/>
+      <!-- Tip -->
+      <polygon points="-20,-12 20,-12 0,18" fill="url(#markerStroke)"/>
+    </g>
+  </g>
+
+  <!-- Bottom-left: metadata strip -->
+  <g transform="translate(72, 570)"
+     font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace"
+     font-size="13" letter-spacing="2.2" fill="#76767c">
+    <circle cx="5" cy="-4" r="3.5" fill="#32b4ff"/>
+    <text x="20" y="0">PURE WIN32</text>
+    <text x="172" y="0">·</text>
+    <text x="200" y="0">MADE IN RUST</text>
+    <text x="356" y="0">·</text>
+    <text x="382" y="0">~2 MB</text>
+    <text x="466" y="0">·</text>
+    <text x="492" y="0">NO TELEMETRY</text>
+  </g>
+  <text transform="translate(1128, 570)"
+        font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace"
+        font-size="13" letter-spacing="2.2" fill="#eeeeee" text-anchor="end">
+    $0 · FOREVER FREE
+  </text>
+</svg>

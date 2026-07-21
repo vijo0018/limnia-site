@@ -1,0 +1,137 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { releases } from '../data/changelog.ts';
+
+const labelAccent: Record<string, string> = {
+  Added: 'text-pen',
+  Changed: 'text-highlight',
+  Fixed: 'text-[#7cff9d]',
+  Removed: 'text-laser',
+  Security: 'text-text-tool',
+};
+---
+
+<Layout
+  title="Limnia · Changelog"
+  description="Release notes for Limnia. Every change, every version."
+>
+  <main class="relative z-10">
+    <section class="mx-auto max-w-6xl px-6 pt-20 pb-24 sm:px-10 sm:pt-28">
+      <header class="mb-14 grid grid-cols-1 gap-6 md:grid-cols-12">
+        <div
+          class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-faint md:col-span-3"
+        >
+          / changelog
+        </div>
+        <div class="md:col-span-9">
+          <h1
+            class="font-display text-[40px] font-semibold leading-[1.03] tracking-[-0.03em] text-ink sm:text-[56px]"
+          >
+            Release notes.
+          </h1>
+          <p
+            class="mt-4 max-w-xl text-[16px] leading-[1.55] text-ink-muted"
+          >
+            Every change that shipped, in order. This file is mirrored from the
+            app's private repo. Follows
+            <a
+              href="https://keepachangelog.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-pen"
+              >Keep a Changelog</a
+            > and
+            <a
+              href="https://semver.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-pen"
+              >SemVer</a
+            >.
+          </p>
+        </div>
+      </header>
+
+      <ol class="space-y-16">
+        {releases.map((r, i) => (
+          <li class="grid grid-cols-1 gap-6 md:grid-cols-12">
+            {/* Left column: version stamp and date */}
+            <div class="md:col-span-3">
+              <div class="sticky top-20">
+                <div class="flex items-baseline gap-3">
+                  <h2
+                    class="font-display text-[26px] font-semibold tracking-[-0.02em] text-ink"
+                  >
+                    {r.version}
+                  </h2>
+                  {r.status === 'unreleased' && (
+                    <span
+                      class="rounded border border-highlight/30 bg-highlight/[0.07] px-1.5 py-0.5 font-mono text-[9.5px] uppercase tracking-[0.14em] text-highlight"
+                    >
+                      unreleased
+                    </span>
+                  )}
+                  {r.status === 'stable' && (
+                    <span
+                      class="rounded border border-pen/30 bg-pen/[0.07] px-1.5 py-0.5 font-mono text-[9.5px] uppercase tracking-[0.14em] text-pen"
+                    >
+                      stable
+                    </span>
+                  )}
+                </div>
+                {r.date && (
+                  <p
+                    class="mt-2 font-mono text-[11.5px] uppercase tracking-[0.12em] text-ink-faint"
+                  >
+                    {r.date}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Right column: change groups */}
+            <div class="space-y-8 md:col-span-9">
+              {r.groups.map((g) => (
+                <section>
+                  <h3
+                    class:list={[
+                      'font-mono text-[11.5px] font-medium uppercase tracking-[0.18em]',
+                      labelAccent[g.label] ?? 'text-ink',
+                    ]}
+                  >
+                    {g.label}
+                  </h3>
+                  <ul class="mt-3 space-y-2">
+                    {g.items.map((item) => (
+                      <li
+                        class="grid grid-cols-[1.25rem_1fr] items-baseline gap-2 text-[15.5px] leading-[1.55] text-ink-muted"
+                      >
+                        <span class="font-mono text-[12px] text-ink-faint">
+                          ▸
+                        </span>
+                        <span set:html={item.replace(/`([^`]+)`/g, '<code class="rounded bg-surface-raised px-1.5 py-0.5 font-mono text-[13px] text-ink">$1</code>')} />
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ))}
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <p
+        class="mt-16 border-t border-line pt-8 font-mono text-[11.5px] text-ink-faint"
+      >
+        Older releases will appear here as they ship. Bugs and requests:
+        <a
+          href="https://github.com/vijo0018/limnia-site/issues"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-ink-muted underline decoration-line-strong underline-offset-4 hover:text-pen hover:decoration-pen"
+          >file an issue</a
+        >.
+      </p>
+    </section>
+  </main>
+</Layout>

@@ -1,57 +1,147 @@
 ---
-const shortcuts = [
-  { keys: ['Ctrl', 'Shift', 'D'], action: 'Toggle draw mode' },
-  { keys: ['Esc'], action: 'Exit draw mode / cancel stroke' },
-  { keys: ['Ctrl', 'Shift', 'S'], action: 'Save canvas as PNG' },
-  { keys: ['Ctrl', 'Shift', 'C'], action: 'Clear canvas' },
-  { keys: ['Ctrl', 'Z'], action: 'Undo', more: 'Redo with Ctrl + Shift + Z' },
-  { keys: ['F1'], action: 'Help' },
+type Shortcut = { keys: string[]; action: string; note?: string; live?: boolean };
+type Group = { label: string; rows: Shortcut[]; sub?: string };
+
+const groups: Group[] = [
+  {
+    label: 'Global',
+    sub: 'works anywhere on Windows',
+    rows: [
+      { keys: ['Ctrl', 'Shift', 'D'], action: 'Toggle draw mode', live: true },
+      { keys: ['Esc'], action: 'Exit draw mode / cancel stroke' },
+      { keys: ['Ctrl', 'Shift', 'S'], action: 'Save canvas as PNG' },
+      { keys: ['Ctrl', 'Shift', 'C'], action: 'Clear canvas' },
+      { keys: ['Ctrl', 'Z'], action: 'Undo', note: 'Redo with Ctrl + Shift + Z' },
+      { keys: ['F1'], action: 'Help' },
+    ],
+  },
+  {
+    label: 'Tools',
+    sub: 'when draw mode is active',
+    rows: [
+      { keys: ['P'], action: 'Pen' },
+      { keys: ['H'], action: 'Highlighter' },
+      { keys: ['E'], action: 'Eraser' },
+      { keys: ['L'], action: 'Line' },
+      { keys: ['A'], action: 'Arrow' },
+      { keys: ['R'], action: 'Rectangle' },
+      { keys: ['C'], action: 'Circle' },
+      { keys: ['T'], action: 'Text' },
+      { keys: ['X'], action: 'Laser pointer' },
+      { keys: ['S'], action: 'Spotlight' },
+    ],
+  },
 ];
 ---
 
-<div
-  class="overflow-hidden rounded-xl border border-border bg-chrome"
+<section
+  id="shortcuts"
+  class="mx-auto max-w-6xl scroll-mt-24 px-6 pt-24 pb-16 sm:px-10 sm:pt-32"
 >
-  <table class="w-full border-collapse text-sm">
-    <thead>
-      <tr>
-        <th
-          class="border-b border-border bg-[#17171a] px-4 py-3 text-left text-muted font-medium"
+  <header class="mb-12 grid grid-cols-1 gap-6 md:grid-cols-12">
+    <div
+      class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-faint md:col-span-3"
+    >
+      § 04 / shortcuts
+    </div>
+    <h2
+      class="font-display text-[34px] font-semibold leading-[1.05] tracking-[-0.025em] text-ink sm:text-[42px] md:col-span-9"
+    >
+      Keyboard-first, by design.
+    </h2>
+  </header>
+
+  {/* Two-column at lg, stacked otherwise.
+      Left: global shortcuts. Right: tool-selection (in draw mode). */}
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    {groups.map((group) => (
+      <div class="overflow-hidden rounded-xl border border-line bg-surface-raised">
+        <div
+          class="flex items-baseline justify-between border-b border-line px-6 py-4"
         >
-          Shortcut
-        </th>
-        <th
-          class="border-b border-border bg-[#17171a] px-4 py-3 text-left text-muted font-medium"
-        >
-          Action
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      {
-        shortcuts.map((row, i) => (
-          <tr>
-            <td
-              class={`px-4 py-3 ${i < shortcuts.length - 1 ? 'border-b border-border' : ''}`}
+          <span
+            class="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-ink"
+          >
+            {group.label}
+          </span>
+          {group.sub && (
+            <span
+              class="font-mono text-[10.5px] uppercase tracking-[0.12em] text-ink-faint"
             >
-              {row.keys.map((k, idx) => (
-                <>
-                  {idx > 0 && <span class="text-muted"> + </span>}
-                  <kbd>{k}</kbd>
-                </>
-              ))}
-            </td>
-            <td
-              class={`px-4 py-3 text-muted ${i < shortcuts.length - 1 ? 'border-b border-border' : ''}`}
-            >
-              {row.action}
-              {row.more && (
-                <span class="ml-2 text-xs opacity-70">({row.more})</span>
-              )}
-            </td>
-          </tr>
-        ))
-      }
-    </tbody>
-  </table>
-</div>
+              {group.sub}
+            </span>
+          )}
+        </div>
+
+        <table class="w-full border-collapse text-left">
+          <tbody>
+            {group.rows.map((row, i) => (
+              <tr class={i % 2 === 1 ? 'bg-surface-sunken/30' : ''}>
+                <th
+                  scope="row"
+                  class:list={[
+                    'px-6 py-3 align-middle font-normal whitespace-nowrap',
+                    i < group.rows.length - 1 ? 'border-b border-line' : '',
+                  ]}
+                >
+                  <span class="inline-flex items-center gap-1">
+                    {row.keys.map((k, idx) => (
+                      <>
+                        {idx > 0 && (
+                          <span class="px-0.5 text-ink-faint">+</span>
+                        )}
+                        <kbd>{k}</kbd>
+                      </>
+                    ))}
+                  </span>
+                </th>
+                <td
+                  class:list={[
+                    'px-6 py-3 align-middle text-[14.5px] text-ink',
+                    i < group.rows.length - 1 ? 'border-b border-line' : '',
+                  ]}
+                >
+                  {row.action}
+                  {row.note && (
+                    <span class="ml-2 font-mono text-[11px] text-ink-faint">
+                      ({row.note})
+                    </span>
+                  )}
+                </td>
+                <td
+                  class:list={[
+                    'px-6 py-3 text-right align-middle whitespace-nowrap',
+                    i < group.rows.length - 1 ? 'border-b border-line' : '',
+                  ]}
+                >
+                  {row.live && (
+                    <button
+                      type="button"
+                      data-demo-trigger
+                      class="group inline-flex items-center gap-1.5 rounded-md border border-pen/40 bg-pen/10 px-2.5 py-1 font-mono text-[10.5px] uppercase tracking-[0.12em] text-pen transition-colors hover:bg-pen/20"
+                    >
+                      <span class="h-1 w-1 rounded-full bg-pen"></span>
+                      try it
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ))}
+  </div>
+
+  <p class="mt-4 font-mono text-[11.5px] text-ink-faint">
+    All shortcuts are remappable in v1.2.
+  </p>
+
+  <script>
+    document.querySelectorAll('[data-demo-trigger]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        (window as any).limniaDemo?.toggle();
+      });
+    });
+  </script>
+</section>

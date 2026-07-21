@@ -2,43 +2,56 @@
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<header
-  class="sticky top-0 z-50 border-b border-border bg-bg/80 backdrop-blur-md"
->
-  <nav
-    class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4"
-  >
+<header class="sticky top-0 z-40 border-b border-line bg-surface/80 backdrop-blur-xl">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-3.5 sm:px-10">
+    {/* Wordmark — uses the actual product icon */}
     <a
       href={`${base}/`}
-      class="flex items-center gap-2 text-sm font-bold uppercase tracking-[0.08em] text-muted no-underline hover:text-text"
+      class="group flex items-center gap-2.5"
     >
+      <img src={`${base}/icon.svg`} alt="" class="h-7 w-7 rounded-md" />
+      <span class="font-display text-[17px] font-semibold tracking-[-0.02em] text-ink">
+        Limnia
+      </span>
       <span
-        class="h-2.5 w-2.5 rounded-full bg-accent shadow-[0_0_12px_var(--color-accent)]"
-      ></span>
-      OmniDraw
+        class="hidden font-mono text-[10.5px] font-medium uppercase tracking-[0.12em] text-ink-faint sm:inline"
+      >
+        v1.0.0 / stable
+      </span>
     </a>
 
-    <div class="flex items-center gap-5 text-sm">
+    <div class="flex items-center gap-1 sm:gap-2">
       <a
         href={`${base}/#tools`}
-        class="hidden text-muted no-underline hover:text-text sm:inline"
-        >Tools</a
+        class="hidden rounded-md px-3 py-1.5 text-[13.5px] text-ink-muted transition-colors hover:bg-surface-raised hover:text-ink sm:inline-block"
       >
+        Tools
+      </a>
       <a
         href={`${base}/#pricing`}
-        class="hidden text-muted no-underline hover:text-text sm:inline"
-        >Free vs Pro</a
+        class="hidden rounded-md px-3 py-1.5 text-[13.5px] text-ink-muted transition-colors hover:bg-surface-raised hover:text-ink sm:inline-block"
       >
+        Pricing
+      </a>
       <a
-        href="https://github.com/vijo0018/omnidraw"
-        class="hidden text-muted no-underline hover:text-text md:inline"
-        >GitHub</a
+        href={`${base}/#shortcuts`}
+        class="hidden rounded-md px-3 py-1.5 text-[13.5px] text-ink-muted transition-colors hover:bg-surface-raised hover:text-ink md:inline-block"
       >
+        Shortcuts
+      </a>
       <a
-        href="https://github.com/vijo0018/omnidraw/releases/latest"
-        class="rounded-lg bg-accent px-4 py-2 font-semibold text-[#002238] no-underline transition-colors hover:bg-accent-hover"
+        href={`${base}/changelog`}
+        class="hidden rounded-md px-3 py-1.5 text-[13.5px] text-ink-muted transition-colors hover:bg-surface-raised hover:text-ink md:inline-block"
+      >
+        Changelog
+      </a>
+
+      <a
+        href={`${base}/downloads/LimniaSetup.exe`}
+        class="ml-2 inline-flex items-center gap-1.5 rounded-md bg-ink px-3.5 py-1.5 text-[13.5px] font-semibold text-surface transition-colors hover:bg-pen"
       >
         Download
+        <span class="font-mono text-[10.5px] font-medium opacity-60">↓ ~2MB</span>
       </a>
     </div>
   </nav>

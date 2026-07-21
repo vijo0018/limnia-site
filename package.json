@@ -1,5 +1,5 @@
 {
-  "name": "omnidraw-site",
+  "name": "limnia-site",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -13,6 +13,9 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.3",
+    "@fontsource-variable/bricolage-grotesque": "^5.2.10",
+    "@fontsource-variable/geist": "^5.2.8",
+    "@fontsource-variable/geist-mono": "^5.2.7",
     "@tailwindcss/vite": "^4.2.2",
     "astro": "^6.1.7",
     "tailwindcss": "^4.2.2"

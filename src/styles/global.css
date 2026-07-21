@@ -1,57 +1,191 @@
 @import "tailwindcss";
 
+/* Self-hosted variable fonts. Bundled by Vite, served from the same origin
+   — no Google Fonts roundtrip, no IP leak, no third-party DNS+TLS. */
+@import "@fontsource-variable/bricolage-grotesque";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+
 @theme {
-  --color-bg: #0c0c0e;
-  --color-bg-elev: #161618;
-  --color-chrome: #1e1e1e;
-  --color-chrome-2: #2a2a2c;
-  --color-border: #2e2e31;
-  --color-text: #e6e6e6;
-  --color-muted: #8a8a90;
-  --color-accent: #32b4ff;
-  --color-accent-hover: #4cc1ff;
-  --color-accent-2: #ffdc28;
-  --color-danger: #ff3c3c;
+  /* ─── Brand palette ─────────────────────────────────────
+     Locked to in-product tool colors. Never drift.
+     The marketing accent IS the Pen tool, on purpose. */
+  --color-pen: #32b4ff;
+  --color-pen-soft: #4cc1ff;
+  --color-pen-deep: #1a8fd6;
+  --color-highlight: #ffdc28;
+  --color-laser: #ff3c3c;
+  --color-text-tool: #b48cff;
+  --color-spotlight: #fff1a8;
+  --color-eraser: #ff6464;
 
-  --font-sans:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, sans-serif;
-  --font-mono: ui-monospace, "SF Mono", Consolas, monospace;
+  /* ─── Semantic neutrals ─────────────────────────────────
+     oklch, warm-tinted toward brand hue (240) for cohesion.
+     Naming is theme-agnostic so light theme can land cleanly. */
+  --color-surface: oklch(13% 0.006 240);
+  --color-surface-raised: oklch(17% 0.008 240);
+  --color-surface-sunken: oklch(10% 0.005 240);
+  --color-line: oklch(28% 0.012 240);
+  --color-line-strong: oklch(40% 0.015 240);
 
-  --radius-card: 12px;
-  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.45);
-  --shadow-glow-accent: 0 0 0 1px color-mix(in srgb, var(--color-accent) 40%, transparent),
-    0 0 32px color-mix(in srgb, var(--color-accent) 25%, transparent);
+  --color-ink: oklch(96% 0.005 240);
+  --color-ink-muted: oklch(74% 0.012 240);
+  --color-ink-faint: oklch(62% 0.012 240);
+
+  /* ─── Type stack ────────────────────────────────────────
+     Display: Bricolage Grotesque (variable, optical sizes —
+       gets characterful at poster scale, refined at body)
+     Body:    Geist (clean, modern, distinctive)
+     Mono:    Geist Mono (real metadata only — versions, kbd,
+       hex codes — never as decorative texture) */
+  --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Geist Variable", "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", "Geist Mono", ui-monospace, "SF Mono", Consolas, monospace;
 }
 
-html {
-  color-scheme: dark;
+/* Base styles MUST be in @layer base, otherwise unlayered rules
+   beat all of Tailwind's @layer utilities in the cascade.
+   (Discovered the hard way: a { color: inherit } was overriding text-surface.) */
+@layer base {
+  html {
+    color-scheme: dark;
+    background: var(--color-surface);
+    color: var(--color-ink);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11", "zero";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: color-mix(in oklch, var(--color-pen) 40%, transparent);
+    color: var(--color-ink);
+  }
+
+  a {
+    text-decoration: none;
+    /* No color: inherit here — let utilities win */
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-pen);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* kbd — physical-key feel */
+  kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.5em;
+    height: 1.6em;
+    padding: 0 0.45em;
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-line);
+    border-bottom-width: 2px;
+    border-radius: 5px;
+    font-family: var(--font-mono);
+    font-size: 0.78em;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    white-space: nowrap;
+    box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.04);
+  }
 }
 
-body {
-  background: radial-gradient(ellipse at top, var(--color-bg-elev) 0%, var(--color-bg) 55%)
-    fixed;
-  color: var(--color-text);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
+@layer components {
+  /* ─── Drawing demo canvas ─────────────────────────────── */
+  .draw-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 60;
+  }
+  body.drawing-mode {
+    cursor: crosshair;
+  }
+  body.drawing-mode .draw-canvas {
+    pointer-events: auto;
+  }
+  body.drawing-mode .draw-status {
+    transform: translate(-50%, 0);
+  }
+
+  .draw-status {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    z-index: 70;
+    transform: translate(-50%, -150%);
+    transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+    margin-top: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 8px 14px 8px 12px;
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    color: var(--color-ink-muted);
+    box-shadow: 0 12px 40px oklch(0% 0 0 / 0.6);
+  }
+  .draw-status .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-pen);
+    box-shadow: 0 0 12px var(--color-pen);
+    animation: pulse 1.6s ease-out infinite;
+  }
+
+  /* ─── Subtle grain ──────────────────────────────────────
+     Adds tactility without resorting to glow shadows. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    mix-blend-mode: overlay;
+  }
+
+  /* ─── Hero entrance ───────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: reveal 800ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .reveal-1 { animation-delay: 60ms; }
+  .reveal-2 { animation-delay: 180ms; }
+  .reveal-3 { animation-delay: 280ms; }
+  .reveal-4 { animation-delay: 400ms; }
+  .reveal-5 { animation-delay: 520ms; }
 }
 
-kbd {
-  display: inline-block;
-  padding: 2px 7px;
-  margin: 0 2px;
-  background: #2a2a2c;
-  border: 1px solid #3a3a3d;
-  border-bottom-width: 2px;
-  border-radius: 5px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--color-text);
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
 }
 
-a {
-  color: var(--color-accent);
-  text-decoration: none;
+@keyframes reveal {
+  to { opacity: 1; transform: translateY(0); }
 }
-a:hover {
-  text-decoration: underline;
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { animation: none; opacity: 1; transform: none; }
+  .draw-status { transition: none; }
+  .draw-status .dot { animation: none; }
 }

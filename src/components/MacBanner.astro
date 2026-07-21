@@ -1,0 +1,160 @@
+---
+// Sticky top banner that only shows on macOS.
+// Three states: collapsed (initial) → expanded (form visible) → done (thank-you).
+// Dismissal and submission are persisted to localStorage so it never shows twice.
+//
+// To activate: replace MAC_TALLY_FORM_ID with the action URL of a Tally form
+// (one email field, optional 'source: mac' hidden field for clarity).
+---
+
+<aside
+  id="mac-banner"
+  hidden
+  class="sticky top-0 z-50 border-b border-line bg-surface-raised"
+>
+  <div
+    class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-4 gap-y-2 px-6 py-2.5 sm:px-10"
+  >
+    {/* Status dot + message */}
+    <div class="flex min-w-0 flex-1 items-center gap-2.5 font-mono text-[11.5px] uppercase tracking-[0.12em] text-ink-muted">
+      <span class="relative inline-block h-1.5 w-1.5 flex-none rounded-full bg-highlight">
+        <span
+          class="absolute inset-0 animate-ping rounded-full bg-highlight opacity-60"
+          style="animation-duration: 2s"></span>
+      </span>
+      <span data-banner-message class="truncate">
+        Mac user · Limnia is Windows-only today.
+      </span>
+    </div>
+
+    {/* Initial state CTA */}
+    <button
+      type="button"
+      data-banner-expand
+      class="group inline-flex items-center gap-1.5 rounded-md border border-highlight/40 bg-highlight/[0.07] px-3 py-1 font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-highlight transition-colors hover:bg-highlight/15"
+    >
+      Tell us you'd want a Mac build
+      <span class="opacity-60 transition-transform group-hover:translate-x-0.5">→</span>
+    </button>
+
+    {/* Expanded form — hidden until expand clicked */}
+    <form
+      data-banner-form
+      hidden
+      action="https://tally.so/r/MAC_TALLY_FORM_ID"
+      method="POST"
+      class="flex w-full items-stretch gap-2 sm:w-auto sm:flex-1"
+    >
+      <input type="hidden" name="source" value="mac" />
+      <label class="sr-only" for="mac-email">Email address</label>
+      <input
+        id="mac-email"
+        name="email"
+        type="email"
+        required
+        autocomplete="email"
+        placeholder="you@example.com"
+        class="min-w-0 flex-1 rounded-md border border-line bg-surface px-3 py-1.5 font-mono text-[12.5px] text-ink placeholder:text-ink-faint focus:border-highlight/60 focus:outline-none"
+      />
+      {/* honeypot */}
+      <input
+        type="text"
+        name="company"
+        tabindex="-1"
+        autocomplete="off"
+        class="absolute h-0 w-0 opacity-0"
+        aria-hidden="true"
+      />
+      <button
+        type="submit"
+        class="inline-flex items-center gap-1.5 rounded-md bg-highlight px-3.5 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-surface transition-colors hover:bg-[#fff05c]"
+      >
+        Vote
+        <span class="opacity-70">↗</span>
+      </button>
+    </form>
+
+    {/* Dismiss */}
+    <button
+      type="button"
+      data-banner-dismiss
+      aria-label="Dismiss banner"
+      class="inline-flex h-6 w-6 flex-none items-center justify-center rounded text-ink-faint transition-colors hover:bg-surface hover:text-ink"
+    >
+      <svg viewBox="0 0 14 14" class="h-3 w-3" aria-hidden="true">
+        <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      </svg>
+    </button>
+  </div>
+</aside>
+
+<script>
+  const STORAGE_KEY = 'limnia.mac-banner.v1';
+  const banner = document.getElementById('mac-banner');
+  if (banner) {
+    const message = banner.querySelector<HTMLElement>('[data-banner-message]')!;
+    const expandBtn = banner.querySelector<HTMLButtonElement>('[data-banner-expand]')!;
+    const form = banner.querySelector<HTMLFormElement>('[data-banner-form]')!;
+    const dismissBtn = banner.querySelector<HTMLButtonElement>('[data-banner-dismiss]')!;
+
+    function isMac(): boolean {
+      // Exclude iOS first — iPad reports MacIntel for navigator.platform.
+      const ua = navigator.userAgent;
+      if (/iPhone|iPad|iPod/.test(ua)) return false;
+      // Modern UA Client Hints API (Chromium).
+      const uaData = (navigator as any).userAgentData;
+      if (uaData?.platform === 'macOS') return true;
+      // Deprecated but still present on every browser.
+      if (navigator.platform && /^Mac/.test(navigator.platform)) return true;
+      // UA string fallback.
+      if (/Macintosh|Mac OS X/.test(ua)) return true;
+      return false;
+    }
+
+    function getState(): 'fresh' | 'dismissed' | 'submitted' {
+      try {
+        return (localStorage.getItem(STORAGE_KEY) as any) || 'fresh';
+      } catch {
+        return 'fresh';
+      }
+    }
+
+    function setState(s: 'dismissed' | 'submitted') {
+      try { localStorage.setItem(STORAGE_KEY, s); } catch {}
+    }
+
+    if (isMac() && getState() === 'fresh') {
+      banner.hidden = false;
+    }
+
+    expandBtn.addEventListener('click', () => {
+      expandBtn.hidden = true;
+      form.hidden = false;
+      message.textContent = 'Mac user · we\u2019ll ping you if a Mac build ships.';
+      form.querySelector<HTMLInputElement>('input[type=email]')?.focus();
+    });
+
+    dismissBtn.addEventListener('click', () => {
+      banner.hidden = true;
+      setState('dismissed');
+    });
+
+    // Intercept submit so we can show a thank-you state inline.
+    // We POST in the background via fetch; if Tally rejects (placeholder URL),
+    // we still show the success state — the user already gave intent.
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      try {
+        await fetch(form.action, { method: 'POST', body: data, mode: 'no-cors' });
+      } catch {
+        // Network failed — still mark submitted; user can email directly if they care.
+      }
+      form.hidden = true;
+      message.textContent = 'Vote registered · we\u2019ll let you know if a Mac build happens.';
+      setState('submitted');
+      // Auto-dismiss after a few seconds so it doesn't linger.
+      setTimeout(() => { banner.hidden = true; }, 4000);
+    });
+  }
+</script>
