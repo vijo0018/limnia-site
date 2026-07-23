@@ -45,9 +45,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <Footer />
 
     {/* Interactive demo — a mini-Limnia. Ctrl+Shift+D toggles draw mode;
-        P / H / X / S switch tools, mirroring the product's real shortcuts.
-        Two layers: draw-canvas persists pen/highlighter; fx-canvas redraws
-        the laser trail / spotlight / ripple pulse every frame. */}
+        single keys switch tools, mirroring the product's real shortcuts.
+        Two layers: draw-canvas persists strokes/shapes; fx-canvas redraws the
+        laser trail / spotlight / shape preview / ripple pulse every frame.
+        Undo replays an operation history, so it stays memory-cheap. */}
     <canvas class="draw-canvas" aria-hidden="true"></canvas>
     <canvas class="fx-canvas" aria-hidden="true"></canvas>
 
@@ -55,34 +56,77 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <span class="dot" aria-hidden="true"></span>
       <span>DRAW MODE</span>
       <span style="opacity:0.45">·</span>
-      <span>press <kbd>P</kbd> <kbd>H</kbd> <kbd>X</kbd> <kbd>S</kbd></span>
+      <span><kbd>esc</kbd> to exit</span>
     </div>
 
     <div class="draw-toolbar" role="toolbar" aria-label="Limnia demo tools" aria-hidden="true">
       <span class="draw-toolbar-mode"><span class="dot" aria-hidden="true"></span>draw</span>
-      <button type="button" class="draw-tool" data-tool="pen" aria-pressed="true" aria-label="Pen (P)" style="color:#32b4ff">
-        <svg viewBox="0 0 20 20"><path d="M3 17l3.5-1L15 7.5l-2-2L4.5 14 3 17z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M13.5 6l2-2 2 2-2 2-2-2z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
-        <kbd>P</kbd>
-      </button>
-      <button type="button" class="draw-tool" data-tool="highlight" aria-pressed="false" aria-label="Highlighter (H)" style="color:#ffdc28">
-        <svg viewBox="0 0 20 20"><path d="M5 15l8-8 4 4-8 8H5v-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M3 17h7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/></svg>
-        <kbd>H</kbd>
-      </button>
-      <button type="button" class="draw-tool" data-tool="laser" aria-pressed="false" aria-label="Laser pointer (X)" style="color:#ff3c3c">
-        <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="3" fill="currentColor"/><circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1" opacity="0.4" fill="none"/></svg>
-        <kbd>X</kbd>
-      </button>
-      <button type="button" class="draw-tool" data-tool="spotlight" aria-pressed="false" aria-label="Spotlight (S)" style="color:#fff1a8">
-        <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="10" cy="10" r="2" fill="currentColor"/></svg>
-        <kbd>S</kbd>
-      </button>
+
+      <div class="draw-group" role="group" aria-label="Tools">
+        <button type="button" class="draw-tool" data-tool="pen" aria-pressed="true" aria-label="Pen (P)" style="color:#32b4ff">
+          <svg viewBox="0 0 20 20"><path d="M3 17l3.5-1L15 7.5l-2-2L4.5 14 3 17z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M13.5 6l2-2 2 2-2 2-2-2z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+          <kbd>P</kbd>
+        </button>
+        <button type="button" class="draw-tool" data-tool="highlight" aria-pressed="false" aria-label="Highlighter (H)" style="color:#ffdc28">
+          <svg viewBox="0 0 20 20"><path d="M5 15l8-8 4 4-8 8H5v-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M3 17h7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/></svg>
+          <kbd>H</kbd>
+        </button>
+        <button type="button" class="draw-tool" data-tool="line" aria-pressed="false" aria-label="Line (L)" style="color:#32b4ff">
+          <svg viewBox="0 0 20 20"><path d="M4 16L16 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <kbd>L</kbd>
+        </button>
+        <button type="button" class="draw-tool" data-tool="arrow" aria-pressed="false" aria-label="Arrow (A)" style="color:#32b4ff">
+          <svg viewBox="0 0 20 20"><path d="M4 16L15 5M15 5H8M15 5v7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <kbd>A</kbd>
+        </button>
+        <button type="button" class="draw-tool" data-tool="rect" aria-pressed="false" aria-label="Rectangle (R)" style="color:#32b4ff">
+          <svg viewBox="0 0 20 20"><rect x="4" y="5" width="12" height="10" rx="1" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
+          <kbd>R</kbd>
+        </button>
+        <button type="button" class="draw-tool" data-tool="laser" aria-pressed="false" aria-label="Laser pointer (X)" style="color:#ff3c3c">
+          <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="3" fill="currentColor"/><circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1" opacity="0.4" fill="none"/></svg>
+          <kbd>X</kbd>
+        </button>
+        <button type="button" class="draw-tool" data-tool="spotlight" aria-pressed="false" aria-label="Spotlight (S)" style="color:#fff1a8">
+          <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="10" cy="10" r="2" fill="currentColor"/></svg>
+          <kbd>S</kbd>
+        </button>
+      </div>
+
       <span class="draw-toolbar-sep" aria-hidden="true"></span>
+
+      <div class="draw-swatches" role="group" aria-label="Color">
+        <button type="button" class="draw-color" data-color="#32b4ff" aria-pressed="true" aria-label="Cyan" style="background:#32b4ff"></button>
+        <button type="button" class="draw-color" data-color="#ff3c3c" aria-pressed="false" aria-label="Red" style="background:#ff3c3c"></button>
+        <button type="button" class="draw-color" data-color="#ffdc28" aria-pressed="false" aria-label="Yellow" style="background:#ffdc28"></button>
+        <button type="button" class="draw-color" data-color="#28c850" aria-pressed="false" aria-label="Green" style="background:#28c850"></button>
+        <button type="button" class="draw-color" data-color="#b48cff" aria-pressed="false" aria-label="Purple" style="background:#b48cff"></button>
+        <button type="button" class="draw-color" data-color="#ffffff" aria-pressed="false" aria-label="White" style="background:#ffffff"></button>
+      </div>
+
+      <span class="draw-toolbar-sep" aria-hidden="true"></span>
+
+      <div class="draw-sizes" role="group" aria-label="Brush size">
+        <button type="button" class="draw-size" data-size="2" aria-pressed="false" aria-label="Small"><span class="dot" style="width:4px;height:4px"></span></button>
+        <button type="button" class="draw-size" data-size="4" aria-pressed="true" aria-label="Medium"><span class="dot" style="width:7px;height:7px"></span></button>
+        <button type="button" class="draw-size" data-size="8" aria-pressed="false" aria-label="Large"><span class="dot" style="width:11px;height:11px"></span></button>
+      </div>
+
+      <span class="draw-toolbar-sep" aria-hidden="true"></span>
+
+      <button type="button" class="draw-action" data-demo-undo aria-label="Undo (Ctrl+Z)">Undo</button>
       <button type="button" class="draw-action" data-demo-clear>Clear</button>
       <button type="button" class="draw-action" data-demo-exit>Esc</button>
     </div>
 
     <script>
-      type Tool = 'pen' | 'highlight' | 'laser' | 'spotlight';
+      type Pt = { x: number; y: number };
+      type FreeTool = 'pen' | 'highlight';
+      type ShapeTool = 'line' | 'arrow' | 'rect';
+      type Tool = FreeTool | ShapeTool | 'laser' | 'spotlight';
+      type Op =
+        | { kind: 'free'; tool: FreeTool; color: string; size: number; points: Pt[] }
+        | { kind: 'shape'; tool: ShapeTool; color: string; size: number; a: Pt; b: Pt };
 
       const draw = document.querySelector('.draw-canvas') as HTMLCanvasElement;
       const fx = document.querySelector('.fx-canvas') as HTMLCanvasElement;
@@ -92,18 +136,24 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const dpr = Math.max(window.devicePixelRatio || 1, 1);
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      const TOOL_COLOR: Record<Tool, string> = {
-        pen: '#32b4ff', highlight: '#ffdc28', laser: '#ff3c3c', spotlight: '#fff1a8',
+      const KEY_TOOL: Record<string, Tool> = {
+        p: 'pen', h: 'highlight', l: 'line', a: 'arrow', r: 'rect', x: 'laser', s: 'spotlight',
       };
+      const isFree = (t: Tool): t is FreeTool => t === 'pen' || t === 'highlight';
+      const isShape = (t: Tool): t is ShapeTool => t === 'line' || t === 'arrow' || t === 'rect';
       const LASER_FADE = 650; // ms
       const RIPPLE_LIFE = 620; // ms
 
       let active = false;
       let tool: Tool = 'pen';
-      let drawing = false;
-      let last: { x: number; y: number } | null = null;
+      let color = '#32b4ff';
+      let size = 4;
       let pointer = { x: -1, y: -1 };
       let hasPointer = false;
+      let last: Pt | null = null;
+      let freeOp: Extract<Op, { kind: 'free' }> | null = null;
+      let shapeOp: Extract<Op, { kind: 'shape' }> | null = null;
+      const ops: Op[] = [];
       let laserTrail: { x: number; y: number; t: number }[] = [];
       let ripples: { x: number; y: number; t: number; color: string }[] = [];
       let raf = 0;
@@ -120,20 +170,102 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         c.style.width = window.innerWidth + 'px';
         c.style.height = window.innerHeight + 'px';
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
       }
       function resize() {
         sizeCanvas(draw, dctx);
         sizeCanvas(fx, fctx);
-        dctx.lineCap = 'round';
-        dctx.lineJoin = 'round';
+        redraw(); // strokes are stored as ops, so a resize can replay them
+      }
+
+      // ── styling ──
+      function freeStyle(ctx: CanvasRenderingContext2D, tl: FreeTool, col: string, sz: number) {
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        if (tl === 'highlight') {
+          ctx.strokeStyle = '#ffdc28';
+          ctx.globalAlpha = 0.3;
+          ctx.lineWidth = sz * 5;
+          ctx.shadowBlur = 0;
+        } else {
+          ctx.strokeStyle = col;
+          ctx.globalAlpha = 1;
+          ctx.lineWidth = sz;
+          ctx.shadowColor = col;
+          ctx.shadowBlur = 6;
+        }
+      }
+      function shapeStyle(ctx: CanvasRenderingContext2D, col: string, sz: number) {
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.globalAlpha = 1;
+        ctx.strokeStyle = col;
+        ctx.lineWidth = sz;
+        ctx.shadowColor = col;
+        ctx.shadowBlur = 5;
+      }
+      function shapePath(ctx: CanvasRenderingContext2D, tl: ShapeTool, a: Pt, b: Pt, sz: number) {
+        if (tl === 'rect') {
+          ctx.strokeRect(Math.min(a.x, b.x), Math.min(a.y, b.y), Math.abs(b.x - a.x), Math.abs(b.y - a.y));
+          return;
+        }
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+        if (tl === 'arrow') {
+          const ang = Math.atan2(b.y - a.y, b.x - a.x);
+          const h = 10 + sz * 1.8;
+          ctx.beginPath();
+          ctx.moveTo(b.x, b.y);
+          ctx.lineTo(b.x - h * Math.cos(ang - Math.PI / 7), b.y - h * Math.sin(ang - Math.PI / 7));
+          ctx.moveTo(b.x, b.y);
+          ctx.lineTo(b.x - h * Math.cos(ang + Math.PI / 7), b.y - h * Math.sin(ang + Math.PI / 7));
+          ctx.stroke();
+        }
+      }
+
+      function renderOp(ctx: CanvasRenderingContext2D, op: Op) {
+        if (op.kind === 'free') {
+          freeStyle(ctx, op.tool, op.color, op.size);
+          ctx.beginPath();
+          op.points.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
+          if (op.points.length === 1) ctx.lineTo(op.points[0].x + 0.1, op.points[0].y);
+          ctx.stroke();
+          ctx.globalAlpha = 1;
+        } else {
+          shapeStyle(ctx, op.color, op.size);
+          shapePath(ctx, op.tool, op.a, op.b, op.size);
+        }
+      }
+      function redraw() {
+        dctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        for (const op of ops) renderOp(dctx, op);
       }
 
       function setTool(t: Tool) {
         tool = t;
+        freeOp = null;
+        shapeOp = null;
+        last = null;
+        if (t !== 'laser') laserTrail = [];
         toolbar.querySelectorAll<HTMLButtonElement>('[data-tool]').forEach((b) => {
           b.setAttribute('aria-pressed', String(b.dataset.tool === t));
         });
-        if (t !== 'laser') laserTrail = [];
+      }
+      function setColor(c: string) {
+        color = c;
+        toolbar.querySelectorAll<HTMLButtonElement>('[data-color]').forEach((b) => {
+          b.setAttribute('aria-pressed', String(b.dataset.color === c));
+        });
+        if (tool === 'laser' || tool === 'spotlight') setTool('pen');
+      }
+      function setSize(s: number) {
+        size = s;
+        toolbar.querySelectorAll<HTMLButtonElement>('[data-size]').forEach((b) => {
+          b.setAttribute('aria-pressed', String(Number(b.dataset.size) === s));
+        });
       }
 
       function activate() {
@@ -144,10 +276,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       }
       function deactivate() {
         active = false;
-        drawing = false;
+        freeOp = null;
+        shapeOp = null;
         last = null;
         laserTrail = [];
         ripples = [];
+        ops.length = 0;
         document.body.classList.remove('drawing-mode');
         toolbar.setAttribute('aria-hidden', 'true');
         cancelAnimationFrame(raf);
@@ -155,27 +289,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         fctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
       }
       function clearAll() {
-        dctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-        fctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        ops.length = 0;
         laserTrail = [];
         ripples = [];
+        redraw();
+        fctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
       }
-
-      function strokeSegment(a: { x: number; y: number }, b: { x: number; y: number }) {
-        dctx.beginPath();
-        dctx.moveTo(a.x, a.y);
-        dctx.lineTo(b.x, b.y);
-        if (tool === 'pen') {
-          dctx.strokeStyle = '#32b4ff';
-          dctx.lineWidth = 3;
-          dctx.shadowColor = '#32b4ff';
-          dctx.shadowBlur = 6;
-        } else {
-          dctx.strokeStyle = 'rgba(255,220,40,0.32)';
-          dctx.lineWidth = 16;
-          dctx.shadowBlur = 0;
-        }
-        dctx.stroke();
+      function undo() {
+        ops.pop();
+        redraw();
       }
 
       function loop() {
@@ -230,7 +352,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           fctx.restore();
         }
 
-        // Ripple pulse where a stroke lands (skipped under reduced motion).
+        // Live shape preview (line / arrow / rect while dragging).
+        if (shapeOp) {
+          fctx.save();
+          shapeStyle(fctx, shapeOp.color, shapeOp.size);
+          shapePath(fctx, shapeOp.tool, shapeOp.a, shapeOp.b, shapeOp.size);
+          fctx.restore();
+        }
+
+        // Ripple pulse where a freehand stroke lands (skipped under reduced motion).
         if (ripples.length) {
           ripples = ripples.filter((rp) => t - rp.t < RIPPLE_LIFE);
           fctx.save();
@@ -257,43 +387,63 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         }
         if (!active) return;
         if (e.key === 'Escape') { deactivate(); return; }
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !e.shiftKey) {
+          e.preventDefault();
+          undo();
+          return;
+        }
         if (e.ctrlKey || e.metaKey || e.altKey || typingTarget()) return;
-        const k = e.key.toLowerCase();
-        if (k === 'p') setTool('pen');
-        else if (k === 'h') setTool('highlight');
-        else if (k === 'x') setTool('laser');
-        else if (k === 's') setTool('spotlight');
+        const t = KEY_TOOL[e.key.toLowerCase()];
+        if (t) setTool(t);
       });
 
       draw.addEventListener('pointerdown', (e) => {
         if (!active) return;
-        pointer = { x: e.clientX, y: e.clientY };
+        const p = { x: e.clientX, y: e.clientY };
+        pointer = p;
         hasPointer = true;
-        if (tool === 'pen' || tool === 'highlight') {
-          drawing = true;
-          last = { x: e.clientX, y: e.clientY };
-          if (!reduceMotion) ripples.push({ x: e.clientX, y: e.clientY, t: now(), color: TOOL_COLOR[tool] });
+        if (isFree(tool)) {
+          freeOp = { kind: 'free', tool, color, size, points: [p] };
+          ops.push(freeOp);
+          last = p;
+          if (!reduceMotion) ripples.push({ x: p.x, y: p.y, t: now(), color: tool === 'highlight' ? '#ffdc28' : color });
+          try { draw.setPointerCapture(e.pointerId); } catch {}
+        } else if (isShape(tool)) {
+          shapeOp = { kind: 'shape', tool, color, size, a: p, b: p };
           try { draw.setPointerCapture(e.pointerId); } catch {}
         } else if (tool === 'laser') {
-          laserTrail.push({ x: e.clientX, y: e.clientY, t: now() });
+          laserTrail.push({ x: p.x, y: p.y, t: now() });
         }
       });
 
       draw.addEventListener('pointermove', (e) => {
         if (!active) return;
-        pointer = { x: e.clientX, y: e.clientY };
+        const p = { x: e.clientX, y: e.clientY };
+        pointer = p;
         hasPointer = true;
-        if ((tool === 'pen' || tool === 'highlight') && drawing && last) {
-          const p = { x: e.clientX, y: e.clientY };
-          strokeSegment(last, p);
+        if (freeOp && last) {
+          freeOp.points.push(p);
+          freeStyle(dctx, freeOp.tool, freeOp.color, freeOp.size);
+          dctx.beginPath();
+          dctx.moveTo(last.x, last.y);
+          dctx.lineTo(p.x, p.y);
+          dctx.stroke();
+          dctx.globalAlpha = 1;
           last = p;
+        } else if (shapeOp) {
+          shapeOp.b = p;
         } else if (tool === 'laser') {
-          laserTrail.push({ x: e.clientX, y: e.clientY, t: now() });
+          laserTrail.push({ x: p.x, y: p.y, t: now() });
         }
       });
 
       const stopDraw = (e: PointerEvent) => {
-        drawing = false;
+        if (shapeOp) {
+          ops.push(shapeOp);
+          renderOp(dctx, shapeOp);
+          shapeOp = null;
+        }
+        freeOp = null;
         last = null;
         try { draw.releasePointerCapture(e.pointerId); } catch {}
       };
@@ -304,6 +454,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       toolbar.querySelectorAll<HTMLButtonElement>('[data-tool]').forEach((b) => {
         b.addEventListener('click', () => setTool(b.dataset.tool as Tool));
       });
+      toolbar.querySelectorAll<HTMLButtonElement>('[data-color]').forEach((b) => {
+        b.addEventListener('click', () => setColor(b.dataset.color!));
+      });
+      toolbar.querySelectorAll<HTMLButtonElement>('[data-size]').forEach((b) => {
+        b.addEventListener('click', () => setSize(Number(b.dataset.size)));
+      });
+      toolbar.querySelector('[data-demo-undo]')?.addEventListener('click', undo);
       toolbar.querySelector('[data-demo-clear]')?.addEventListener('click', clearAll);
       toolbar.querySelector('[data-demo-exit]')?.addEventListener('click', deactivate);
 
@@ -311,7 +468,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       resize();
 
       (window as any).limniaDemo = {
-        activate, deactivate, setTool,
+        activate, deactivate, setTool, setColor, setSize, undo,
         toggle: () => (active ? deactivate() : activate()),
       };
     </script>

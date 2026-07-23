@@ -184,7 +184,7 @@ const orbColors = palette.map((c, i) => {
         Twelve tools, one toolbar.
       </h2>
       <p class="mt-3 max-w-lg text-[16px] leading-[1.55] text-ink-muted">
-        A color-coded palette mirrored straight from the product — plus grid,
+        A color-coded palette mirrored straight from the product, plus grid,
         eyedropper, and boards. Every tool is a single keystroke away. Prefer a
         ring to a bar? Flip it to <span class="text-ink">Orb</span>.
       </p>
@@ -245,7 +245,7 @@ const orbColors = palette.map((c, i) => {
                         ? 'border-pen/50 bg-pen/10'
                         : 'border-transparent',
                     ]}
-                    aria-label={`${t.name} (${t.key})${t.pro ? ' — Pro' : ''}`}
+                    aria-label={`${t.name} (${t.key})${t.pro ? ', Pro' : ''}`}
                     style={`color: ${t.color}`}
                   >
                     <svg viewBox="0 0 20 20" class="h-5 w-5" set:html={t.icon} />
@@ -335,7 +335,7 @@ const orbColors = palette.map((c, i) => {
     <span class="flex items-center gap-2">
       <span class="h-1.5 w-1.5 rounded-full" style="background: #f5b942"></span>
       <span class="text-ink-muted">Pro</span>
-      <span>— magnifier, boards</span>
+      <span>· magnifier, boards</span>
     </span>
     <span class="text-ink-faint/40">·</span>
     <span>The Orb is draggable, and remembers where you left it on each monitor.</span>

@@ -27,7 +27,7 @@ export const releases: Release[] = [
       {
         label: 'Added',
         items: [
-          'Transparent, click-through overlay for drawing anywhere on screen — `alpha = 0` hit-testing, spanning the full multi-monitor virtual desktop.',
+          'Transparent, click-through overlay for drawing anywhere on screen: `alpha = 0` hit-testing, spanning the full multi-monitor virtual desktop.',
           '12 tools: Pen, Highlighter, Eraser, Line, Arrow (single / double / dashed), Rectangle, Circle, Text, Laser Pointer, Spotlight, Ruler, and Magnifier.',
           'Grid overlay, Eyedropper (pick any pixel on screen), and named style presets.',
           '14-color palette, native Windows custom color picker, and 4 custom-color preset slots.',
@@ -38,7 +38,7 @@ export const releases: Release[] = [
           'System tray icon with right-click menu, single-instance enforcement, per-monitor DPI awareness, and an optional start-with-Windows setting.',
           'First-run onboarding card; crash hook writing fatal errors to `%APPDATA%\\Limnia\\crash.log`.',
           'Inno Setup installer with optional desktop shortcut and auto-start.',
-          'Limnia Pro (one-time unlock, verified offline via Ed25519 — no server, no phone-home): Magnifier, MP4 screen recording, GIF recording, region capture, system / mic audio capture, and Whiteboard / Blackboard canvases.',
+          'Limnia Pro (one-time unlock, verified offline via Ed25519, with no server or phone-home): Magnifier, MP4 screen recording, GIF recording, region capture, system / mic audio capture, and Whiteboard / Blackboard canvases.',
         ],
       },
     ],

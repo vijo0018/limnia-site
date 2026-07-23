@@ -171,13 +171,22 @@
     transform: translate(-50%, calc(100% + 44px));
     transition: transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    justify-content: center;
     gap: 4px;
+    row-gap: 6px;
+    max-width: calc(100vw - 24px);
     padding: 7px;
     background: var(--color-surface-raised);
     border: 1px solid var(--color-line);
     border-radius: 14px;
     box-shadow: 0 20px 60px oklch(0% 0 0 / 0.6);
+  }
+  .draw-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
   }
   body.drawing-mode .draw-toolbar {
     transform: translate(-50%, 0);
@@ -251,6 +260,56 @@
     background: var(--color-surface);
     color: var(--color-ink);
   }
+
+  /* ─── Demo color swatches ─── */
+  .draw-swatches {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 4px;
+  }
+  .draw-color {
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    box-shadow: inset 0 0 0 1px oklch(0% 0 0 / 0.25);
+    cursor: pointer;
+    transition: transform 150ms, border-color 150ms;
+  }
+  .draw-color:hover { transform: scale(1.12); }
+  .draw-color[aria-pressed="true"] { border-color: var(--color-ink); }
+
+  /* ─── Demo brush sizes ─── */
+  .draw-sizes {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 0 2px;
+  }
+  .draw-size {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 34px;
+    border-radius: 9px;
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    transition: background 150ms, border-color 150ms;
+  }
+  .draw-size:hover { background: var(--color-surface); }
+  .draw-size[aria-pressed="true"] {
+    border-color: color-mix(in oklch, var(--color-pen) 45%, transparent);
+    background: color-mix(in oklch, var(--color-pen) 12%, transparent);
+  }
+  .draw-size .dot {
+    border-radius: 50%;
+    background: var(--color-ink-muted);
+  }
+  .draw-size[aria-pressed="true"] .dot { background: var(--color-ink); }
 
   /* ─── Tools showcase — a mock "screen" the toolbar floats over ───
      Limnia is an overlay on top of whatever's below; the dot-grid stage
