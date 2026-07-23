@@ -148,10 +148,30 @@ const groups = [
   { label: 'live', tools: live },
   { label: 'utilities', tools: utilities },
 ];
+
+// ── Orb geometry — the 12 drawing tools ring the hub; the 14-color palette
+// forms the outer ring. Positions are precomputed as percentages so the orb
+// scales fluidly. Angles start at the top (−90°) and go clockwise.
+const ringTools = [...freehand, ...shapes, ...text, ...live];
+const TOOL_R = 34; // % of half-size
+const orbTools = ringTools.map((t, i) => {
+  const a = ((-90 + (360 / ringTools.length) * i) * Math.PI) / 180;
+  return { ...t, x: 50 + TOOL_R * Math.cos(a), y: 50 + TOOL_R * Math.sin(a) };
+});
+
+const palette = [
+  '#FF3232', '#FF6482', '#FF8C00', '#FFDC28', '#64DC3C', '#28C850', '#28C8C8',
+  '#288CFF', '#A03CDC', '#8C643C', '#A0A0A0', '#FFFFFF', '#1E1E1E', '#000000',
+];
+const COLOR_R = 47;
+const orbColors = palette.map((c, i) => {
+  const a = ((-90 + (360 / palette.length) * i) * Math.PI) / 180;
+  return { c, x: 50 + COLOR_R * Math.cos(a), y: 50 + COLOR_R * Math.sin(a) };
+});
 ---
 
 <section id="tools" class="mx-auto max-w-6xl scroll-mt-24 px-6 pt-24 pb-8 sm:px-10 sm:pt-32">
-  <header class="mb-12 grid grid-cols-1 gap-6 md:grid-cols-12">
+  <header class="mb-10 grid grid-cols-1 gap-6 md:grid-cols-12">
     <div
       class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-faint md:col-span-3"
     >
@@ -165,120 +185,175 @@ const groups = [
       </h2>
       <p class="mt-3 max-w-lg text-[16px] leading-[1.55] text-ink-muted">
         A color-coded palette mirrored straight from the product — plus grid,
-        eyedropper, and boards. Every tool is a single keystroke away. The
-        toolbar you see here is the toolbar in the app.
+        eyedropper, and boards. Every tool is a single keystroke away. Prefer a
+        ring to a bar? Flip it to <span class="text-ink">Orb</span>.
       </p>
     </div>
   </header>
 
-  {/* Toolbar mockup — floating chrome, with a subtle baseline shadow
-      and a "DRAW" status pill on the left mimicking the product's mode indicator. */}
-  <div class="relative">
-    <div
-      class="relative overflow-x-auto rounded-xl border border-line bg-surface-raised shadow-[0_20px_60px_-20px_oklch(0%_0_0/0.6)]"
-    >
-      <div class="flex min-w-max items-stretch">
-        {/* Mode indicator — left cap */}
-        <div
-          class="flex items-center gap-2 border-r border-line px-5 py-4"
-        >
-          <span class="relative inline-block h-1.5 w-1.5 rounded-full bg-pen">
-            <span
-              class="absolute inset-0 animate-ping rounded-full bg-pen opacity-60"
-              style="animation-duration: 2s"></span>
-          </span>
-          <span
-            class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-muted"
-          >draw</span>
-        </div>
+  {/* Layout toggle — Classic ⇄ Orb. Above the stage, right-aligned. */}
+  <div class="mb-4 flex items-center justify-between gap-4">
+    <span class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-faint">
+      layout
+    </span>
+    <div class="tool-toggle" role="tablist" aria-label="Toolbar layout">
+      <button type="button" class="tool-toggle-btn" data-layout-btn="classic" role="tab" aria-selected="true">
+        Classic
+      </button>
+      <button type="button" class="tool-toggle-btn" data-layout-btn="orb" role="tab" aria-selected="false">
+        Orb
+      </button>
+      <span class="tool-toggle-thumb" aria-hidden="true"></span>
+    </div>
+  </div>
 
-        {/* Tool groups — each tool is icon + persistent key label.
-            No hover tooltips: they'd overflow the scroll container,
-            and showing the keystroke always matches "keyboard-first" intent. */}
-        {groups.map((group, gi) => (
-          <div
-            class:list={[
-              'flex items-stretch gap-1 px-3 py-3',
-              gi < groups.length - 1 ? 'border-r border-line' : '',
-            ]}
-          >
-            {group.tools.map((t, ti) => (
-              <div class="flex flex-col items-center gap-1">
-                <button
-                  type="button"
-                  class:list={[
-                    'relative flex h-11 min-w-11 items-center justify-center rounded-md border transition-colors duration-150',
-                    gi === 0 && ti === 0
-                      ? 'border-pen/50 bg-pen/10'
-                      : 'border-transparent hover:border-line hover:bg-surface',
-                  ]}
-                  aria-label={`${t.name} (${t.key})${t.pro ? ' — Pro' : ''}`}
-                  style={`color: ${t.color}`}
-                >
-                  <svg viewBox="0 0 20 20" class="h-5 w-5" set:html={t.icon} />
-                  {t.pro && (
-                    <span
-                      class="absolute right-1 top-1 h-1.5 w-1.5 rounded-full"
-                      style="background: #f5b942"
-                      aria-hidden="true"
-                    ></span>
-                  )}
-                </button>
-                <span
-                  class="font-mono text-[9.5px] font-medium uppercase tracking-[0.14em] text-ink-faint"
-                  aria-hidden="true"
-                >
-                  {t.key}
-                </span>
-              </div>
-            ))}
+  {/* The stage — a mock "screen" the toolbar floats over, echoing the product:
+      Limnia is an overlay on top of whatever's below. Classic and Orb crossfade
+      within it. */}
+  <div class="tool-stage" data-layout="classic">
+    {/* ─── Classic bar ─── */}
+    <div class="tool-view tool-view-classic">
+      <div
+        class="relative max-w-full overflow-x-auto rounded-xl border border-line bg-surface-raised shadow-[0_20px_60px_-20px_oklch(0%_0_0/0.6)]"
+      >
+        <div class="flex min-w-max items-stretch">
+          <div class="flex items-center gap-2 border-r border-line px-5 py-4">
+            <span class="relative inline-block h-1.5 w-1.5 rounded-full bg-pen">
+              <span
+                class="absolute inset-0 animate-ping rounded-full bg-pen opacity-60"
+                style="animation-duration: 2s"></span>
+            </span>
+            <span class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-muted">
+              draw
+            </span>
           </div>
-        ))}
 
-        {/* Color swatch on the right — legend link */}
-        <div class="ml-auto hidden items-center gap-2 border-l border-line px-5 py-4 md:flex">
-          <span class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-faint">14</span>
-          <div class="flex gap-1">
-            <span class="h-3.5 w-3.5 rounded-[3px] bg-pen"></span>
-            <span class="h-3.5 w-3.5 rounded-[3px]" style="background: #ffdc28"></span>
-            <span class="h-3.5 w-3.5 rounded-[3px]" style="background: #ff3c3c"></span>
-            <span class="h-3.5 w-3.5 rounded-[3px]" style="background: #b48cff"></span>
-            <span class="h-3.5 w-3.5 rounded-[3px]" style="background: #fff1a8"></span>
-            <span class="h-3.5 w-3.5 rounded-[3px]" style="background: #7cff9d"></span>
-            <span class="h-3.5 w-3.5 rounded-[3px]" style="background: #ffffff"></span>
-            <span class="h-3.5 w-3.5 rounded-[3px] border border-line" style="background: #0c0c0e"></span>
+          {groups.map((group, gi) => (
+            <div
+              class:list={[
+                'flex items-stretch gap-1 px-3 py-3',
+                gi < groups.length - 1 ? 'border-r border-line' : '',
+              ]}
+            >
+              {group.tools.map((t, ti) => (
+                <div class="flex flex-col items-center gap-1">
+                  <button
+                    type="button"
+                    class:list={[
+                      'tool-chip relative flex h-11 min-w-11 items-center justify-center rounded-md border transition-[color,background-color,border-color,transform] duration-150',
+                      gi === 0 && ti === 0
+                        ? 'border-pen/50 bg-pen/10'
+                        : 'border-transparent',
+                    ]}
+                    aria-label={`${t.name} (${t.key})${t.pro ? ' — Pro' : ''}`}
+                    style={`color: ${t.color}`}
+                  >
+                    <svg viewBox="0 0 20 20" class="h-5 w-5" set:html={t.icon} />
+                    {t.pro && (
+                      <span
+                        class="absolute right-1 top-1 h-1.5 w-1.5 rounded-full"
+                        style="background: #f5b942"
+                        aria-hidden="true"
+                      ></span>
+                    )}
+                  </button>
+                  <span
+                    class="font-mono text-[9.5px] font-medium uppercase tracking-[0.14em] text-ink-faint"
+                    aria-hidden="true"
+                  >
+                    {t.key}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ))}
+
+          <div class="ml-auto hidden items-center gap-2 border-l border-line px-5 py-4 md:flex">
+            <span class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-faint">14</span>
+            <div class="flex gap-1">
+              {palette.slice(0, 8).map((c) => (
+                <span
+                  class:list={['h-3.5 w-3.5 rounded-[3px]', c === '#000000' ? 'border border-line' : '']}
+                  style={`background: ${c}`}
+                ></span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    {/* Legend below the toolbar */}
-    <div
-      class="mt-6 grid grid-cols-2 gap-x-8 gap-y-2 font-mono text-[11.5px] text-ink-faint sm:grid-cols-3 lg:grid-cols-5"
-    >
-      {groups.map((group) => (
-        <div class="flex items-baseline gap-2">
-          <span class="uppercase tracking-[0.12em]">{group.label}</span>
-          <span class="flex-1 border-b border-dashed border-line"></span>
-          <span>{String(group.tools.length).padStart(2, '0')}</span>
-        </div>
-      ))}
-    </div>
-
-    {/* Footnotes — Orb layout + Pro marker. Personality lives in the honesty
-        of the details: the toolbar can also be a draggable radial menu. */}
-    <div class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[11px] text-ink-faint">
-      <span class="flex items-center gap-2">
-        <span class="h-1.5 w-1.5 rounded-full" style="background: #f5b942"></span>
-        <span class="text-ink-muted">Pro</span>
-        <span>— magnifier, boards</span>
-      </span>
-      <span class="text-ink-faint/40">·</span>
-      <span>
-        Prefer a radial menu? Switch the toolbar to
-        <span class="text-ink-muted">Orb</span> — a draggable ring of tools,
-        colors, and sizes.
-      </span>
+    {/* ─── Orb radial ─── (decorative twin of the classic bar) */}
+    <div class="tool-view tool-view-orb" aria-hidden="true">
+      <div class="orb">
+        {/* outer color ring */}
+        {orbColors.map((c) => (
+          <span
+            class="orb-color"
+            style={`left:${c.x}%; top:${c.y}%; background:${c.c}; ${c.c === '#000000' ? 'box-shadow: inset 0 0 0 1px var(--color-line);' : ''}`}
+          ></span>
+        ))}
+        {/* faint guide ring */}
+        <span class="orb-guide" aria-hidden="true"></span>
+        {/* tool ring */}
+        {orbTools.map((t, i) => (
+          <span class="orb-chip" style={`left:${t.x}%; top:${t.y}%; color:${t.color}; transition-delay:${i * 22}ms`}>
+            <svg viewBox="0 0 20 20" set:html={t.icon} />
+            {t.pro && <span class="orb-pro" style="background:#f5b942"></span>}
+          </span>
+        ))}
+        {/* hub */}
+        <span class="orb-hub">
+          <svg viewBox="0 0 40 40" aria-hidden="true">
+            <g transform="translate(20 20)" fill="none" stroke="#32b4ff" stroke-linecap="round">
+              <circle r="15" stroke-width="1.4" opacity="0.35" stroke-dasharray="78 12" transform="rotate(-58)" />
+              <circle r="9" stroke-width="1.6" opacity="0.7" stroke-dasharray="45 8" transform="rotate(-52)" />
+            </g>
+            <circle cx="20" cy="20" r="3.6" fill="#5ec2ff" />
+          </svg>
+          <span class="orb-hub-label">draw</span>
+        </span>
+      </div>
     </div>
   </div>
+
+  {/* Legend below the stage */}
+  <div
+    class="mt-6 grid grid-cols-2 gap-x-8 gap-y-2 font-mono text-[11.5px] text-ink-faint sm:grid-cols-3 lg:grid-cols-5"
+  >
+    {groups.map((group) => (
+      <div class="flex items-baseline gap-2">
+        <span class="uppercase tracking-[0.12em]">{group.label}</span>
+        <span class="flex-1 border-b border-dashed border-line"></span>
+        <span>{String(group.tools.length).padStart(2, '0')}</span>
+      </div>
+    ))}
+  </div>
+
+  {/* Pro marker */}
+  <div class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[11px] text-ink-faint">
+    <span class="flex items-center gap-2">
+      <span class="h-1.5 w-1.5 rounded-full" style="background: #f5b942"></span>
+      <span class="text-ink-muted">Pro</span>
+      <span>— magnifier, boards</span>
+    </span>
+    <span class="text-ink-faint/40">·</span>
+    <span>The Orb is draggable, and remembers where you left it on each monitor.</span>
+  </div>
+
+  <script>
+    const stage = document.querySelector('.tool-stage') as HTMLElement | null;
+    if (stage) {
+      const btns = stage.parentElement?.querySelectorAll<HTMLButtonElement>('[data-layout-btn]');
+      btns?.forEach((b) => {
+        b.addEventListener('click', () => {
+          const layout = b.dataset.layoutBtn!;
+          stage.setAttribute('data-layout', layout);
+          btns.forEach((x) =>
+            x.setAttribute('aria-selected', String(x.dataset.layoutBtn === layout)),
+          );
+        });
+      });
+    }
+  </script>
 </section>

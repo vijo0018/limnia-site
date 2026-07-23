@@ -38,8 +38,25 @@ const changelogHref = `${base}/changelog`;
         your screen.
       </h1>
 
+      {/* Self-drawing annotation stroke — the product's signature act,
+          performed on load. Fully drawn (static) under reduced motion. */}
+      <svg
+        class="hero-underline mt-2 h-[22px] w-[min(64%,430px)] overflow-visible text-pen"
+        viewBox="0 0 460 24"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M6 15 Q 130 23, 250 13 Q 360 5, 454 17"
+          stroke="currentColor"
+          stroke-width="5"
+          stroke-linecap="round"
+          pathLength="1"
+        />
+      </svg>
+
       <p
-        class="reveal reveal-3 mt-7 max-w-xl text-[17px] leading-[1.55] text-ink-muted sm:text-[19px]"
+        class="reveal reveal-3 mt-6 max-w-xl text-[17px] leading-[1.55] text-ink-muted sm:text-[19px]"
       >
         A 2&thinsp;MB Windows overlay for presenters, educators, and creators.
         Press a hotkey, annotate any pixel,
@@ -152,15 +169,18 @@ const changelogHref = `${base}/changelog`;
 
             {/* Hand-drawn cyan annotation: arrow pointing at something */}
             <path
+              class="hero-schema-arrow"
               d="M 100 180 Q 145 130, 215 158 L 205 148 M 215 158 L 200 168"
               stroke="#32b4ff" stroke-width="2.5" fill="none"
               stroke-linecap="round" stroke-linejoin="round"
+              pathLength="1"
             />
             {/* Circled emphasis */}
             <ellipse
+              class="hero-schema-ring"
               cx="225" cy="160" rx="22" ry="14"
               fill="none" stroke="#32b4ff" stroke-width="2"
-              stroke-dasharray="0" transform="rotate(-8 225 160)"
+              transform="rotate(-8 225 160)" pathLength="1"
             />
           </g>
 
