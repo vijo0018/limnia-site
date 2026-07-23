@@ -2,33 +2,29 @@
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const installerHref = `${base}/downloads/LimniaSetup.exe`;
 
-type Feature = { v: string; text: string };
-
-const free: Feature[] = [
-  { v: 'v1.0', text: '10 drawing tools' },
-  { v: 'v1.0', text: '14-color palette + custom picker' },
-  { v: 'v1.0', text: '4 brush sizes, 20-step undo / redo' },
-  { v: 'v1.0', text: 'PNG export + clipboard copy' },
-  { v: 'v1.0', text: 'Multi-monitor capture' },
-  { v: 'v1.0', text: 'System tray, auto-start option' },
-  { v: 'v1.1', text: 'Eyedropper + custom color presets' },
-  { v: 'v1.2', text: 'Remappable hotkeys + custom toolbar' },
-  { v: 'v1.2', text: 'Shape recognition, grid, pixel ruler' },
-  { v: 'v1.2', text: 'Arrow variants (double-headed, curved, dotted)' },
+// Free = everything shipping today except the Pro-gated tools. No version tags:
+// it all ships now, and tagging features with future versions was the old
+// (inaccurate) roadmap framing.
+const free: string[] = [
+  'All 11 drawing tools — pen, highlighter, eraser, line, arrow, rectangle, circle, text, laser, spotlight, ruler',
+  'Grid overlay + eyedropper (pick any pixel on screen)',
+  '14-color palette + native custom picker + 4 preset slots',
+  '4 brush sizes, 20-step undo / redo',
+  'PNG export + clipboard copy (canvas or composited with the screen)',
+  'Multi-monitor capture with a monitor picker',
+  'Named style presets (tool + color + size)',
+  'Classic and Orb (radial) toolbar layouts',
+  'System tray, auto-start option, per-monitor DPI',
 ];
 
-const pro: Feature[] = [
-  { v: 'v2.0', text: 'Screen recording (MP4, 30 / 60 fps)' },
-  { v: 'v2.0', text: 'GIF creation + freeze-frame' },
-  { v: 'v2.0', text: 'Region capture + system audio' },
-  { v: 'v2.0', text: 'Whiteboard + Blackboard modes' },
-  { v: 'v2.0', text: 'Zoom / magnifier tool' },
-  { v: 'v2.0', text: 'Stamps + shape library' },
-  { v: 'v2.0', text: 'Text formatting (bold, italic, fonts)' },
-  { v: 'v2.1', text: 'Webcam picture-in-picture' },
-  { v: 'v2.1', text: 'Pressure sensitivity (pen, highlighter)' },
-  { v: 'v2.1', text: 'Multi-page canvas + presenter timer' },
-  { v: 'v2.1', text: 'Privacy blur tool' },
+// Pro = the heavier tools, deliberately kept as a small teaser.
+const pro: string[] = [
+  'Magnifier (live lens)',
+  'Screen recording (MP4)',
+  'GIF recording',
+  'Region capture',
+  'System / mic audio',
+  'Whiteboard / Blackboard',
 ];
 ---
 
@@ -50,56 +46,16 @@ const pro: Feature[] = [
         <span class="text-ink-muted">Pro is additive.</span>
       </h2>
       <p class="mt-3 max-w-xl text-[16px] leading-[1.55] text-ink-muted">
-        Every feature shipped today stays in Free, forever. Pro is a one-time
-        unlock for the heavier tools teachers, streamers, and creators rely on:
-        recording, region capture, whiteboard modes.
+        Everything above — all 11 drawing tools, grid, eyedropper, multi-monitor
+        capture — is free, now, with no account and no catch. Pro just adds a few
+        heavier tools for recording and teaching.
       </p>
     </div>
   </header>
 
-  {/* Supporter perk callout — sits above the two cards.
-      Anyone who donates before Pro launches gets a free Pro license. */}
-  <div
-    class="mb-6 grid grid-cols-1 items-center gap-4 rounded-xl border border-line bg-surface-raised px-6 py-4 sm:grid-cols-[auto_1fr_auto] sm:gap-6 sm:px-7"
-  >
-    <div class="flex items-center gap-2">
-      <span class="text-laser" aria-hidden="true">♥</span>
-      <span
-        class="font-mono text-[10.5px] font-medium uppercase tracking-[0.14em] text-ink-faint"
-      >
-        supporter perk
-      </span>
-    </div>
-    <p class="text-[14.5px] leading-[1.5] text-ink">
-      Donate any amount on
-      <a
-        href="https://github.com/sponsors/vijo0018"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="font-mono text-[13px] text-ink underline decoration-line-strong underline-offset-4 hover:text-pen hover:decoration-pen"
-        >Sponsors</a
-      >
-      or
-      <a
-        href="https://ko-fi.com/vijo0018"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="font-mono text-[13px] text-ink underline decoration-line-strong underline-offset-4 hover:text-pen hover:decoration-pen"
-        >Ko-fi</a
-      >
-      before Pro launches.
-      <span class="text-ink-muted">A Pro license is yours at launch, no extra cost.</span>
-    </p>
-    <span
-      class="hidden font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-faint sm:inline"
-    >
-      $0 floor
-    </span>
-  </div>
-
-  <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-    {/* ─── Free ─── */}
-    <article class="relative flex flex-col rounded-xl border border-line bg-surface-raised">
+  <div class="grid grid-cols-1 gap-6 md:grid-cols-12">
+    {/* ─── Free — the star ─── */}
+    <article class="relative flex flex-col rounded-xl border border-line bg-surface-raised md:col-span-8">
       {/* Top accent — cyan (Pen) */}
       <div class="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-pen to-transparent"></div>
 
@@ -109,7 +65,7 @@ const pro: Feature[] = [
             Limnia <span class="text-ink-muted">Free</span>
           </span>
           <span
-            class="rounded border border-line bg-surface px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-pen"
+            class="rounded border border-pen/30 bg-pen/[0.07] px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-pen"
           >
             available now
           </span>
@@ -131,14 +87,11 @@ const pro: Feature[] = [
         </div>
       </header>
 
-      <ul class="flex-1 space-y-2.5 px-7 pt-6 pb-7 text-[14.5px]">
+      <ul class="grid flex-1 grid-cols-1 gap-x-8 gap-y-2.5 px-7 pt-6 pb-7 text-[14.5px] sm:grid-cols-2">
         {free.map((f) => (
-          <li class="grid grid-cols-[3.5rem_1fr_1.25rem] items-baseline gap-2">
-            <span class="font-mono text-[10.5px] uppercase tracking-[0.1em] text-ink-faint">
-              {f.v}
-            </span>
-            <span class="text-ink">{f.text}</span>
+          <li class="grid grid-cols-[1.25rem_1fr] items-baseline gap-2">
             <span class="text-pen">✓</span>
+            <span class="text-ink">{f}</span>
           </li>
         ))}
       </ul>
@@ -157,108 +110,49 @@ const pro: Feature[] = [
       </div>
     </article>
 
-    {/* ─── Pro ─── */}
-    <article
-      class="relative flex flex-col rounded-xl border border-line bg-surface-raised"
-    >
-      {/* Top accent — yellow (Highlighter) */}
+    {/* ─── Pro — slim teaser, deliberately downplayed ─── */}
+    <aside class="relative flex flex-col rounded-xl border border-line bg-surface-raised md:col-span-4">
+      {/* Top accent — amber (Pro) */}
       <div class="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-highlight to-transparent"></div>
 
-      <header class="border-b border-line px-7 pt-7 pb-6">
+      <div class="flex h-full flex-col px-7 pt-7 pb-6">
         <div class="flex items-center justify-between">
-          <span class="font-display text-[22px] font-semibold tracking-[-0.02em] text-ink">
+          <span class="font-display text-[19px] font-semibold tracking-[-0.02em] text-ink">
             Limnia <span class="text-highlight">Pro</span>
           </span>
           <span
             class="rounded border border-highlight/30 bg-highlight/[0.07] px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-highlight"
           >
-            shipping Q3 2026
+            soon
           </span>
         </div>
-        <p
-          class="mt-2 font-mono text-[11.5px] uppercase tracking-[0.12em] text-ink-faint"
-        >
-          heavier tools, one-time unlock
+        <p class="mt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-faint">
+          heavier tools · one-time unlock
         </p>
 
-        <div class="mt-7 flex items-baseline gap-1.5">
-          <span
-            class="font-display font-semibold tracking-[-0.04em] text-ink"
-            style="font-size: clamp(56px, 8vw, 84px); line-height: 1;"
-          >$9<span class="text-ink-muted">.99</span></span>
-          <span class="font-mono text-[12px] uppercase tracking-[0.12em] text-ink-faint">
-            / once
-          </span>
-        </div>
-      </header>
+        <ul class="mt-5 flex-1 space-y-2 text-[13.5px]">
+          {pro.map((f) => (
+            <li class="grid grid-cols-[1rem_1fr] items-baseline gap-2 text-ink-muted">
+              <span class="text-highlight">+</span>
+              <span>{f}</span>
+            </li>
+          ))}
+        </ul>
 
-      <ul class="flex-1 space-y-2.5 px-7 pt-6 pb-7 text-[14.5px]">
-        <li class="mb-2 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-faint">
-          everything in free, plus:
-        </li>
-        {pro.map((f) => (
-          <li class="grid grid-cols-[3.5rem_1fr_1.25rem] items-baseline gap-2">
-            <span class="font-mono text-[10.5px] uppercase tracking-[0.1em] text-ink-faint">
-              {f.v}
+        <div class="mt-6 border-t border-line pt-5">
+          <div class="flex items-baseline gap-1.5">
+            <span class="font-display text-[28px] font-semibold tracking-[-0.03em] text-ink">
+              $14.99
             </span>
-            <span class="text-ink">{f.text}</span>
-            <span class="text-highlight">✓</span>
-          </li>
-        ))}
-      </ul>
-
-      <div class="border-t border-line px-7 pt-5 pb-6">
-        {/* Waitlist form — posts to Tally.
-            To activate: create a Tally form (tally.so), copy its form ID,
-            and replace TALLY_FORM_ID below with the action URL Tally provides
-            (e.g. https://tally.so/r/abc123). Until then the form will 404 on submit. */}
-        <form
-          action="https://tally.so/r/TALLY_FORM_ID"
-          method="POST"
-          class="group/form flex flex-col gap-2.5"
-          data-waitlist
-        >
-          <label class="sr-only" for="waitlist-email">Email address</label>
-          <div
-            class="flex items-stretch overflow-hidden rounded-md border border-line bg-surface focus-within:border-highlight/60"
-          >
-            <input
-              id="waitlist-email"
-              name="email"
-              type="email"
-              required
-              autocomplete="email"
-              placeholder="you@example.com"
-              class="min-w-0 flex-1 bg-transparent px-3.5 py-2.5 font-mono text-[13px] text-ink placeholder:text-ink-faint focus:outline-none"
-            />
-            {/* Honeypot — bots fill this, humans don't */}
-            <input
-              type="text"
-              name="company"
-              tabindex="-1"
-              autocomplete="off"
-              class="absolute h-0 w-0 opacity-0"
-              aria-hidden="true"
-            />
-            <button
-              type="submit"
-              class="group/submit inline-flex items-center gap-1.5 border-l border-line bg-surface-raised px-4 text-[12.5px] font-semibold uppercase tracking-[0.1em] text-ink transition-colors hover:bg-highlight hover:text-surface"
-            >
-              Notify
-              <span
-                class="font-mono text-[11px] opacity-60 transition-transform group-hover/submit:translate-x-0.5"
-                >↗</span
-              >
-            </button>
+            <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-faint">
+              / once
+            </span>
           </div>
-          <p
-            class="flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.12em] text-ink-faint"
-          >
-            <span class="h-1 w-1 rounded-full bg-highlight"></span>
-            no spam · one email when Pro ships
+          <p class="mt-2 text-[12.5px] leading-[1.5] text-ink-faint">
+            Not for sale yet. Free never loses a feature to Pro.
           </p>
-        </form>
+        </div>
       </div>
-    </article>
+    </aside>
   </div>
 </section>

@@ -1,6 +1,10 @@
 // Release history. Keep in sync with ../../../screen_draw/CHANGELOG.md
 // whenever a new version ships. (The site is a separate public repo; the
 // app's private repo is the canonical source of truth.)
+//
+// NOTE: the full 12-tool build + Pro features are live now. They're listed under
+// the current stable release below. If you cut a tagged release beyond v1.0.0,
+// split this into a new entry (version + ISO date) rather than growing v1.0.0.
 
 export type ChangeGroup = {
   label: 'Added' | 'Changed' | 'Fixed' | 'Removed' | 'Security';
@@ -16,36 +20,6 @@ export type Release = {
 
 export const releases: Release[] = [
   {
-    version: 'Unreleased',
-    date: '',
-    status: 'unreleased',
-    groups: [
-      {
-        label: 'Added',
-        items: [
-          'Monitor picker for Save/Copy capture on multi-monitor setups.',
-          'Spotlight tool: dims the screen except around the cursor.',
-          'Single-key tool shortcuts in draw mode (P, H, E, L, A, R, C, T, X, S).',
-        ],
-      },
-      {
-        label: 'Changed',
-        items: [
-          'Toolbar rewritten as a separate layered window so buttons never get stamped over by laser / shape previews.',
-          'Save and Copy now share the composite-capture path; the standalone Screenshot action was removed.',
-          'Upgraded to Rust edition 2024 and the windows crate 0.62.',
-        ],
-      },
-      {
-        label: 'Fixed',
-        items: [
-          'Toolbar is re-raised after laser frames so buttons stay clickable during laser animation.',
-          'Laser trail is cleared when switching away from the Laser Pointer tool.',
-        ],
-      },
-    ],
-  },
-  {
     version: 'v1.0.0',
     date: '2026-04-17',
     status: 'stable',
@@ -53,15 +27,18 @@ export const releases: Release[] = [
       {
         label: 'Added',
         items: [
-          'Transparent, click-through overlay for drawing anywhere on screen.',
-          'Tools: Pen, Highlighter, Eraser, Line, Arrow, Rectangle, Circle, Text, Laser Pointer.',
-          '14-color palette plus a native Windows custom color picker.',
-          '20-step undo / redo history.',
-          'PNG export (Ctrl+Shift+S), clipboard copy, and screenshot-with-annotations.',
-          'System tray icon with right-click menu and single-instance enforcement.',
-          'Per-monitor DPI awareness spanning the full virtual desktop.',
-          'Inno Setup installer with optional desktop shortcut and auto-start-with-Windows.',
-          'Crash hook writing fatal errors to %APPDATA%\\Limnia\\crash.log.',
+          'Transparent, click-through overlay for drawing anywhere on screen — `alpha = 0` hit-testing, spanning the full multi-monitor virtual desktop.',
+          '12 tools: Pen, Highlighter, Eraser, Line, Arrow (single / double / dashed), Rectangle, Circle, Text, Laser Pointer, Spotlight, Ruler, and Magnifier.',
+          'Grid overlay, Eyedropper (pick any pixel on screen), and named style presets.',
+          '14-color palette, native Windows custom color picker, and 4 custom-color preset slots.',
+          '4 brush sizes and 20-step undo / redo.',
+          'PNG export (Ctrl+Shift+S), clipboard copy (canvas alone or composited with the screen), and multi-monitor capture with a monitor picker.',
+          'Single-key tool shortcuts in draw mode (P H E L A R C T X S M Z I G W B).',
+          'Two toolbar layouts: a Classic bar and a draggable Orb radial menu.',
+          'System tray icon with right-click menu, single-instance enforcement, per-monitor DPI awareness, and an optional start-with-Windows setting.',
+          'First-run onboarding card; crash hook writing fatal errors to `%APPDATA%\\Limnia\\crash.log`.',
+          'Inno Setup installer with optional desktop shortcut and auto-start.',
+          'Limnia Pro (one-time unlock, verified offline via Ed25519 — no server, no phone-home): Magnifier, MP4 screen recording, GIF recording, region capture, system / mic audio capture, and Whiteboard / Blackboard canvases.',
         ],
       },
     ],

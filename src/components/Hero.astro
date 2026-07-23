@@ -95,6 +95,20 @@ const changelogHref = `${base}/changelog`;
         A schematic "transparent overlay" diagram. */}
     <div class="reveal reveal-3 lg:col-span-4">
       <div class="relative">
+        {/* Faint ripple accent — the brand mark's motif, echoed behind the
+            schematic. Static, so it's reduced-motion safe by default. */}
+        <svg
+          class="pointer-events-none absolute -right-4 -top-12 h-52 w-52 opacity-[0.13]"
+          viewBox="0 0 200 200"
+          aria-hidden="true"
+        >
+          <g fill="none" stroke="#32b4ff" stroke-linecap="round">
+            <circle cx="100" cy="100" r="30" stroke-width="2.5" stroke-dasharray="170 25" transform="rotate(-60 100 100)" />
+            <circle cx="100" cy="100" r="55" stroke-width="2" stroke-dasharray="310 34" transform="rotate(-52 100 100)" opacity="0.7" />
+            <circle cx="100" cy="100" r="82" stroke-width="1.5" stroke-dasharray="470 46" transform="rotate(-64 100 100)" opacity="0.5" />
+          </g>
+        </svg>
+
         {/* Layered "windows" demonstrating click-through */}
         <svg
           viewBox="0 0 320 280"

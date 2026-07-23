@@ -79,12 +79,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               respect for your screen.
             </h2>
             <p class="mt-4 text-[16.5px] leading-[1.65] text-ink-muted">
-              Limnia is written in Rust against the raw Windows API.
-              No Electron. No web view. No GPU. The whole binary is
+              Limnia is written in Rust (edition 2024) against the raw Windows
+              API. No Electron. No web view. The drawing overlay uses no GPU —
+              every stroke is composited in software. The whole binary is
               <span class="font-mono text-[14.5px] text-ink">~2 MB</span>.
-              Settings live in a JSON file in your AppData folder. Crashes
-              write to a local log file you choose whether to share. Nothing
-              else gets written; nothing leaves the machine.
+              Settings live in a JSON file in your AppData folder, and Pro
+              licenses are verified entirely offline (Ed25519, no server).
+              Crashes write to a local log file you choose whether to share.
+              Nothing else gets written; nothing leaves the machine.
             </p>
             <p class="mt-4 text-[16.5px] leading-[1.65] text-ink-muted">
               The source is closed. That's a deliberate choice. Solo-dev

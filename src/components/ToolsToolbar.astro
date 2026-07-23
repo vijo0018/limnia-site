@@ -1,12 +1,14 @@
 ---
 // Each tool group mirrors the actual Limnia toolbar layout.
 // Colors map to the tool's in-product color — the palette is the brand.
+// `pro` marks a feature gated behind the one-time Pro unlock.
 type Tool = {
   id: string;
   name: string;
   key: string;
   color: string;
   icon: string; // SVG <path>/<g> markup, 20x20 viewBox
+  pro?: boolean;
 };
 
 const freehand: Tool[] = [
@@ -89,6 +91,54 @@ const live: Tool[] = [
     color: '#fff1a8',
     icon: '<circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="10" cy="10" r="2" fill="currentColor"/>',
   },
+  {
+    id: 'ruler',
+    name: 'Ruler',
+    key: 'M',
+    color: '#7fd4ff',
+    icon: '<path d="M3.5 12.5L12.5 3.5l4 4-9 9-4-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M6 10l1.6 1.6M8.6 7.4L10.2 9M11.2 4.8l1.6 1.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>',
+  },
+  {
+    id: 'magnifier',
+    name: 'Magnifier',
+    key: 'Z',
+    color: '#f5b942',
+    pro: true,
+    icon: '<circle cx="9" cy="9" r="5.2" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M12.8 12.8L17 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M9 6.8v4.4M6.8 9h4.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>',
+  },
+];
+
+const utilities: Tool[] = [
+  {
+    id: 'grid',
+    name: 'Grid',
+    key: 'G',
+    color: '#8a93a0',
+    icon: '<rect x="3.5" y="3.5" width="13" height="13" rx="1.5" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M8 3.5v13M12.5 3.5v13M3.5 8h13M3.5 12.5h13" stroke="currentColor" stroke-width="1.1" opacity="0.85"/>',
+  },
+  {
+    id: 'eyedropper',
+    name: 'Eyedropper',
+    key: 'I',
+    color: '#7cff9d',
+    icon: '<path d="M4 16l.7-2.8L12 6l2 2-7.2 7.2L4 16z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M12.5 5.5l2-2a1.4 1.4 0 0 1 2 2l-2 2" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>',
+  },
+  {
+    id: 'whiteboard',
+    name: 'Whiteboard',
+    key: 'W',
+    color: '#f5b942',
+    pro: true,
+    icon: '<rect x="3" y="4" width="14" height="9" rx="1.2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M10 13v3M7 16h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+  },
+  {
+    id: 'blackboard',
+    name: 'Blackboard',
+    key: 'B',
+    color: '#f5b942',
+    pro: true,
+    icon: '<rect x="3" y="4" width="14" height="9" rx="1.2" stroke="currentColor" stroke-width="1.5" fill="currentColor" fill-opacity="0.18"/><path d="M10 13v3M7 16h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+  },
 ];
 
 const groups = [
@@ -96,6 +146,7 @@ const groups = [
   { label: 'shapes', tools: shapes },
   { label: 'text', tools: text },
   { label: 'live', tools: live },
+  { label: 'utilities', tools: utilities },
 ];
 ---
 
@@ -110,11 +161,12 @@ const groups = [
       <h2
         class="font-display text-[34px] font-semibold leading-[1.05] tracking-[-0.025em] text-ink sm:text-[42px]"
       >
-        Ten tools, one toolbar.
+        Twelve tools, one toolbar.
       </h2>
       <p class="mt-3 max-w-lg text-[16px] leading-[1.55] text-ink-muted">
-        A color-coded palette mirrored straight from the product. Every tool is a
-        single keystroke away. The toolbar you see here is the toolbar in the app.
+        A color-coded palette mirrored straight from the product — plus grid,
+        eyedropper, and boards. Every tool is a single keystroke away. The
+        toolbar you see here is the toolbar in the app.
       </p>
     </div>
   </header>
@@ -155,15 +207,22 @@ const groups = [
                 <button
                   type="button"
                   class:list={[
-                    'flex h-11 min-w-11 items-center justify-center rounded-md border transition-colors duration-150',
+                    'relative flex h-11 min-w-11 items-center justify-center rounded-md border transition-colors duration-150',
                     gi === 0 && ti === 0
                       ? 'border-pen/50 bg-pen/10'
                       : 'border-transparent hover:border-line hover:bg-surface',
                   ]}
-                  aria-label={`${t.name} (${t.key})`}
+                  aria-label={`${t.name} (${t.key})${t.pro ? ' — Pro' : ''}`}
                   style={`color: ${t.color}`}
                 >
                   <svg viewBox="0 0 20 20" class="h-5 w-5" set:html={t.icon} />
+                  {t.pro && (
+                    <span
+                      class="absolute right-1 top-1 h-1.5 w-1.5 rounded-full"
+                      style="background: #f5b942"
+                      aria-hidden="true"
+                    ></span>
+                  )}
                 </button>
                 <span
                   class="font-mono text-[9.5px] font-medium uppercase tracking-[0.14em] text-ink-faint"
@@ -195,7 +254,7 @@ const groups = [
 
     {/* Legend below the toolbar */}
     <div
-      class="mt-6 grid grid-cols-2 gap-x-8 gap-y-2 font-mono text-[11.5px] text-ink-faint sm:grid-cols-4"
+      class="mt-6 grid grid-cols-2 gap-x-8 gap-y-2 font-mono text-[11.5px] text-ink-faint sm:grid-cols-3 lg:grid-cols-5"
     >
       {groups.map((group) => (
         <div class="flex items-baseline gap-2">
@@ -204,6 +263,22 @@ const groups = [
           <span>{String(group.tools.length).padStart(2, '0')}</span>
         </div>
       ))}
+    </div>
+
+    {/* Footnotes — Orb layout + Pro marker. Personality lives in the honesty
+        of the details: the toolbar can also be a draggable radial menu. */}
+    <div class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[11px] text-ink-faint">
+      <span class="flex items-center gap-2">
+        <span class="h-1.5 w-1.5 rounded-full" style="background: #f5b942"></span>
+        <span class="text-ink-muted">Pro</span>
+        <span>— magnifier, boards</span>
+      </span>
+      <span class="text-ink-faint/40">·</span>
+      <span>
+        Prefer a radial menu? Switch the toolbar to
+        <span class="text-ink-muted">Orb</span> — a draggable ring of tools,
+        colors, and sizes.
+      </span>
     </div>
   </div>
 </section>

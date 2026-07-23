@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+<!--
+  Limnia app mark — "Still ripple".
+  Concentric, almost-closed rings on a still surface, radiating from a bright
+  pen-cyan center. The gapped rings are a deliberate bridge from the old
+  almost-closed "O" mark, reinterpreted as ripples — Limnia = límnē, a still pool.
+
+  This is the master. The nav wordmark and (via a reduced favicon.svg) the tab
+  icon derive from the same brand. Drop the identical file into
+  screen_draw/assets/icon.svg to regenerate the app .ico from one source.
+-->
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Limnia">
   <defs>
     <linearGradient id="bg" x1="50%" y1="0%" x2="50%" y2="100%">
       <stop offset="0%" stop-color="#2c2c30"/>
       <stop offset="100%" stop-color="#1a1a1c"/>
     </linearGradient>
-    <linearGradient id="stroke" x1="0%" y1="100%" x2="100%" y2="0%">
+    <linearGradient id="ripple" x1="0%" y1="100%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#1e9bff"/>
       <stop offset="100%" stop-color="#60cbff"/>
     </linearGradient>
-    <linearGradient id="marker" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#fafafc"/>
-      <stop offset="100%" stop-color="#bcbcc2"/>
-    </linearGradient>
-    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="6"/>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="5"/>
     </filter>
   </defs>
 
@@ -23,27 +29,18 @@
 
   <!-- Subtle top highlight -->
   <path d="M 56 0 H 200 A 56 56 0 0 1 256 56 V 78 H 0 V 56 A 56 56 0 0 1 56 0 Z"
-        fill="#ffffff" opacity="0.035"/>
+        fill="#ffffff" opacity="0.04"/>
 
-  <!-- Soft cyan glow behind the O -->
-  <path d="M 120 58 A 72 72 0 1 0 144 62"
-        stroke="#32b4ff" stroke-width="36" stroke-linecap="round"
-        fill="none" opacity="0.28" filter="url(#glow)"/>
-
-  <!-- The signature O: almost-closed stroke -->
-  <path d="M 120 58 A 72 72 0 1 0 144 62"
-        stroke="url(#stroke)" stroke-width="26" stroke-linecap="round"
-        fill="none"/>
-
-  <!-- Marker at the end of the stroke (top-right, rotated as if just lifted) -->
-  <g transform="translate(144, 62) rotate(-22)">
-    <!-- Body -->
-    <rect x="-17" y="-50" width="34" height="42" rx="7" fill="url(#marker)"/>
-    <!-- Barrel line detail -->
-    <line x1="-12" y1="-42" x2="12" y2="-42" stroke="#9a9aa0" stroke-width="1.5"/>
-    <!-- Ferrule -->
-    <rect x="-17" y="-12" width="34" height="5" fill="#8a8a90"/>
-    <!-- Tip (cyan) -->
-    <polygon points="-10,-7 10,-7 0,10" fill="#1e9bff"/>
+  <!-- Ripple rings — each almost closed, gaps aligned to the upper-right.
+       Drawn twice per ring is unnecessary; the soft glow carries the depth. -->
+  <g transform="translate(128 128)" fill="none" stroke="url(#ripple)"
+     stroke-linecap="round" filter="url(#glow)">
+    <circle r="108" stroke-width="6"  opacity="0.20" stroke-dasharray="619 60" transform="rotate(-70)"/>
+    <circle r="78"  stroke-width="8"  opacity="0.48" stroke-dasharray="440 50" transform="rotate(-55)"/>
+    <circle r="46"  stroke-width="11" opacity="0.92" stroke-dasharray="249 40" transform="rotate(-62)"/>
   </g>
+
+  <!-- Center: where the mark lands -->
+  <circle cx="128" cy="128" r="15" fill="#5ec2ff" filter="url(#glow)"/>
+  <circle cx="128" cy="128" r="14" fill="url(#ripple)"/>
 </svg>

@@ -1,5 +1,5 @@
 ---
-type Shortcut = { keys: string[]; action: string; note?: string; live?: boolean };
+type Shortcut = { keys: string[]; action: string; note?: string; live?: boolean; pro?: boolean };
 type Group = { label: string; rows: Shortcut[]; sub?: string };
 
 const groups: Group[] = [
@@ -10,8 +10,11 @@ const groups: Group[] = [
       { keys: ['Ctrl', 'Shift', 'D'], action: 'Toggle draw mode', live: true },
       { keys: ['Esc'], action: 'Exit draw mode / cancel stroke' },
       { keys: ['Ctrl', 'Shift', 'S'], action: 'Save canvas as PNG' },
+      { keys: ['Ctrl', 'C'], action: 'Copy to clipboard' },
       { keys: ['Ctrl', 'Shift', 'C'], action: 'Clear canvas' },
       { keys: ['Ctrl', 'Z'], action: 'Undo', note: 'Redo with Ctrl + Shift + Z' },
+      { keys: ['Ctrl', 'Shift', 'R'], action: 'Record screen (MP4)', pro: true },
+      { keys: ['Ctrl', 'Shift', 'G'], action: 'Record GIF', pro: true },
       { keys: ['F1'], action: 'Help' },
     ],
   },
@@ -29,6 +32,12 @@ const groups: Group[] = [
       { keys: ['T'], action: 'Text' },
       { keys: ['X'], action: 'Laser pointer' },
       { keys: ['S'], action: 'Spotlight' },
+      { keys: ['M'], action: 'Ruler' },
+      { keys: ['Z'], action: 'Magnifier', pro: true },
+      { keys: ['I'], action: 'Eyedropper' },
+      { keys: ['G'], action: 'Grid overlay' },
+      { keys: ['W'], action: 'Whiteboard', pro: true },
+      { keys: ['B'], action: 'Blackboard', pro: true },
     ],
   },
 ];
@@ -101,12 +110,22 @@ const groups: Group[] = [
                     i < group.rows.length - 1 ? 'border-b border-line' : '',
                   ]}
                 >
-                  {row.action}
-                  {row.note && (
-                    <span class="ml-2 font-mono text-[11px] text-ink-faint">
-                      ({row.note})
-                    </span>
-                  )}
+                  <span class="inline-flex items-center gap-2">
+                    {row.action}
+                    {row.pro && (
+                      <span
+                        class="rounded border px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.14em]"
+                        style="color:#f5b942;border-color:color-mix(in oklch,#f5b942 35%,transparent);background:color-mix(in oklch,#f5b942 8%,transparent)"
+                      >
+                        Pro
+                      </span>
+                    )}
+                    {row.note && (
+                      <span class="font-mono text-[11px] text-ink-faint">
+                        ({row.note})
+                      </span>
+                    )}
+                  </span>
                 </td>
                 <td
                   class:list={[
@@ -134,7 +153,9 @@ const groups: Group[] = [
   </div>
 
   <p class="mt-4 font-mono text-[11.5px] text-ink-faint">
-    All shortcuts are remappable in v1.2.
+    <kbd>Esc</kbd> cascades — it dismisses the active flyout, then the eyedropper,
+    then a text box, then the current stroke, then draw mode. One key, always the
+    safe way out.
   </p>
 
   <script>

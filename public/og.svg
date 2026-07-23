@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Open Graph image for Limnia landing page. 1200x630 (the spec for
-  Facebook/Twitter/LinkedIn/Discord cards).
+  Open Graph image for Limnia. 1200x630 (Facebook/Twitter/LinkedIn/Discord).
+  Referenced from <meta property="og:image"> in Layout.astro.
 
-  This SVG is referenced from <meta property="og:image"> in Layout.astro.
-  Most platforms today render SVG OG images directly. If a target platform
-  (older Slack, some CMS embeds) requires PNG, convert with:
+  Brand mark is the "Still ripple" (see icon.svg). If a platform needs PNG:
     npx svgexport public/og.svg public/og.png 1200:630
   ...and add og.png as a secondary og:image meta tag.
 
-  Fonts use system fallbacks (not Google Fonts) so SVG rasterizers render
-  reliably across platforms. The look stays close to Bricolage even with
-  Segoe UI / SF Pro because of weight + letter-spacing.
+  Fonts use system fallbacks so SVG rasterizers render reliably across platforms.
 -->
 <svg width="1200" height="630" viewBox="0 0 1200 630"
      xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +23,7 @@
       <circle cx="2" cy="2" r="1" fill="#26262a"/>
     </pattern>
 
-    <linearGradient id="markerStroke" x1="0%" y1="100%" x2="100%" y2="0%">
+    <linearGradient id="ripple" x1="0%" y1="100%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#1e9bff"/>
       <stop offset="100%" stop-color="#60cbff"/>
     </linearGradient>
@@ -41,13 +37,24 @@
   <rect width="1200" height="630" fill="url(#bg)"/>
   <rect width="1200" height="630" fill="url(#dots)" opacity="0.55"/>
 
+  <!-- Hero mark: a large still-pool ripple on the right, gaps to the upper-right -->
+  <g transform="translate(985, 250)" fill="none" stroke="url(#ripple)"
+     stroke-linecap="round" filter="url(#penGlow)">
+    <circle r="135" stroke-width="7"  opacity="0.14" stroke-dasharray="773 75" transform="rotate(-70)"/>
+    <circle r="100" stroke-width="9"  opacity="0.30" stroke-dasharray="573 55" transform="rotate(-58)"/>
+    <circle r="66"  stroke-width="12" opacity="0.55" stroke-dasharray="379 36" transform="rotate(-64)"/>
+    <circle r="34"  stroke-width="13" opacity="0.9"  stroke-dasharray="186 28" transform="rotate(-60)"/>
+  </g>
+  <circle cx="985" cy="250" r="18" fill="#5ec2ff" filter="url(#penGlow)"/>
+  <circle cx="985" cy="250" r="16" fill="url(#ripple)"/>
+
   <!-- Top-left: brand mark + version stamp -->
   <g transform="translate(72, 64)">
     <rect width="40" height="40" rx="9" fill="#1d1d20"/>
-    <!-- Mini marker O (lifted from the favicon, simplified) -->
-    <path d="M 13 26 A 8 8 0 1 0 17 12"
-          stroke="url(#markerStroke)" stroke-width="3.5"
-          fill="none" stroke-linecap="round"/>
+    <!-- Mini ripple (lifted from favicon.svg) -->
+    <circle cx="20" cy="20" r="12.5" fill="none" stroke="url(#ripple)" stroke-width="3.4"
+            stroke-linecap="round" stroke-dasharray="70 8.5" transform="rotate(-58 20 20)"/>
+    <circle cx="20" cy="20" r="4.6" fill="url(#ripple)"/>
     <text x="58" y="27" font-size="22" font-weight="700" fill="#eeeeee" letter-spacing="-0.3">
       Limnia
     </text>
@@ -71,26 +78,6 @@
     <path d="M 75 478 Q 240 498, 410 482 Q 545 470, 685 492"
           stroke="#32b4ff" stroke-width="5" stroke-linecap="round"
           fill="none"/>
-  </g>
-
-  <!-- Right side: lifted marker (drawing the underline) -->
-  <g transform="translate(900, 230)">
-    <g transform="rotate(-22)" filter="url(#penGlow)" opacity="0.25">
-      <rect x="-32" y="-94" width="64" height="84" rx="15" fill="#32b4ff"/>
-    </g>
-    <g transform="rotate(-22)">
-      <!-- Marker body -->
-      <rect x="-32" y="-94" width="64" height="84" rx="15" fill="#3a3a3d"/>
-      <!-- Highlight band -->
-      <rect x="-32" y="-94" width="64" height="20" rx="15" fill="#454548"/>
-      <!-- Detail line -->
-      <line x1="-22" y1="-80" x2="22" y2="-80" stroke="#5a5a60" stroke-width="2"/>
-      <line x1="-22" y1="-72" x2="0" y2="-72" stroke="#5a5a60" stroke-width="1.5" opacity="0.6"/>
-      <!-- Ferrule -->
-      <rect x="-32" y="-22" width="64" height="10" fill="#5a5a60"/>
-      <!-- Tip -->
-      <polygon points="-20,-12 20,-12 0,18" fill="url(#markerStroke)"/>
-    </g>
   </g>
 
   <!-- Bottom-left: metadata strip -->

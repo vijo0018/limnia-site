@@ -1,10 +1,12 @@
 ---
 const facts = [
   { label: 'language', value: 'Rust', accent: '#dea584' },
+  { label: 'edition', value: '2024' },
   { label: 'platform', value: 'Win32 API' },
   { label: 'framework', value: 'none' },
-  { label: 'gpu', value: 'no' },
+  { label: 'gpu', value: 'none · overlay' },
   { label: 'binary', value: '~2 MB' },
+  { label: 'licensing', value: 'offline' },
   { label: 'telemetry', value: 'never' },
 ];
 ---
@@ -38,8 +40,10 @@ const facts = [
         mouse input. Toggle off and it disappears again.
       </p>
       <p class="mt-5 text-[16.5px] leading-[1.6] text-ink-muted">
-        Pure Win32. No GPU. No framework. The whole binary is smaller than this
-        page.
+        Pure Win32. No framework. The drawing overlay uses no GPU at all — every
+        stroke is composited in a software BGRA buffer. The one exception is Pro
+        screen recording, which taps Direct3D and Media Foundation for hardware
+        H.264. The whole binary is smaller than this page.
       </p>
     </div>
 
