@@ -11,11 +11,12 @@
 //   public/screenshots/in-video.png   — Limnia on a paused video frame
 
 import { existsSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { dirname, resolve } from 'node:path';
+import { resolve } from 'node:path';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const publicDir = resolve(__dirname, '../../public');
+// Resolve from the project root (Astro always builds with cwd there), not
+// from import.meta.url: Vite's transformed module URLs don't reliably map
+// back to the source file's directory, which made every check fail.
+const publicDir = resolve(process.cwd(), 'public');
 const has = (rel: string) => existsSync(resolve(publicDir, rel));
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -67,7 +68,7 @@ const screenshots = [
           /demo/hero-loop · drop file to activate
         </span>
         <span class="font-mono text-[11px] text-ink-faint/70">
-          ~8–12s seamless loop · ~2 MB · 16:9
+          8 to 12s seamless loop · about 2 MB · 16:9
         </span>
       </div>
       {/* Real asset — only rendered if the file exists at build time, so
@@ -83,7 +84,7 @@ const screenshots = [
       {!heroMp4 && heroGif && (
         <img
           src={`${base}/demo/hero-loop.gif`}
-          alt="Limnia in use"
+          alt="Limnia annotating a slide: a red circle and arrow are drawn, a line is highlighted, then the canvas clears"
           class="absolute inset-0 h-full w-full object-cover"
         />
       )}
@@ -91,7 +92,7 @@ const screenshots = [
     <figcaption class="flex items-center justify-between border-t border-line px-5 py-3 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
       <span class="flex items-center gap-2">
         <span class="h-1.5 w-1.5 rounded-full bg-pen"></span>
-        live recording
+        drawn by limnia's engine
       </span>
       <span>toggle · annotate · vanish</span>
     </figcaption>
