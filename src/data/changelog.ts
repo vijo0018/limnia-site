@@ -20,6 +20,36 @@ export type Release = {
 
 export const releases: Release[] = [
   {
+    version: 'v1.1.0',
+    date: '2026-07-31',
+    status: 'stable',
+    groups: [
+      {
+        label: 'Added',
+        items: [
+          'Orb: Grid toggle satellite, Redo satellite, and Copy / Grid / Help / About entries in the right-click menu.',
+          'Orb: Record and Board options open in popover flyout cards, with direct Whiteboard / Blackboard picks.',
+        ],
+      },
+      {
+        label: 'Changed',
+        items: [
+          'Orb board polish: raised domed nodes with hover rings, smoother anti-aliased ring strokes, and zone labels that appear only while you hover a zone.',
+          'The in-app upgrade button now opens the checkout page on this site.',
+          'Notification copy rewritten in plain sentences.',
+        ],
+      },
+      {
+        label: 'Fixed',
+        items: [
+          'The orb stays on the monitor you drag it to instead of snapping back to the primary monitor.',
+          'The custom color picker and dialogs open above the overlay.',
+          'Upgrade and notice cards replace an existing card instead of stacking.',
+        ],
+      },
+    ],
+  },
+  {
     version: 'v1.0.0',
     date: '2026-04-17',
     status: 'stable',
