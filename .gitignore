@@ -6,6 +6,9 @@ dist/
 # dependencies
 node_modules/
 
+# bun is the package manager here; stray npm lockfiles are accidents
+package-lock.json
+
 # logs
 npm-debug.log*
 yarn-debug.log*
