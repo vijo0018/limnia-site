@@ -1,0 +1,122 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { LS_CHECKOUT_URL, PRO_PRICE } from '../lib/store';
+
+// The app's "Get Limnia Pro" button opens this page (stable indirection —
+// shipped binaries never learn the checkout URL). It must render something
+// sensible in both states: before launch (holding copy) and after
+// (forward to the Lemon Squeezy checkout).
+const onSale = LS_CHECKOUT_URL !== '';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const pro: string[] = [
+  'Magnifier (live lens)',
+  'Screen recording (MP4)',
+  'GIF recording',
+  'Region capture',
+  'System / mic audio',
+  'Whiteboard / Blackboard',
+];
+---
+
+<Layout
+  title="Limnia · Get Pro"
+  description="Unlock Limnia Pro — recording, capture, and boards. One-time purchase."
+>
+  <main class="relative z-10">
+    <section class="mx-auto max-w-6xl px-6 pt-20 pb-24 sm:px-10 sm:pt-28">
+      <header class="mb-14 grid grid-cols-1 gap-6 md:grid-cols-12">
+        <div class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-faint md:col-span-3">
+          / checkout
+        </div>
+        <div class="md:col-span-9">
+          <h1 class="font-display text-[40px] font-semibold leading-[1.03] tracking-[-0.03em] text-ink sm:text-[56px]">
+            Limnia <span class="text-highlight">Pro</span>.
+          </h1>
+          <p class="mt-4 max-w-2xl text-[17px] leading-[1.6] text-ink-muted">
+            {
+              onSale
+                ? 'The heavier tools, unlocked once, yours forever.'
+                : 'Almost ready. Pro is not on sale quite yet.'
+            }
+          </p>
+        </div>
+      </header>
+
+      <div class="mx-auto max-w-2xl">
+        <article class="relative rounded-xl border border-line bg-surface-raised px-8 pt-8 pb-7">
+          <div class="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-highlight to-transparent"></div>
+
+          <div class="flex items-baseline justify-between">
+            <span class="font-display text-[22px] font-semibold tracking-[-0.02em] text-ink">
+              One-time unlock
+            </span>
+            <div class="flex items-baseline gap-1.5">
+              <span class="font-display text-[28px] font-semibold tracking-[-0.03em] text-ink">
+                {PRO_PRICE}
+              </span>
+              <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-faint">
+                / once
+              </span>
+            </div>
+          </div>
+
+          <ul class="mt-6 grid grid-cols-1 gap-2 text-[13.5px] sm:grid-cols-2">
+            {
+              pro.map((f) => (
+                <li class="grid grid-cols-[1rem_1fr] items-baseline gap-2 text-ink-muted">
+                  <span class="text-highlight">+</span>
+                  <span>{f}</span>
+                </li>
+              ))
+            }
+          </ul>
+
+          <div class="mt-7 border-t border-line pt-6">
+            {
+              onSale ? (
+                <>
+                  <a
+                    href={LS_CHECKOUT_URL}
+                    class="group flex w-full items-center justify-center gap-2 rounded-md bg-highlight px-5 py-3 text-[14px] font-semibold text-surface transition-opacity hover:opacity-90"
+                  >
+                    Continue to checkout
+                    <span class="font-mono text-[11px] opacity-70 transition-transform group-hover:translate-x-0.5">
+                      ↗
+                    </span>
+                  </a>
+                  <p class="mt-4 text-[12.5px] leading-[1.6] text-ink-faint">
+                    Secure checkout by Lemon Squeezy. Your license key arrives
+                    by email after purchase — enter it in Limnia via the tray
+                    icon &rarr; <span class="text-ink-muted">Enter license key</span>.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <div class="flex w-full items-center justify-center gap-2 rounded-md border border-highlight/30 bg-highlight/[0.07] px-5 py-3 font-mono text-[11px] uppercase tracking-[0.14em] text-highlight">
+                    coming soon
+                  </div>
+                  <p class="mt-4 text-[12.5px] leading-[1.6] text-ink-faint">
+                    Limnia sent you here from its upgrade card, but checkout is
+                    not open yet. Everything on the
+                    <a href={`${base}/`} class="text-ink-muted underline decoration-line underline-offset-2 hover:text-ink">free tier</a>
+                    stays free — watch the
+                    <a href={`${base}/changelog`} class="text-ink-muted underline decoration-line underline-offset-2 hover:text-ink">changelog</a>
+                    for the launch.
+                  </p>
+                </>
+              )
+            }
+          </div>
+        </article>
+
+        <p class="mt-6 text-center text-[12px] text-ink-faint">
+          Questions? <a
+            href="https://github.com/vijo0018/limnia/issues"
+            class="underline decoration-line underline-offset-2 hover:text-ink"
+          >Open an issue</a> — happy to help.
+        </p>
+      </div>
+    </section>
+  </main>
+</Layout>
