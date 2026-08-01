@@ -1,43 +1,34 @@
-# Astro Starter Kit: Minimal
+# Limnia · marketing site
+
+[![Deploy to GitHub Pages](https://github.com/vijo0018/limnia-site/actions/workflows/deploy.yml/badge.svg)](https://github.com/vijo0018/limnia-site/actions/workflows/deploy.yml)
+
+The website for **[Limnia](https://vijo0018.github.io/limnia-site/)**, a tiny screen-overlay drawing tool for Windows. Press a hotkey, draw on whatever is on screen, press it again and it's gone.
+
+This repo is the site only: the storefront, the docs surface, and the download page. The app itself is written in Rust against the raw Win32 API (~2 MB, no telemetry, no GPU) and is closed source; its [changelog](https://vijo0018.github.io/limnia-site/changelog) is public here.
+
+**Live site: [vijo0018.github.io/limnia-site](https://vijo0018.github.io/limnia-site/)**
+
+## Stack
+
+- [Astro 6](https://astro.build) with MDX
+- [Tailwind CSS 4](https://tailwindcss.com)
+- Deployed to GitHub Pages by [`deploy.yml`](.github/workflows/deploy.yml) on every push to `main`
+
+## Development
+
+Bun is the package manager.
 
 ```sh
-bun create astro@latest -- --template minimal
+bun install
+bun dev        # local dev server at localhost:4321
+bun build      # production build to ./dist/
+bun preview    # preview the production build
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Issues
 
-## 🚀 Project Structure
+Found a problem with the site, or with Limnia itself? [Open an issue](https://github.com/vijo0018/limnia-site/issues). This tracker is the public contact channel for both.
 
-Inside of your Astro project, you'll see the following folders and files:
+## Support
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `bun install`             | Installs dependencies                            |
-| `bun dev`             | Starts local dev server at `localhost:4321`      |
-| `bun build`           | Build your production site to `./dist/`          |
-| `bun preview`         | Preview your build locally, before deploying     |
-| `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `bun astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+If Limnia earns a place in your workflow, tips fund the code-signing certificate and future releases: [Ko-fi](https://ko-fi.com/vijo0018) · [GitHub Sponsors](https://github.com/sponsors/vijo0018).
