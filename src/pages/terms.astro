@@ -2,9 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 
 // AI-drafted starter template. Have a lawyer review before relying on this
-// for a paid product launch — especially section 9 (governing law), which
-// depends on your jurisdiction. Placeholders to fill before publishing are
-// marked [LIKE THIS].
+// for a paid product launch. Operator identity is intentionally pseudonymous
+// (vijo0018); if Pro sales make Limnia a registered business, swap in the
+// business name here and in privacy.astro. Governing law is set to Sweden.
 const effectiveDate = '2026-04-18';
 const lastReviewed = '2026-04-18';
 ---
@@ -85,7 +85,7 @@ const lastReviewed = '2026-04-18';
           </h2>
           <p class="mt-3">
             The Limnia name, logo, and source code are owned by
-            <span class="text-ink">[YOUR FULL NAME / BUSINESS NAME]</span>. The
+            <span class="text-ink">the developer of Limnia, publishing as vijo0018 on GitHub</span>. The
             installer and binary are licensed to you under these terms; the code
             is closed source.
           </p>
@@ -168,10 +168,10 @@ const lastReviewed = '2026-04-18';
           </h2>
           <p class="mt-3">
             These terms are governed by the laws of
-            <span class="text-ink">[YOUR JURISDICTION, e.g. "Norway" or "the State of California, USA"]</span>,
+            <span class="text-ink">Sweden</span>,
             without regard to conflict of law principles. Any dispute arising
             out of or related to these terms will be resolved in the courts of
-            <span class="text-ink">[YOUR JURISDICTION]</span>.
+            <span class="text-ink">Sweden</span>.
           </p>
         </section>
 
@@ -181,10 +181,6 @@ const lastReviewed = '2026-04-18';
           </h2>
           <ul class="mt-3 grid gap-2 pl-0">
             <li class="grid grid-cols-[6rem_1fr] items-baseline gap-3 font-mono text-[13px]">
-              <span class="uppercase tracking-[0.12em] text-ink-faint">email</span>
-              <a href="mailto:[YOUR_SUPPORT_EMAIL]" class="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-pen">[YOUR_SUPPORT_EMAIL]</a>
-            </li>
-            <li class="grid grid-cols-[6rem_1fr] items-baseline gap-3 font-mono text-[13px]">
               <span class="uppercase tracking-[0.12em] text-ink-faint">issues</span>
               <a href="https://github.com/vijo0018/limnia-site/issues" target="_blank" rel="noopener noreferrer" class="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-pen">github.com/vijo0018/limnia-site/issues</a>
             </li>
@@ -192,8 +188,8 @@ const lastReviewed = '2026-04-18';
         </section>
 
         <p class="border-t border-line pt-8 font-mono text-[11.5px] text-ink-faint">
-          Limnia is operated by [YOUR FULL NAME / BUSINESS NAME], based in
-          [YOUR COUNTRY / STATE].
+          Limnia is operated by an independent developer publishing as
+          vijo0018, based in Sweden.
         </p>
 
       </article>
