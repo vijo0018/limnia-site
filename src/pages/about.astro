@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { PRO_PRICE } from '../lib/store';
 
 // The structural / brand sections (stack, principles, what's-coming) are
 // drafted from screen_draw/docs/ROADMAP.md context. The personal-voice
@@ -108,25 +109,27 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
           <section>
             <p class="font-mono text-[11.5px] uppercase tracking-[0.18em] text-ink-faint">
-              what's coming
+              free and pro
             </p>
             <h2 class="mt-3 font-display text-[28px] font-semibold tracking-[-0.02em] text-ink">
               Free stays free. Pro is additive.
             </h2>
             <p class="mt-4 text-[16.5px] leading-[1.65] text-ink-muted">
               Every feature shipped today stays in the free tier, forever.
-              The Pro tier ($9.99 one-time, shipping Q3 2026) adds heavier
-              tools for specific audiences: recording for streamers,
-              whiteboard modes for teachers, a presenter timer for speakers.
-              None of it changes what Free does.
+              The Pro tier ({PRO_PRICE} one-time) is already built into the
+              app: MP4 and GIF recording for streamers, whiteboard and
+              blackboard canvases for teachers, a magnifier and region
+              capture for pointing at the small stuff. None of it changes
+              what Free does.
             </p>
             <p class="mt-4 text-[16.5px] leading-[1.65] text-ink-muted">
-              The
+              Pro is not on sale quite yet; checkout opens on the
               <a href={`${base}/#pricing`} class="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-pen">pricing page</a>
-              has the full feature split. There are no subscriptions, no
-              cloud services, and no plans for either. If you need Limnia
-              for commercial work (client deliverables, paid courses), a
-              separate Commercial Use License will exist alongside Pro.
+              once the store goes live, and the full feature split is there
+              today. There are no subscriptions, no cloud services, and no
+              plans for either. If you need Limnia for commercial work
+              (client deliverables, paid courses), a separate Commercial
+              Use License will exist alongside Pro.
             </p>
           </section>
 
@@ -190,7 +193,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               </a>
             </div>
             <p class="mt-3 font-mono text-[10.5px] uppercase tracking-[0.12em] text-ink-faint">
-              ♥ donor before pro ships? pro is yours at launch.
+              ♥ donor before pro goes on sale? pro is yours at launch.
             </p>
           </div>
 
