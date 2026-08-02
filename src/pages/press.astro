@@ -1,0 +1,337 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { releases } from '../data/changelog.ts';
+import { PRO_PRICE } from '../lib/store.ts';
+import { statSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Asset sizes are measured at build time (same node:fs pattern as
+// InAction.astro). A missing file fails the build loudly, which is the
+// right failure mode for a page whose whole job is download links.
+const publicDir = resolve(process.cwd(), 'public');
+const bytes = (rel: string) => statSync(resolve(publicDir, rel)).size;
+const kb = (rel: string) => `${Math.max(1, Math.round(bytes(rel) / 1024))} KB`;
+const installerMB = (bytes('downloads/LimniaSetup.exe') / (1024 * 1024)).toFixed(1);
+
+const current = releases[0];
+
+const boilerplate = [
+  {
+    id: 'copy-one-liner',
+    label: 'one-liner',
+    text: 'Limnia is a 2 MB Windows overlay for drawing on your screen. Press a hotkey, annotate any pixel, vanish.',
+  },
+  {
+    id: 'copy-short',
+    label: 'short',
+    text: `Limnia is a screen annotation overlay for Windows. One hotkey turns the screen into a canvas: pen, highlighter, shapes, text, laser pointer, and spotlight over slides, code, video, anything. Esc and it vanishes. It is a native Win32 app written in Rust: a 2 MB installer, no telemetry, no account, no subscription. The core app is free forever; Limnia Pro is a one-time ${PRO_PRICE} unlock that adds recording, whiteboards, and a magnifier.`,
+  },
+  {
+    id: 'copy-full',
+    label: 'full',
+    text: `Limnia is a screen annotation overlay for Windows, made for presenters, educators, streamers, and developers. One hotkey turns the whole screen into a canvas with 12 tools (pen, highlighter, eraser, lines, arrows, shapes, text, laser pointer, spotlight, and more) drawn over anything, across every monitor. The overlay is click-through until summoned (alpha = 0 hit-testing) and vanishes on Esc. Limnia is written in Rust against the raw Win32 API: no Electron, no GPU, roughly 2 MB installed, and no telemetry of any kind. Every feature shipped in the free tier stays free. Limnia Pro, a one-time ${PRO_PRICE} unlock verified entirely offline, adds MP4 and GIF screen recording, region capture, whiteboard and blackboard canvases, and a magnifier. Limnia launched in April 2026 and is built by a solo developer who publishes as vijo0018.`,
+  },
+].map((b) => ({ ...b, words: b.text.split(/\s+/).length }));
+
+const facts: [string, string][] = [
+  ['product', 'Limnia'],
+  ['category', 'screen annotation overlay'],
+  ['platform', 'Windows 10 / 11 · x64'],
+  ['price', `free · Pro ${PRO_PRICE} one-time`],
+  ['installer', `LimniaSetup.exe · ${installerMB} MB`],
+  ['stack', 'Rust · pure Win32 · no GPU'],
+  ['telemetry', 'none'],
+  ['launched', '2026-04-17 · v1.0.0'],
+  ['current', `${current.version} · ${current.date}`],
+  ['developer', 'vijo0018 · solo'],
+];
+
+const rules = [
+  'The name is Limnia, one word, capital L. The paid tier is Limnia Pro. Pronounced LIM-nee-uh, from the Greek límnē, a still pool.',
+  'Credit the developer as vijo0018. Limnia is published pseudonymously; there is no company name and no personal name to print.',
+  'Keep the app mark on its rounded dark tile. Do not recolor it, add effects, or redraw the ripples.',
+  'Crop and resize the images freely; please do not repaint or overdraw them. They are rendered demo scenes (real Limnia strokes over stand-in screens), so there is nothing third-party to license.',
+  'Everything in the fact sheet is printable as-is.',
+];
+
+const marks = [
+  {
+    file: 'icon.svg',
+    save: 'limnia-mark.svg',
+    name: 'app mark',
+    detail: 'the still ripple · master',
+    alt: 'Limnia app mark: concentric cyan ripple rings radiating from a bright center dot, on a rounded dark tile',
+    imgClass: 'h-24 w-24',
+  },
+  {
+    file: 'favicon.svg',
+    save: 'limnia-favicon.svg',
+    name: 'favicon',
+    detail: 'reduced mark · small sizes',
+    alt: 'Limnia favicon: a simplified ripple mark for small sizes',
+    imgClass: 'h-14 w-14',
+  },
+  {
+    file: 'og.svg',
+    save: 'limnia-social-card.svg',
+    name: 'social card',
+    detail: '1200 × 630',
+    alt: 'Limnia social sharing card, 1200 by 630',
+    imgClass: 'max-h-full w-auto',
+  },
+].map((m) => ({ ...m, src: `${base}/${m.file}`, size: kb(m.file) }));
+
+const shots = [
+  {
+    file: 'screenshots/in-slides.png',
+    save: 'limnia-in-slides.png',
+    label: 'on slides',
+    detail: '1280 × 800',
+    alt: 'Limnia annotating a slide: a hand-drawn circle and arrow calling out a bullet point',
+  },
+  {
+    file: 'screenshots/in-code.png',
+    save: 'limnia-in-code.png',
+    label: 'on code',
+    detail: '1280 × 800',
+    alt: 'Limnia over a code editor: a line of code swiped with the yellow highlighter and marked with a red arrow',
+  },
+  {
+    file: 'screenshots/in-video.png',
+    save: 'limnia-in-video.png',
+    label: 'on a paused video',
+    detail: '1280 × 800',
+    alt: 'Limnia annotating a paused video frame',
+  },
+  {
+    file: 'demo/hero-loop.gif',
+    save: 'limnia-demo-loop.gif',
+    label: 'demo loop',
+    detail: '800 × 450 · animated',
+    alt: 'Animated demo: Limnia draws a circle, an arrow, and a highlight over a slide, then the canvas clears',
+  },
+].map((s) => ({ ...s, src: `${base}/${s.file}`, size: kb(s.file) }));
+---
+
+<Layout
+  title="Limnia · Press kit"
+  description="Logos, screenshots, boilerplate, and a fact sheet for writing about Limnia."
+>
+  <main class="relative z-10">
+    <section class="mx-auto max-w-6xl px-6 pt-20 pb-24 sm:px-10 sm:pt-28">
+      <header class="mb-14 grid grid-cols-1 gap-6 md:grid-cols-12">
+        <div class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-faint md:col-span-3">
+          / press
+        </div>
+        <div class="md:col-span-9">
+          <h1 class="font-display text-[40px] font-semibold leading-[1.03] tracking-[-0.03em] text-ink sm:text-[56px]">
+            Press kit.
+          </h1>
+          <p class="mt-4 max-w-2xl text-[17px] leading-[1.6] text-ink-muted">
+            Everything you need to write about Limnia: pre-written copy, a
+            fact sheet, logos, and screenshots. No zip, no form, no
+            watermark. Every file is a direct download and the boilerplate
+            is yours to edit.
+          </p>
+        </div>
+      </header>
+
+      <div class="mx-auto grid max-w-5xl grid-cols-1 gap-12 lg:grid-cols-12">
+
+        {/* ─── Main column: boilerplate + ground rules ─── */}
+        <div class="space-y-12 lg:col-span-8">
+
+          <section>
+            <p class="font-mono text-[11.5px] uppercase tracking-[0.18em] text-ink-faint">
+              boilerplate
+            </p>
+            <h2 class="mt-3 font-display text-[28px] font-semibold tracking-[-0.02em] text-ink">
+              Three lengths, ready to paste.
+            </h2>
+            <div class="mt-6 space-y-4">
+              {boilerplate.map((b) => (
+                <div class="rounded-xl border border-line bg-surface-raised p-6">
+                  <div class="flex items-baseline justify-between gap-4">
+                    <p class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-faint">
+                      {b.label} · {b.words} words
+                    </p>
+                    <button
+                      type="button"
+                      data-copy={b.id}
+                      class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted transition-colors hover:text-pen"
+                    >
+                      copy
+                    </button>
+                  </div>
+                  <p id={b.id} class="mt-3 text-[15.5px] leading-[1.6] text-ink-muted">
+                    {b.text}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section>
+            <p class="font-mono text-[11.5px] uppercase tracking-[0.18em] text-ink-faint">
+              ground rules
+            </p>
+            <h2 class="mt-3 font-display text-[28px] font-semibold tracking-[-0.02em] text-ink">
+              Short list, all of it reasonable.
+            </h2>
+            <ul class="mt-5 space-y-3">
+              {rules.map((r) => (
+                <li class="grid grid-cols-[1.25rem_1fr] items-baseline gap-2 text-[15.5px] leading-[1.55] text-ink-muted">
+                  <span class="font-mono text-[12px] text-ink-faint">▸</span>
+                  <span>{r}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+        </div>
+
+        {/* ─── Sidebar: fact sheet + contact ─── */}
+        <aside class="space-y-8 lg:col-span-4">
+          <div class="rounded-xl border border-line bg-surface-raised p-6">
+            <p class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-faint">
+              fact sheet
+            </p>
+            <dl class="mt-4 space-y-1.5 font-mono text-[12px]">
+              {facts.map(([label, value]) => (
+                <div class="grid grid-cols-[5.5rem_1fr] gap-2">
+                  <dt class="uppercase tracking-[0.12em] text-ink-faint">{label}</dt>
+                  <dd class="text-ink">{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <div class="rounded-xl border border-line bg-surface-raised p-6">
+            <p class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-faint">
+              press contact
+            </p>
+            <p class="mt-3 text-[14px] leading-[1.55] text-ink-muted">
+              Questions, fact checks, interview requests: open an issue on
+              GitHub. It goes straight to the developer, because there is
+              nobody else here.
+            </p>
+            <a
+              href="https://github.com/vijo0018/limnia-site/issues"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-4 inline-flex items-center gap-1.5 font-mono text-[12px] text-ink hover:text-pen"
+            >
+              github / issues <span class="opacity-60">↗</span>
+            </a>
+          </div>
+        </aside>
+
+      </div>
+
+      {/* ─── Marks ─── */}
+      <section class="mx-auto mt-20 max-w-5xl">
+        <p class="font-mono text-[11.5px] uppercase tracking-[0.18em] text-ink-faint">
+          marks
+        </p>
+        <h2 class="mt-3 font-display text-[28px] font-semibold tracking-[-0.02em] text-ink">
+          The still ripple.
+        </h2>
+        <p class="mt-3 max-w-2xl text-[15.5px] leading-[1.6] text-ink-muted">
+          All vector, all tiny. The mark is the app icon: ripple rings
+          radiating from a pen-cyan center, on a rounded dark tile that is
+          part of the mark.
+        </p>
+        <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {marks.map((m) => (
+            <figure class="overflow-hidden rounded-xl border border-line bg-surface-raised">
+              <div class="grid h-44 place-items-center border-b border-line bg-surface-sunken p-6">
+                <img src={m.src} alt={m.alt} class={m.imgClass} loading="lazy" />
+              </div>
+              <figcaption class="flex items-baseline justify-between gap-3 px-5 py-3 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
+                <span>{m.name} · {m.detail}</span>
+                <a
+                  href={m.src}
+                  download={m.save}
+                  class="shrink-0 text-ink-muted transition-colors hover:text-pen"
+                >
+                  svg · {m.size} ↓
+                </a>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── Screenshots ─── */}
+      <section class="mx-auto mt-20 max-w-5xl">
+        <p class="font-mono text-[11.5px] uppercase tracking-[0.18em] text-ink-faint">
+          screenshots
+        </p>
+        <h2 class="mt-3 font-display text-[28px] font-semibold tracking-[-0.02em] text-ink">
+          The product, doing the thing.
+        </h2>
+        <p class="mt-3 max-w-2xl text-[15.5px] leading-[1.6] text-ink-muted">
+          Rendered demo scenes: real Limnia strokes over stand-in screens,
+          so there is no third-party app in frame and nothing to clear
+          rights for.
+        </p>
+        <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {shots.map((s) => (
+            <figure class="overflow-hidden rounded-xl border border-line bg-surface-raised">
+              <div class="aspect-video border-b border-line bg-surface-sunken">
+                <img src={s.src} alt={s.alt} class="h-full w-full object-cover" loading="lazy" />
+              </div>
+              <figcaption class="flex items-baseline justify-between gap-3 px-5 py-3 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
+                <span>{s.label} · {s.detail}</span>
+                <a
+                  href={s.src}
+                  download={s.save}
+                  class="shrink-0 text-ink-muted transition-colors hover:text-pen"
+                >
+                  {s.file.endsWith('.gif') ? 'gif' : 'png'} · {s.size} ↓
+                </a>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      <p class="mx-auto mt-16 max-w-5xl border-t border-line pt-8 font-mono text-[11.5px] text-ink-faint">
+        Need something that is not here (a specific crop, a higher
+        resolution, the mark on a light tile)?
+        <a
+          href="https://github.com/vijo0018/limnia-site/issues"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-ink-muted underline decoration-line-strong underline-offset-4 hover:text-pen hover:decoration-pen"
+          >Ask</a
+        >. It will get made.
+      </p>
+    </section>
+  </main>
+</Layout>
+
+<script>
+  // Copy buttons for the boilerplate blocks. The text is plain selectable
+  // prose either way; this just saves the triple-click.
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const src = document.getElementById(btn.dataset.copy!);
+      if (!src?.textContent) return;
+      try {
+        await navigator.clipboard.writeText(src.textContent.replace(/\s+/g, ' ').trim());
+      } catch {
+        return; // clipboard blocked; the text is still selectable
+      }
+      const prev = btn.textContent;
+      btn.textContent = 'copied';
+      btn.classList.add('text-pen');
+      setTimeout(() => {
+        btn.textContent = prev;
+        btn.classList.remove('text-pen');
+      }, 1400);
+    });
+  });
+</script>

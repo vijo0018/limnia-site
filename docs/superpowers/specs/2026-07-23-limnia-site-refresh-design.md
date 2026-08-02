@@ -154,7 +154,7 @@ exist now as Pro. Drop the large email waitlist form (Pro is downplayed);
 supporter-perk messaging moves entirely to the Support section.
 
 ### `Footer.astro`
-- **license: MIT → Proprietary** (© 2026 Vidar). This is the most important
+- **license: MIT → Proprietary** (© 2026 vijo). This is the most important
   factual correction.
 - Keep version `v1.0.0` / `~2 MB` unless the owner confirms a version bump
   (see Open Items).
