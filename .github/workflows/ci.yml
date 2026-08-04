@@ -1,0 +1,53 @@
+name: CI
+
+# Build check for pull requests.
+#
+# deploy.yml only runs on push to main, so before this existed nothing
+# validated a PR at all — a broken build merged cleanly and then failed at
+# deploy time, on main, with the live site left on the previous version. That
+# gap is worst with auto-merge enabled, which is exactly when nobody is
+# watching.
+#
+# Deliberately the same steps as deploy.yml's build job, minus the Pages
+# upload: if this passes, the deploy will too.
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      # --frozen-lockfile also catches a package.json edited without
+      # regenerating bun.lock.
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build site
+        run: bun run build
+
+      # The social preview must be a raster image: X, LinkedIn, Facebook,
+      # Slack and Discord all refuse to render an SVG og:image. Guard the
+      # asset's existence and type rather than its bytes — resvg output isn't
+      # reproducible across runners with different fonts installed, so a hash
+      # comparison would fail for reasons that have nothing to do with the PR.
+      - name: Check og:image is a real PNG
+        run: |
+          test -f public/og.png || {
+            echo "::error::public/og.png missing — run 'bun run og'"; exit 1;
+          }
+          file public/og.png | grep -q 'PNG image data' || {
+            echo "::error::public/og.png is not a PNG"; exit 1;
+          }
+          echo "og.png OK: $(file -b public/og.png)"
