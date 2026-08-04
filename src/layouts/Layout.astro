@@ -4,17 +4,80 @@ import MacBanner from '../components/MacBanner.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 
+import {
+  SITE_URL,
+  SITE_NAME,
+  SITE_TAGLINE,
+  SITE_DESCRIPTION,
+  APP_VERSION,
+  REPO_URL,
+  INSTALLER_SIZE,
+} from '../lib/site';
+
 interface Props {
   title?: string;
   description?: string;
+  /**
+   * Path this page is served at, e.g. '/install'. Used for the canonical URL
+   * and og:url. Defaults to the request's own pathname so pages that don't
+   * pass it still get a correct (rather than homepage-shaped) canonical.
+   */
+  path?: string;
+  /** Set on pages that shouldn't be indexed (e.g. 404). */
+  noindex?: boolean;
 }
 
 const {
-  title = 'Limnia · Draw on your screen, instantly.',
-  description = 'A 2 MB Windows overlay for presenters, educators, and creators. Press a hotkey, annotate any pixel, vanish.',
+  title = `${SITE_NAME} · ${SITE_TAGLINE}`,
+  description = SITE_DESCRIPTION,
+  path,
+  noindex = false,
 } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Canonical: prefer an explicit path, else derive from the current URL and
+// strip the base prefix so we don't emit '/limnia-site/limnia-site/...'.
+const rawPath = path ?? Astro.url.pathname.replace(base, '') ?? '/';
+const cleanPath = rawPath === '' ? '/' : rawPath;
+const canonical = `${SITE_URL}${cleanPath === '/' ? '/' : cleanPath.replace(/\/$/, '')}`;
+
+// Social preview. This MUST be a raster image — X, LinkedIn, Facebook, Slack
+// and Discord all silently refuse to render an SVG og:image, which is why
+// every Limnia link used to preview as a bare text card. Regenerate with
+// `bun run og` after editing public/og.svg.
+const ogImage = `${SITE_URL}/og.png`;
+
+// Structured data. Tells search engines this is a downloadable Windows app
+// rather than a generic page, which is what earns the rich app result. Only
+// the two pages that are actually *about* the app claim it — emitting the
+// same SoftwareApplication block on /terms and /privacy dilutes the signal.
+const wantsAppSchema = cleanPath === '/' || cleanPath === '/install';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: SITE_NAME,
+  description: SITE_DESCRIPTION,
+  applicationCategory: 'UtilitiesApplication',
+  applicationSubCategory: 'Screen annotation',
+  operatingSystem: 'Windows 10, Windows 11',
+  softwareVersion: APP_VERSION.replace(/^v/, ''),
+  fileSize: INSTALLER_SIZE,
+  url: `${SITE_URL}/`,
+  downloadUrl: `${SITE_URL}/install`,
+  softwareHelp: `${SITE_URL}/install`,
+  codeRepository: REPO_URL,
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  author: {
+    '@type': 'Person',
+    name: 'vijo',
+  },
+};
 ---
 
 <!doctype html>
@@ -25,18 +88,35 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
 
-    <meta property="og:title" content="Limnia · Draw on your screen, instantly." />
+    {/* Per-page OG title — previously hardcoded, so all eight pages shared
+        the homepage's preview card no matter what they were about. */}
+    <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://vijo0018.github.io/limnia-site/" />
-    <meta property="og:image" content={`https://vijo0018.github.io${base}/og.svg`} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${SITE_NAME} — ${SITE_TAGLINE}`} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content={`https://vijo0018.github.io${base}/og.svg`} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
 
     <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+
+    {wantsAppSchema && (
+      <script
+        type="application/ld+json"
+        is:inline
+        set:html={JSON.stringify(jsonLd)}
+      />
+    )}
   </head>
   <body class="min-h-screen relative">
     <MacBanner />

@@ -1,7 +1,10 @@
 ---
+import { APP_VERSION, INSTALLER, INSTALLER_SIZE } from '../lib/site';
+
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const installerHref = `${base}/downloads/LimniaSetup.exe`;
+const installerHref = `${base}/downloads/${INSTALLER.file}`;
 const changelogHref = `${base}/changelog`;
+const installHref = `${base}/install`;
 ---
 
 <section class="relative pt-16 pb-24 sm:pt-20 sm:pb-28">
@@ -21,9 +24,9 @@ const changelogHref = `${base}/changelog`;
           <span class="text-ink">live</span>
         </span>
         <span class="text-ink-faint/50">/</span>
-        <span>v1.0.0 · stable</span>
+        <span>{APP_VERSION} · stable</span>
         <span class="text-ink-faint/50">/</span>
-        <span>~2 MB</span>
+        <span>{INSTALLER_SIZE}</span>
         <span class="text-ink-faint/50">/</span>
         <span class="hidden sm:inline">windows x64</span>
       </div>
@@ -95,6 +98,19 @@ const changelogHref = `${base}/changelog`;
           Try the demo
         </button>
       </div>
+
+      {/* Says the quiet part out loud. The installer is unsigned, so Windows
+          shows a scary wall — meeting that head-on before the click converts
+          better than letting SmartScreen be the first mention of it. */}
+      <p class="reveal reveal-5 mt-5 text-[13.5px] leading-[1.5] text-ink-faint">
+        Windows will show a &ldquo;protected your PC&rdquo; warning &mdash;
+        Limnia isn&rsquo;t code-signed yet.{' '}
+        <a
+          href={installHref}
+          class="text-ink-muted underline decoration-line-strong underline-offset-[3px] transition-colors hover:text-pen hover:decoration-pen"
+          >Here&rsquo;s why, and how to verify the download</a
+        >.
+      </p>
 
       {/* The hint that points to the signature moment */}
       <p

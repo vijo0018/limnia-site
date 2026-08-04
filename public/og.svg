@@ -3,9 +3,12 @@
   Open Graph image for Limnia. 1200x630 (Facebook/Twitter/LinkedIn/Discord).
   Referenced from <meta property="og:image"> in Layout.astro.
 
-  Brand mark is the "Still ripple" (see icon.svg). If a platform needs PNG:
-    npx svgexport public/og.svg public/og.png 1200:630
-  ...and add og.png as a secondary og:image meta tag.
+  Brand mark is the "Still ripple" (see icon.svg).
+
+  This SVG is the SOURCE, not the shipped asset. Social crawlers (X, LinkedIn,
+  Facebook, Slack, Discord) do not render SVG previews, so Layout.astro points
+  og:image at public/og.png instead. After editing this file, regenerate it:
+    bun run og
 
   Fonts use system fallbacks so SVG rasterizers render reliably across platforms.
 -->
@@ -60,7 +63,7 @@
     </text>
     <text x="170" y="25" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace"
           font-size="12" letter-spacing="2.4" fill="#5a5a60">
-      V1.0.0 / STABLE
+      V1.1.0 / STABLE
     </text>
   </g>
 
