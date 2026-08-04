@@ -7,6 +7,7 @@
 // claimed v1.0.0 several weeks after v1.1.0 shipped.
 
 import { releases } from '../data/changelog';
+import { useCases } from '../data/use-cases';
 
 /** Origin the site is served from. No trailing slash. */
 export const SITE_ORIGIN = 'https://vijo0018.github.io';
@@ -31,8 +32,12 @@ export const RELEASES_URL = `${REPO_URL}/releases/latest`;
  * as a literal. The changelog lists newest first; the first `stable` entry is
  * what users can actually download today.
  */
-export const APP_VERSION =
-  releases.find((r) => r.status === 'stable')?.version ?? 'v1.0.0';
+const currentRelease = releases.find((r) => r.status === 'stable');
+
+export const APP_VERSION = currentRelease?.version ?? 'v1.0.0';
+
+/** ISO release date of APP_VERSION. */
+export const APP_RELEASE_DATE = currentRelease?.date ?? '';
 
 /**
  * The installer as served from `public/downloads/`.
@@ -64,14 +69,19 @@ export const INSTALLER_SIZE = `${(INSTALLER.bytes / 1_000_000).toFixed(1)} MB`;
  */
 export const INSTALLER_SIGNED = false;
 
-/** Every routable page, used to emit the sitemap. Keep in sync with src/pages. */
+/**
+ * Every routable page, used to emit the sitemap. Keep in sync with src/pages.
+ * Use-case routes are derived rather than listed so adding one to
+ * data/use-cases.ts is enough to get it crawled.
+ */
 export const ROUTES = [
   '/',
   '/install',
+  ...useCases.map((uc) => `/use-cases/${uc.slug}`),
   '/changelog',
   '/buy',
   '/about',
   '/press',
   '/privacy',
   '/terms',
-] as const;
+];
