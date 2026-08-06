@@ -1,12 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { LS_CHECKOUT_URL, PRO_PRICE } from '../lib/store';
+import { CHECKOUT_URL, PRO_PRICE } from '../lib/store';
 
 // The app's "Get Limnia Pro" button opens this page (stable indirection —
 // shipped binaries never learn the checkout URL). It must render something
 // sensible in both states: before launch (holding copy) and after
-// (forward to the Lemon Squeezy checkout).
-const onSale = LS_CHECKOUT_URL !== '';
+// (forward to the checkout).
+const onSale = CHECKOUT_URL !== '';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const pro: string[] = [
@@ -77,7 +77,7 @@ const pro: string[] = [
               onSale ? (
                 <>
                   <a
-                    href={LS_CHECKOUT_URL}
+                    href={CHECKOUT_URL}
                     class="group flex w-full items-center justify-center gap-2 rounded-md bg-highlight px-5 py-3 text-[14px] font-semibold text-surface transition-opacity hover:opacity-90"
                   >
                     Continue to checkout

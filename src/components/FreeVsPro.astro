@@ -1,11 +1,11 @@
 ---
-import { LS_CHECKOUT_URL, PRO_PRICE } from '../lib/store';
+import { CHECKOUT_URL, PRO_PRICE } from '../lib/store';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const installerHref = `${base}/downloads/LimniaSetup.exe`;
 // Set the checkout URL in src/lib/store.ts and the card flips from the
 // "soon" teaser to a working buy button (via /buy, same as the app's funnel).
-const onSale = LS_CHECKOUT_URL !== '';
+const onSale = CHECKOUT_URL !== '';
 
 // Free = everything shipping today except the Pro-gated tools. No version tags:
 // it all ships now, and tagging features with future versions was the old
