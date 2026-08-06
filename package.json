@@ -9,7 +9,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "og": "node scripts/render-og.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.3",
@@ -21,6 +22,7 @@
     "tailwindcss": "^4.2.2"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^26.1.2"
   }
 }

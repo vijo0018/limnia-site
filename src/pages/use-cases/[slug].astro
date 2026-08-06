@@ -1,0 +1,167 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { useCases } from '../../data/use-cases';
+import { INSTALLER, INSTALLER_SIZE, APP_VERSION } from '../../lib/site';
+
+export function getStaticPaths() {
+  return useCases.map((uc) => ({ params: { slug: uc.slug }, props: { uc } }));
+}
+
+const { uc } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const installerHref = `${base}/downloads/${INSTALLER.file}`;
+const installHref = `${base}/install`;
+
+// Sibling pages, for internal linking — the thing that actually makes a set
+// of landing pages rank rather than sit there as orphans.
+const others = useCases.filter((o) => o.slug !== uc.slug);
+---
+
+<Layout
+  title={uc.title}
+  description={uc.description}
+  path={`/use-cases/${uc.slug}`}
+>
+  <main class="relative z-10">
+    <section class="mx-auto max-w-6xl px-6 pt-20 pb-24 sm:px-10 sm:pt-28">
+      <header class="mb-12 grid grid-cols-1 gap-6 md:grid-cols-12">
+        <div
+          class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-faint md:col-span-3"
+        >
+          / {uc.eyebrow}
+        </div>
+        <div class="md:col-span-9">
+          <h1
+            class="font-display text-[38px] font-semibold leading-[1.04] tracking-[-0.03em] text-ink text-balance sm:text-[52px]"
+          >
+            {uc.heading}
+          </h1>
+          <p class="mt-5 max-w-2xl text-[17px] leading-[1.6] text-ink-muted">
+            {uc.intro}
+          </p>
+
+          <div class="mt-8 flex flex-wrap items-center gap-3">
+            <a
+              href={installerHref}
+              class="group inline-flex items-center gap-2.5 rounded-md bg-ink px-5 py-3 text-[14px] font-semibold text-surface transition-colors hover:bg-pen"
+            >
+              Download for Windows
+              <span
+                class="font-mono text-[11px] font-medium opacity-60 transition-transform group-hover:translate-y-0.5"
+                >&darr; {INSTALLER_SIZE}</span
+              >
+            </a>
+            <a
+              href={installHref}
+              class="inline-flex items-center gap-2.5 rounded-md border border-line px-5 py-3 text-[14px] font-medium text-ink transition-colors hover:border-line-strong hover:bg-surface-raised"
+            >
+              Install &amp; verify
+              <span class="font-mono text-[11px] opacity-60">&rarr;</span>
+            </a>
+          </div>
+          <p class="mt-3.5 font-mono text-[11.5px] uppercase tracking-[0.12em] text-ink-faint">
+            {APP_VERSION} &middot; windows 10 / 11 &middot; free forever &middot; no telemetry
+          </p>
+        </div>
+      </header>
+
+      {/* Proof before prose. */}
+      <figure class="overflow-hidden rounded-xl border border-line bg-surface-raised">
+        <img
+          src={`${base}/${uc.shot}`}
+          alt={uc.shotAlt}
+          width="1280"
+          height="800"
+          class="w-full"
+          loading="eager"
+        />
+        <figcaption
+          class="flex items-center gap-2 border-t border-line px-5 py-3 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint"
+        >
+          <span class="h-1.5 w-1.5 rounded-full bg-pen"></span>
+          drawn by limnia&rsquo;s engine
+        </figcaption>
+      </figure>
+
+      {/* The workflow, as actual keystrokes. */}
+      <section class="mt-20 grid grid-cols-1 gap-8 md:grid-cols-12">
+        <div class="md:col-span-4">
+          <h2
+            class="font-display text-[26px] font-semibold leading-[1.15] tracking-[-0.02em] text-ink"
+          >
+            The whole workflow.
+          </h2>
+          <p class="mt-3 text-[15.5px] leading-[1.6] text-ink-muted">
+            Five keystrokes, start to finish. Nothing to open, nothing to
+            close.
+          </p>
+        </div>
+        <ol class="md:col-span-8">
+          {uc.steps.map((s) => (
+            <li
+              class="grid grid-cols-1 gap-x-6 gap-y-2 border-t border-line py-4 last:border-b sm:grid-cols-[11rem_1fr]"
+            >
+              <span class="flex flex-wrap items-start gap-1">
+                {s.key.split('+').map((k) => <kbd>{k}</kbd>)}
+              </span>
+              <span class="text-[15.5px] leading-[1.6] text-ink-muted">
+                {s.body}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* Why it fits this audience. */}
+      <section class="mt-20">
+        <div class="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2">
+          {uc.points.map((p) => (
+            <div>
+              <h3 class="text-[16.5px] font-medium text-ink">{p.title}</h3>
+              <p class="mt-2 text-[15.5px] leading-[1.6] text-ink-muted">
+                {p.body}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* The caveat. Every page has one — being straight about the limits is
+          the brand, and it's what makes the rest of the page believable. */}
+      <aside
+        class="mt-16 rounded-xl border border-line bg-surface-sunken/60 px-6 py-5"
+      >
+        <p
+          class="font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-faint"
+        >
+          worth knowing
+        </p>
+        <p class="mt-2 text-[15.5px] leading-[1.6] text-ink-muted">
+          {uc.caveat}
+        </p>
+      </aside>
+
+      {/* Internal links — otherwise these pages are orphans and rank as such. */}
+      <nav class="mt-20 border-t border-line pt-8">
+        <p
+          class="font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-faint"
+        >
+          also
+        </p>
+        <ul class="mt-4 flex flex-wrap gap-x-6 gap-y-3">
+          {others.map((o) => (
+            <li>
+              <a
+                href={`${base}/use-cases/${o.slug}`}
+                class="text-[15.5px] text-ink-muted underline decoration-line-strong underline-offset-[3px] transition-colors hover:text-pen hover:decoration-pen"
+              >
+                {o.heading.replace(/\.$/, '')}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </section>
+  </main>
+</Layout>

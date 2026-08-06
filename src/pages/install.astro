@@ -1,0 +1,248 @@
+---
+import Layout from '../layouts/Layout.astro';
+import {
+  APP_VERSION,
+  INSTALLER,
+  INSTALLER_SIZE,
+  INSTALLER_SIGNED,
+  RELEASES_URL,
+  REPO_URL,
+} from '../lib/site';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const installerHref = `${base}/downloads/${INSTALLER.file}`;
+
+// The click-through path, written as literal UI strings so a user can match
+// them against what's on their screen. Keep these exact — paraphrasing the
+// button labels is what makes "just click More info" advice useless.
+const steps = [
+  {
+    n: '01',
+    title: 'A blue window appears',
+    body: 'It says "Windows protected your PC" and offers a single "Don\'t run" button. It looks like a dead end. It isn\'t — the escape hatch is deliberately understated.',
+  },
+  {
+    n: '02',
+    title: 'Click "More info"',
+    body: 'It\'s the small grey link in the body text, above the button. This is the step almost everyone misses.',
+  },
+  {
+    n: '03',
+    title: 'Click "Run anyway"',
+    body: 'A second button appears once the details expand. Before you click it, check the publisher line matches what this page says below.',
+  },
+];
+---
+
+<Layout
+  title="Limnia · Install & verify"
+  description="Why Windows flags the Limnia installer, how to check it's really ours with a SHA-256 hash, and how to install it safely."
+  path="/install"
+>
+  <main class="relative z-10">
+    <section class="mx-auto max-w-6xl px-6 pt-20 pb-24 sm:px-10 sm:pt-28">
+      <header class="mb-14 grid grid-cols-1 gap-6 md:grid-cols-12">
+        <div
+          class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-faint md:col-span-3"
+        >
+          / install
+        </div>
+        <div class="md:col-span-9">
+          <h1
+            class="font-display text-[40px] font-semibold leading-[1.03] tracking-[-0.03em] text-ink sm:text-[56px]"
+          >
+            Windows will<br />warn you.
+          </h1>
+          <p class="mt-5 max-w-2xl text-[17px] leading-[1.6] text-ink-muted">
+            That warning is real, and we&rsquo;d rather explain it than hope you
+            click through. Here&rsquo;s exactly what it means, why it happens,
+            and how to prove this file is the one we built.
+          </p>
+        </div>
+      </header>
+
+      <article class="mx-auto max-w-3xl space-y-14">
+        {/* ── The honest explanation ─────────────────────────────── */}
+        <section>
+          <h2
+            class="font-display text-[24px] font-semibold tracking-[-0.02em] text-ink"
+          >
+            What the warning actually means
+          </h2>
+          <div class="mt-4 space-y-4 text-[16.5px] leading-[1.65] text-ink-muted">
+            <p>
+              Windows SmartScreen doesn&rsquo;t scan Limnia and decide
+              it&rsquo;s malicious. It checks whether it has seen this exact
+              file before, from a publisher it recognises. Limnia is new and
+              {INSTALLER_SIGNED ? ' recently signed' : ' not code-signed yet'},
+              so the answer is no &mdash; and &ldquo;unrecognised&rdquo; is
+              displayed with the same red urgency as &ldquo;dangerous.&rdquo;
+            </p>
+            <p>
+              A code-signing certificate costs roughly $110&ndash;180 a year,
+              and since Microsoft&rsquo;s 2026 policy change it no longer buys
+              instant trust &mdash; even a signed installer keeps warning until
+              enough people have downloaded it. So the certificate would soften
+              the wording, not remove the wall. We&rsquo;d rather be straight
+              with you about that than quietly pass the cost on.
+            </p>
+            <p class="text-ink">
+              The permanent fix is the Microsoft Store, where Microsoft signs
+              the package themselves and SmartScreen never fires. That work is
+              underway.
+            </p>
+          </div>
+        </section>
+
+        {/* ── Click-through steps ────────────────────────────────── */}
+        <section>
+          <h2
+            class="font-display text-[24px] font-semibold tracking-[-0.02em] text-ink"
+          >
+            Getting past it
+          </h2>
+          <ol class="mt-6 space-y-0">
+            {steps.map((s) => (
+              <li
+                class="grid grid-cols-[3rem_1fr] gap-x-4 border-t border-line py-5 last:border-b"
+              >
+                <span
+                  class="font-mono text-[12px] uppercase tracking-[0.12em] text-pen"
+                  >{s.n}</span
+                >
+                <div>
+                  <p class="text-[16px] font-medium text-ink">{s.title}</p>
+                  <p class="mt-1.5 text-[15.5px] leading-[1.6] text-ink-muted">
+                    {s.body}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        {/* ── Verification — the part that earns the trust ────────── */}
+        <section>
+          <h2
+            class="font-display text-[24px] font-semibold tracking-[-0.02em] text-ink"
+          >
+            Don&rsquo;t take our word for it
+          </h2>
+          <p class="mt-4 text-[16.5px] leading-[1.65] text-ink-muted">
+            &ldquo;Trust me&rdquo; is not a security model. Check the file
+            against the hash below &mdash; if it matches, the installer you have
+            is byte-for-byte the one we published. If it doesn&rsquo;t,
+            don&rsquo;t run it, and
+            <a
+              href={`${REPO_URL}/issues`}
+              class="text-ink underline decoration-line-strong underline-offset-[3px] transition-colors hover:text-pen hover:decoration-pen"
+              >tell us</a
+            >.
+          </p>
+
+          <div class="mt-6 overflow-hidden rounded-xl border border-line bg-surface-raised">
+            <dl
+              class="grid grid-cols-[7rem_1fr] gap-x-4 gap-y-2.5 px-5 py-4 font-mono text-[12.5px]"
+            >
+              <dt class="uppercase tracking-[0.12em] text-ink-faint">file</dt>
+              <dd class="text-ink">{INSTALLER.file}</dd>
+              <dt class="uppercase tracking-[0.12em] text-ink-faint">version</dt>
+              <dd class="text-ink">{APP_VERSION}</dd>
+              <dt class="uppercase tracking-[0.12em] text-ink-faint">size</dt>
+              <dd class="text-ink">
+                {INSTALLER_SIZE} ({INSTALLER.bytes.toLocaleString('en-US')} bytes)
+              </dd>
+              <dt class="uppercase tracking-[0.12em] text-ink-faint">sha-256</dt>
+              <dd class="break-all text-pen">{INSTALLER.sha256}</dd>
+            </dl>
+          </div>
+
+          <p
+            class="mt-6 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint"
+          >
+            verify in powershell
+          </p>
+          <pre
+            class="mt-2 overflow-x-auto rounded-xl border border-line bg-surface-sunken px-5 py-4 font-mono text-[13px] leading-[1.7] text-ink-muted"><code>Get-FileHash .\{INSTALLER.file} -Algorithm SHA256 | Format-List</code></pre>
+          <p class="mt-3 text-[15px] leading-[1.6] text-ink-muted">
+            Compare the <span class="font-mono text-ink">Hash</span> line to the
+            SHA-256 above. Case doesn&rsquo;t matter. You can also upload the
+            file to
+            <a
+              href="https://www.virustotal.com/gui/home/upload"
+              rel="noopener noreferrer"
+              target="_blank"
+              class="text-ink underline decoration-line-strong underline-offset-[3px] transition-colors hover:text-pen hover:decoration-pen"
+              >VirusTotal</a
+            > for an independent multi-engine scan.
+          </p>
+        </section>
+
+        {/* ── What it does on your machine ───────────────────────── */}
+        <section>
+          <h2
+            class="font-display text-[24px] font-semibold tracking-[-0.02em] text-ink"
+          >
+            What the installer touches
+          </h2>
+          <p class="mt-4 text-[16.5px] leading-[1.65] text-ink-muted">
+            The whole footprint, so nothing is a surprise:
+          </p>
+          <ul class="mt-4 space-y-2.5 text-[15.5px] leading-[1.6] text-ink-muted">
+            {[
+              ['Program Files\\Limnia', 'A single ~2 MB limnia.exe. No bundled runtime, no extra services.'],
+              ['%APPDATA%\\Limnia\\config.json', 'Your last-used tool, color, and brush size. Deleted on uninstall.'],
+              ['Start menu + optional desktop shortcut', 'The desktop one is a checkbox you can decline.'],
+              ['Optional "start with Windows" entry', 'One HKCU Run registry value, also a checkbox, also removed on uninstall.'],
+            ].map(([what, why]) => (
+              <li class="grid grid-cols-1 gap-x-4 sm:grid-cols-[20rem_1fr]">
+                <span class="font-mono text-[13px] text-ink">{what}</span>
+                <span>{why}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-5 text-[16.5px] leading-[1.65] text-ink-muted">
+            No network requests, no telemetry, no auto-updater phoning home. The
+            <a
+              href={`${base}/privacy`}
+              class="text-ink underline decoration-line-strong underline-offset-[3px] transition-colors hover:text-pen hover:decoration-pen"
+              >privacy page</a
+            > covers this in full.
+          </p>
+        </section>
+
+        {/* ── Download ───────────────────────────────────────────── */}
+        <section class="border-t border-line pt-10">
+          <div class="flex flex-wrap items-center gap-3">
+            <a
+              href={installerHref}
+              class="group inline-flex items-center gap-2.5 rounded-md bg-ink px-5 py-3 text-[14px] font-semibold text-surface transition-colors hover:bg-pen"
+            >
+              Download {APP_VERSION}
+              <span
+                class="font-mono text-[11px] font-medium opacity-60 transition-transform group-hover:translate-y-0.5"
+                >&darr; {INSTALLER_SIZE}</span
+              >
+            </a>
+            <a
+              href={RELEASES_URL}
+              rel="noopener noreferrer"
+              target="_blank"
+              class="inline-flex items-center gap-2.5 rounded-md border border-line px-5 py-3 text-[14px] font-medium text-ink transition-colors hover:border-line-strong hover:bg-surface-raised"
+            >
+              All releases on GitHub
+              <span class="font-mono text-[11px] opacity-60">&rarr;</span>
+            </a>
+          </div>
+          <p
+            class="mt-4 font-mono text-[11.5px] uppercase tracking-[0.12em] text-ink-faint"
+          >
+            windows 10 / 11 &middot; x64 &middot; {INSTALLER_SIGNED
+              ? 'signed'
+              : 'unsigned'} &middot; no telemetry
+          </p>
+        </section>
+      </article>
+    </section>
+  </main>
+</Layout>

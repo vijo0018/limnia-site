@@ -1,0 +1,8 @@
+# Limnia — https://vijo0018.github.io/limnia-site/
+#
+# Everything here is public marketing and docs; nothing is crawl-sensitive.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://vijo0018.github.io/limnia-site/sitemap.xml

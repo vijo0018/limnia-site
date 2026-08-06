@@ -1,12 +1,19 @@
 ---
+import {
+  APP_VERSION,
+  APP_RELEASE_DATE,
+  INSTALLER,
+  INSTALLER_SIZE,
+} from '../lib/site';
+import { useCases } from '../data/use-cases';
+
 const year = new Date().getFullYear();
-// Release date of the currently-advertised version. Update when a new tag ships.
-const buildDate = '2026-04-17';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const links = [
-  { label: 'download', href: `${base}/downloads/LimniaSetup.exe`, value: 'LimniaSetup.exe', external: false },
+  { label: 'download', href: `${base}/downloads/${INSTALLER.file}`, value: INSTALLER.file, external: false },
+  { label: 'install & verify', href: `${base}/install`, value: '/install', external: false },
   { label: 'changelog', href: `${base}/changelog`, value: '/changelog', external: false },
   { label: 'about', href: `${base}/about`, value: '/about', external: false },
   { label: 'press kit', href: `${base}/press`, value: '/press', external: false },
@@ -29,15 +36,15 @@ const links = [
       <dl class="mt-4 space-y-1.5 font-mono text-[12px]">
         <div class="grid grid-cols-[6.5rem_1fr] gap-2">
           <dt class="uppercase tracking-[0.12em] text-ink-faint">version</dt>
-          <dd class="text-ink">v1.0.0</dd>
+          <dd class="text-ink">{APP_VERSION}</dd>
         </div>
         <div class="grid grid-cols-[6.5rem_1fr] gap-2">
           <dt class="uppercase tracking-[0.12em] text-ink-faint">released</dt>
-          <dd class="text-ink">{buildDate}</dd>
+          <dd class="text-ink">{APP_RELEASE_DATE}</dd>
         </div>
         <div class="grid grid-cols-[6.5rem_1fr] gap-2">
           <dt class="uppercase tracking-[0.12em] text-ink-faint">size</dt>
-          <dd class="text-ink">~2 MB · windows x64</dd>
+          <dd class="text-ink">{INSTALLER_SIZE} · windows x64</dd>
         </div>
         <div class="grid grid-cols-[6.5rem_1fr] gap-2">
           <dt class="uppercase tracking-[0.12em] text-ink-faint">license</dt>
@@ -65,6 +72,24 @@ const links = [
               class="text-ink-muted transition-colors hover:text-pen"
             >
               {l.value} <span class="opacity-50">{l.external ? '↗' : '→'}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      {/* Use-case pages, linked from every page so they're crawlable rather
+          than reachable only from the one homepage section that mentions them. */}
+      <p class="mt-8 font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-faint">
+        use cases
+      </p>
+      <ul class="mt-3 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[12.5px]">
+        {useCases.map((uc) => (
+          <li>
+            <a
+              href={`${base}/use-cases/${uc.slug}`}
+              class="text-ink-muted transition-colors hover:text-pen"
+            >
+              {uc.eyebrow} <span class="opacity-50">→</span>
             </a>
           </li>
         ))}

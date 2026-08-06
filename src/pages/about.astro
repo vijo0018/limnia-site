@@ -67,10 +67,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               press it again and it's gone.
             </p>
             <p class="mt-4 text-[16.5px] leading-[1.65] text-ink-muted">
-              The existing tools each have a piece of it. ZoomIt can draw,
-              but it's a zoom utility first and drawing feels like a detour.
-              Epic Pen parks a toolbar on your screen all day. ShareX
-              annotates screenshots after the fact, which is great for bug
+              The existing tools each have a piece of it. Some are zoom
+              utilities that can also draw, where drawing feels like a
+              detour. Some park a toolbar on your screen all day. Some
+              annotate screenshots after the fact, which is great for bug
               reports and useless mid-conversation. None of them treat
               disappearing as the core feature. That was the part I cared
               about most, so I built the tool around it: a click-through
@@ -100,8 +100,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <p class="mt-4 text-[16.5px] leading-[1.65] text-ink-muted">
               The source is closed. That's a deliberate choice. Solo-dev
               overhead of dual-repo + license management is meaningful, and
-              the closest comparables in this category (Epic Pen, ZoomIt) are
-              also closed. The
+              the closest comparables in this category are also closed. The
               <a href={`${base}/changelog`} class="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-pen">changelog</a>
               is public so you can see exactly what shipped and when.
             </p>
