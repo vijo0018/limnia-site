@@ -1,0 +1,16 @@
+{
+  "name": "limnia-worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Mints Limnia Pro license keys for Lemon Squeezy orders. Stateless: keys are derived from the order id, never stored.",
+  "scripts": {
+    "test": "bun test",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "wrangler": "^4.0.0"
+  }
+}
