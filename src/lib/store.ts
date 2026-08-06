@@ -19,3 +19,10 @@ export const CHECKOUT_URL = '';
 // configured price — this is display-only, the checkout charges what the
 // store says.
 export const PRO_PRICE = '$14.99';
+
+// Base URL of the key-minting worker (see worker/README.md), e.g.
+// 'https://limnia-keys.<subdomain>.workers.dev'. /claim posts the order id and
+// identifier from the buyer's receipt link here and shows the key it returns.
+// While empty, /claim explains that claiming isn't live yet rather than failing
+// with a network error.
+export const WORKER_URL = '';

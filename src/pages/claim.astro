@@ -1,0 +1,183 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { WORKER_URL } from '../lib/store';
+
+// Where buyers land from the "Get your key" button in their Lemon Squeezy
+// receipt. The link carries ?order=<numeric id>&id=<uuid identifier>; the
+// worker trades those for the signed key (worker/README.md explains why that
+// pair is safe to put in a URL).
+//
+// The key is fetched client-side rather than baked in: this is a static site,
+// and the receipt link stays valid forever, so a buyer can re-claim any time
+// and get the identical key back.
+const claimLive = WORKER_URL !== '';
+---
+
+<Layout
+  title="Limnia · Your Pro key"
+  description="Get the license key for your Limnia Pro purchase."
+>
+  <main class="relative z-10">
+    <section class="mx-auto max-w-6xl px-6 pt-20 pb-24 sm:px-10 sm:pt-28">
+      <header class="mb-14 grid grid-cols-1 gap-6 md:grid-cols-12">
+        <div class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-faint md:col-span-3">
+          / claim
+        </div>
+        <div class="md:col-span-9">
+          <h1 class="font-display text-[40px] font-semibold leading-[1.03] tracking-[-0.03em] text-ink sm:text-[56px]">
+            Your Pro key.
+          </h1>
+          <p class="mt-4 max-w-2xl text-[17px] leading-[1.6] text-ink-muted">
+            {
+              claimLive
+                ? 'Thanks for buying Limnia Pro. Your key is below — paste it into Limnia and Pro unlocks immediately, no restart.'
+                : 'This is where your license key will appear after buying Limnia Pro.'
+            }
+          </p>
+        </div>
+      </header>
+
+      <div class="mx-auto max-w-3xl">
+        {
+          claimLive ? (
+            <>
+              <div
+                id="claim-panel"
+                class="rounded-xl border border-line bg-surface-raised p-6 sm:p-8"
+                data-worker={WORKER_URL}
+              >
+                <p class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-faint">
+                  license key
+                </p>
+
+                <div id="claim-loading" class="mt-4 text-[15.5px] text-ink-muted">
+                  Fetching your key…
+                </div>
+
+                <div id="claim-success" class="mt-4 hidden">
+                  <div class="flex items-start justify-between gap-4">
+                    <code
+                      id="claim-key"
+                      class="block flex-1 break-all font-mono text-[13px] leading-[1.7] text-pen"
+                    />
+                    <button
+                      id="claim-copy"
+                      type="button"
+                      class="shrink-0 rounded-md border border-line px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted transition-colors hover:border-line-strong hover:text-ink"
+                    >
+                      copy
+                    </button>
+                  </div>
+                  <p class="mt-5 text-[14px] leading-[1.6] text-ink-muted">
+                    In Limnia: tray icon &rarr;{' '}
+                    <span class="text-ink">Enter license key</span> &rarr; paste.
+                    Keep this link — it works forever and always returns this
+                    same key.
+                  </p>
+                </div>
+
+                <div id="claim-error" class="mt-4 hidden">
+                  <p class="text-[15.5px] leading-[1.6] text-ink-muted">
+                    <span id="claim-error-text" class="text-ink" />
+                  </p>
+                  <p class="mt-4 text-[14px] leading-[1.6] text-ink-faint">
+                    Open the link straight from your purchase receipt email — it
+                    carries the details this page needs. If it still fails,{' '}
+                    <a
+                      href="https://github.com/vijo0018/limnia-site/issues"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-ink-muted underline decoration-line-strong underline-offset-4 hover:text-pen hover:decoration-pen"
+                    >
+                      open an issue
+                    </a>{' '}
+                    with your order number and it gets sorted by hand.
+                  </p>
+                </div>
+              </div>
+
+              <p class="mt-6 font-mono text-[11.5px] leading-[1.7] text-ink-faint">
+                Keys are verified offline. Limnia never sends your key anywhere,
+                and never contacts a server to check it.
+              </p>
+            </>
+          ) : (
+            <div class="rounded-xl border border-line bg-surface-raised p-6 sm:p-8">
+              <p class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-faint">
+                not live yet
+              </p>
+              <p class="mt-3 text-[15.5px] leading-[1.6] text-ink-muted">
+                Pro isn't on sale yet, so there are no keys to claim. When it
+                launches, your receipt will link straight here.
+              </p>
+            </div>
+          )
+        }
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<script>
+  const panel = document.getElementById('claim-panel');
+  if (panel) {
+    const worker = panel.dataset.worker ?? '';
+    const loading = document.getElementById('claim-loading')!;
+    const success = document.getElementById('claim-success')!;
+    const errorBox = document.getElementById('claim-error')!;
+    const errorText = document.getElementById('claim-error-text')!;
+    const keyEl = document.getElementById('claim-key')!;
+    const copyBtn = document.getElementById('claim-copy') as HTMLButtonElement | null;
+
+    const fail = (message: string) => {
+      loading.classList.add('hidden');
+      errorText.textContent = message;
+      errorBox.classList.remove('hidden');
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const order = params.get('order');
+    const id = params.get('id');
+
+    if (!order || !id) {
+      fail("This link is missing its order details, so there's nothing to look up.");
+    } else {
+      const url = new URL('/key', worker);
+      url.searchParams.set('order', order);
+      url.searchParams.set('id', id);
+
+      fetch(url, { headers: { Accept: 'application/json' } })
+        .then(async (response) => {
+          const body = (await response.json().catch(() => null)) as { key?: string } | null;
+          if (!response.ok || !body?.key) {
+            // The worker deliberately gives one opaque reason for every
+            // refusal, so there is nothing more specific to show here.
+            fail("We couldn't match this link to a completed purchase.");
+            return;
+          }
+          keyEl.textContent = body.key;
+          loading.classList.add('hidden');
+          success.classList.remove('hidden');
+        })
+        .catch(() => {
+          fail("We couldn't reach the key service. Check your connection and reload.");
+        });
+    }
+
+    copyBtn?.addEventListener('click', async () => {
+      if (!keyEl.textContent) return;
+      try {
+        await navigator.clipboard.writeText(keyEl.textContent);
+      } catch {
+        return; // clipboard blocked; the key is selectable either way
+      }
+      const previous = copyBtn.textContent;
+      copyBtn.textContent = 'copied';
+      copyBtn.classList.add('text-pen');
+      setTimeout(() => {
+        copyBtn.textContent = previous;
+        copyBtn.classList.remove('text-pen');
+      }, 1400);
+    });
+  }
+</script>
