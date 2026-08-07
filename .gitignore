@@ -20,6 +20,14 @@ pnpm-debug.log*
 .env
 .env.production
 
+# wrangler reads local secrets from .dev.vars — that file would hold the
+# Ed25519 signing seed and the Lemon Squeezy API key in plaintext. Leaking the
+# seed means anyone can mint Pro keys, and it cannot be rotated without
+# stranding every paying customer.
+.dev.vars
+.dev.vars.*
+.wrangler/
+
 # macOS-specific files
 .DS_Store
 
