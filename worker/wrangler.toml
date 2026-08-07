@@ -5,9 +5,14 @@ main = "src/index.ts"
 compatibility_date = "2026-08-01"
 
 [vars]
-# Variant id of the Limnia Pro product. Fill in from the Lemon Squeezy
-# dashboard (Products -> Limnia Pro -> the variant's id). Not a secret.
-LS_VARIANT_ID = ""
+# Variant id of the Limnia Pro product (Products -> ... -> Copy variant ID).
+# Not a secret.
+#
+# TEST MODE value. Lemon Squeezy keeps test and live data separate, so the
+# live product created via "Copy to Live Mode" gets a DIFFERENT variant id.
+# Update this before taking real payments, or every live order will fail
+# authorization and no buyer will be able to claim a key.
+LS_VARIANT_ID = "1993942"
 
 # Only this origin may call /key from a browser.
 ALLOWED_ORIGIN = "https://vijo0018.github.io"
