@@ -21,8 +21,26 @@ export interface Env {
   LS_WEBHOOK_SECRET: string;
   /** Variant id of the Limnia Pro product, so other orders cannot mint keys. */
   LS_VARIANT_ID: string;
-  /** Origin allowed to call /key from a browser (the site's claim page). */
+  /**
+   * Comma-separated origins allowed to call /key from a browser. The deployed
+   * site plus, usually, a localhost dev server — testing the claim flow means
+   * running the real worker against a local page.
+   */
   ALLOWED_ORIGIN: string;
+}
+
+/**
+ * Which origin to put in `Access-Control-Allow-Origin`.
+ *
+ * Echoes the caller's origin only when it is on the allowlist. An unknown
+ * origin gets the first allowed value instead, so the browser blocks it —
+ * reflecting an arbitrary origin back would defeat the point of CORS.
+ */
+export function corsOrigin(allowed: string, requestOrigin: string | null): string {
+  const list = allowed.split(',').map((o) => o.trim()).filter(Boolean);
+  const fallback = list[0] ?? '';
+  if (!requestOrigin) return fallback;
+  return list.includes(requestOrigin) ? requestOrigin : fallback;
 }
 
 export interface Deps {
@@ -31,12 +49,13 @@ export interface Deps {
 
 const DEFAULT_DEPS: Deps = { fetchOrder };
 
-function json(body: unknown, status: number, env: Env): Response {
+function json(body: unknown, status: number, env: Env, origin: string | null): Response {
   return new Response(JSON.stringify(body), {
     status,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN,
+      'Access-Control-Allow-Origin': corsOrigin(env.ALLOWED_ORIGIN, origin),
+      'Vary': 'Origin',
       'Cache-Control': 'no-store',
     },
   });
@@ -49,13 +68,18 @@ function json(body: unknown, status: number, env: Env): Response {
  * the buyer's own receipt email is the claim link. The numeric id fetches the
  * order; the UUID proves the caller is the buyer.
  */
-export async function handleKey(url: URL, env: Env, deps: Deps = DEFAULT_DEPS): Promise<Response> {
+export async function handleKey(
+  url: URL,
+  env: Env,
+  deps: Deps = DEFAULT_DEPS,
+  requestOrigin: string | null = null,
+): Promise<Response> {
   const orderId = url.searchParams.get('order');
   const identifier = url.searchParams.get('id');
 
   // Reject before spending an API call on obviously malformed input.
   if (!orderId || !/^\d+$/.test(orderId) || !identifier) {
-    return json({ error: 'not_claimable' }, 400, env);
+    return json({ error: 'not_claimable' }, 400, env, requestOrigin);
   }
 
   const order = await deps.fetchOrder(env.LS_API_KEY, orderId);
@@ -64,11 +88,11 @@ export async function handleKey(url: URL, env: Env, deps: Deps = DEFAULT_DEPS): 
     variantId: Number(env.LS_VARIANT_ID),
   });
   if (!decision.ok) {
-    return json({ error: decision.reason }, 403, env);
+    return json({ error: decision.reason }, 403, env, requestOrigin);
   }
 
   const key = await mintKey(seedFromHex(env.SIGNING_SEED_HEX), orderId);
-  return json({ key }, 200, env);
+  return json({ key }, 200, env, requestOrigin);
 }
 
 /**
@@ -90,20 +114,22 @@ export async function handleWebhook(request: Request, env: Env): Promise<Respons
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+    const origin = request.headers.get('Origin');
 
     if (request.method === 'OPTIONS') {
       return new Response(null, {
         status: 204,
         headers: {
-          'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN,
+          'Access-Control-Allow-Origin': corsOrigin(env.ALLOWED_ORIGIN, origin),
           'Access-Control-Allow-Methods': 'GET, OPTIONS',
           'Access-Control-Max-Age': '86400',
+          'Vary': 'Origin',
         },
       });
     }
 
     if (url.pathname === '/key' && request.method === 'GET') {
-      return handleKey(url, env);
+      return handleKey(url, env, DEFAULT_DEPS, origin);
     }
 
     if (url.pathname === '/webhook' && request.method === 'POST') {
