@@ -150,7 +150,7 @@ export const useCases: UseCase[] = [
       },
       {
         title: 'Expressive without being heavy',
-        body: 'A 14-color palette, four brush sizes, laser trails and spotlight, in a ~2 MB install with no runtime to load.',
+        body: 'A 14-color palette, four brush sizes, laser trails and spotlight, in a 1.2 MB app with no runtime to load.',
       },
     ],
     caveat:
@@ -177,7 +177,7 @@ export const useCases: UseCase[] = [
     points: [
       {
         title: 'Honest about what it is',
-        body: 'Pure Win32, software-rendered, no GPU, no framework, no runtime beyond the Windows API. Around 2 MB installed. Written in Rust.',
+        body: 'Pure Win32, software-rendered, no GPU, no framework, no runtime beyond the Windows API. The app is 1.2 MB. Written in Rust.',
       },
       {
         title: 'Click-through by construction',

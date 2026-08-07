@@ -1,5 +1,6 @@
 ---
 import { CHECKOUT_URL, PRO_PRICE } from '../lib/store';
+import { INSTALLER_SIZE } from '../lib/site';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const installerHref = `${base}/downloads/LimniaSetup.exe`;
@@ -109,7 +110,7 @@ const pro: string[] = [
           Download Free
           <span
             class="font-mono text-[11px] opacity-60 transition-transform group-hover:translate-y-0.5"
-            >↓ ~2MB</span
+            >↓ {INSTALLER_SIZE}</span
           >
         </a>
       </div>
