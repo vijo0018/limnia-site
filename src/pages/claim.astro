@@ -30,7 +30,7 @@ const claimLive = WORKER_URL !== '';
           <p class="mt-4 max-w-2xl text-[17px] leading-[1.6] text-ink-muted">
             {
               claimLive
-                ? 'Thanks for buying Limnia Pro. Your key is below — paste it into Limnia and Pro unlocks immediately, no restart.'
+                ? 'Thanks for buying Limnia Pro. Your key is below. Paste it into Limnia and Pro unlocks immediately, no restart.'
                 : 'This is where your license key will appear after buying Limnia Pro.'
             }
           </p>
@@ -71,7 +71,7 @@ const claimLive = WORKER_URL !== '';
                   <p class="mt-5 text-[14px] leading-[1.6] text-ink-muted">
                     In Limnia: tray icon &rarr;{' '}
                     <span class="text-ink">Enter license key</span> &rarr; paste.
-                    Keep this link — it works forever and always returns this
+                    Keep this link: it works forever and always returns this
                     same key.
                   </p>
                 </div>
@@ -81,8 +81,9 @@ const claimLive = WORKER_URL !== '';
                     <span id="claim-error-text" class="text-ink" />
                   </p>
                   <p class="mt-4 text-[14px] leading-[1.6] text-ink-faint">
-                    Open the link straight from your purchase receipt email — it
-                    carries the details this page needs. If it still fails,{' '}
+                    Open the link straight from your purchase receipt email,
+                    which carries the details this page needs. If it still
+                    fails,{' '}
                     <a
                       href="https://github.com/vijo0018/limnia-site/issues"
                       target="_blank"

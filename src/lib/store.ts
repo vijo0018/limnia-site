@@ -13,10 +13,10 @@
 //     "Get Limnia Pro" button here, so this page must always resolve.
 //   - The pricing card swaps its "soon" badge for a working buy button.
 // While empty, /buy shows a holding page and pricing keeps the "soon" badge.
-export const CHECKOUT_URL = '';
+export const CHECKOUT_URL = 'https://limnia.lemonsqueezy.com/checkout/buy/d85e1b76-99d1-48c8-af2c-35654c43ee94';
 
 // Shown on /buy and the pricing card. Keep in sync with the checkout's
-// configured price — this is display-only, the checkout charges what the
+// configured price - this is display-only, the checkout charges what the
 // store says.
 export const PRO_PRICE = '$14.99';
 
@@ -25,4 +25,4 @@ export const PRO_PRICE = '$14.99';
 // identifier from the buyer's receipt link here and shows the key it returns.
 // While empty, /claim explains that claiming isn't live yet rather than failing
 // with a network error.
-export const WORKER_URL = '';
+export const WORKER_URL = 'https://limnia-keys.limnia-worker.workers.dev';

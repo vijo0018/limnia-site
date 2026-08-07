@@ -13,7 +13,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const installerHref = `${base}/downloads/${INSTALLER.file}`;
 const installHref = `${base}/install`;
 
-// Sibling pages, for internal linking — the thing that actually makes a set
+// Sibling pages, for internal linking - the thing that actually makes a set
 // of landing pages rank rather than sit there as orphans.
 const others = useCases.filter((o) => o.slug !== uc.slug);
 ---
@@ -127,7 +127,7 @@ const others = useCases.filter((o) => o.slug !== uc.slug);
         </div>
       </section>
 
-      {/* The caveat. Every page has one — being straight about the limits is
+      {/* The caveat. Every page has one - being straight about the limits is
           the brand, and it's what makes the rest of the page believable. */}
       <aside
         class="mt-16 rounded-xl border border-line bg-surface-sunken/60 px-6 py-5"
@@ -142,7 +142,7 @@ const others = useCases.filter((o) => o.slug !== uc.slug);
         </p>
       </aside>
 
-      {/* Internal links — otherwise these pages are orphans and rank as such. */}
+      {/* Internal links - otherwise these pages are orphans and rank as such. */}
       <nav class="mt-20 border-t border-line pt-8">
         <p
           class="font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-faint"

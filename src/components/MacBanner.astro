@@ -37,7 +37,7 @@
       <span class="opacity-60 transition-transform group-hover:translate-x-0.5">→</span>
     </button>
 
-    {/* Expanded form — hidden until expand clicked */}
+    {/* Expanded form - hidden until expand clicked */}
     <form
       data-banner-form
       hidden
@@ -98,7 +98,7 @@
     const dismissBtn = banner.querySelector<HTMLButtonElement>('[data-banner-dismiss]')!;
 
     function isMac(): boolean {
-      // Exclude iOS first — iPad reports MacIntel for navigator.platform.
+      // Exclude iOS first - iPad reports MacIntel for navigator.platform.
       const ua = navigator.userAgent;
       if (/iPhone|iPad|iPod/.test(ua)) return false;
       // Modern UA Client Hints API (Chromium).
@@ -141,14 +141,14 @@
 
     // Intercept submit so we can show a thank-you state inline.
     // We POST in the background via fetch; if Tally rejects (placeholder URL),
-    // we still show the success state — the user already gave intent.
+    // we still show the success state - the user already gave intent.
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = new FormData(form);
       try {
         await fetch(form.action, { method: 'POST', body: data, mode: 'no-cors' });
       } catch {
-        // Network failed — still mark submitted; user can email directly if they care.
+        // Network failed - still mark submitted; user can email directly if they care.
       }
       form.hidden = true;
       message.textContent = 'Vote registered · we\u2019ll let you know if a Mac build happens.';

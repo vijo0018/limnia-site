@@ -8,10 +8,10 @@ const installHref = `${base}/install`;
 ---
 
 <section class="relative pt-16 pb-24 sm:pt-20 sm:pb-28">
-  {/* Asymmetric grid — left-leaning, 8/4 split at lg */}
+  {/* Asymmetric grid - left-leaning, 8/4 split at lg */}
   <div class="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-6 sm:px-10 lg:grid-cols-12 lg:gap-12">
     <div class="lg:col-span-8">
-      {/* Status row — real metadata, not decoration */}
+      {/* Status row - real metadata, not decoration */}
       <div
         class="reveal reveal-1 inline-flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint"
       >
@@ -31,7 +31,7 @@ const installHref = `${base}/install`;
         <span class="hidden sm:inline">windows x64</span>
       </div>
 
-      {/* Headline — the poster moment.
+      {/* Headline - the poster moment.
           Bricolage at large opsz becomes characterful. */}
       <h1
         class="reveal reveal-2 mt-6 font-display font-semibold leading-[0.92] tracking-[-0.035em] text-ink text-balance"
@@ -41,7 +41,7 @@ const installHref = `${base}/install`;
         your screen.
       </h1>
 
-      {/* Self-drawing annotation stroke — the product's signature act,
+      {/* Self-drawing annotation stroke - the product's signature act,
           performed on load. Fully drawn (static) under reduced motion. */}
       <svg
         class="hero-underline mt-2 h-[22px] w-[min(64%,430px)] overflow-visible text-pen"
@@ -66,7 +66,7 @@ const installHref = `${base}/install`;
         <em class="not-italic text-ink">vanish.</em>
       </p>
 
-      {/* CTAs — left-aligned. Three states: primary, ghost, demo trigger. */}
+      {/* CTAs - left-aligned. Three states: primary, ghost, demo trigger. */}
       <div class="reveal reveal-4 mt-9 flex flex-wrap items-center gap-3">
         <a
           href={installerHref}
@@ -100,10 +100,10 @@ const installHref = `${base}/install`;
       </div>
 
       {/* Says the quiet part out loud. The installer is unsigned, so Windows
-          shows a scary wall — meeting that head-on before the click converts
+          shows a scary wall - meeting that head-on before the click converts
           better than letting SmartScreen be the first mention of it. */}
       <p class="reveal reveal-5 mt-5 text-[13.5px] leading-[1.5] text-ink-faint">
-        Windows will show a &ldquo;protected your PC&rdquo; warning &mdash;
+        Windows will show a &ldquo;protected your PC&rdquo; warning, because
         Limnia isn&rsquo;t code-signed yet.{' '}
         <a
           href={installHref}
@@ -124,11 +124,11 @@ const installHref = `${base}/install`;
       </p>
     </div>
 
-    {/* Right column — quiet visual that mirrors the icon language.
+    {/* Right column - quiet visual that mirrors the icon language.
         A schematic "transparent overlay" diagram. */}
     <div class="reveal reveal-3 lg:col-span-4">
       <div class="relative">
-        {/* Faint ripple accent — the brand mark's motif, echoed behind the
+        {/* Faint ripple accent - the brand mark's motif, echoed behind the
             schematic. Static, so it's reduced-motion safe by default. */}
         <svg
           class="pointer-events-none absolute -right-4 -top-12 h-52 w-52 opacity-[0.13]"
@@ -158,7 +158,7 @@ const installHref = `${base}/install`;
             </linearGradient>
           </defs>
 
-          {/* Bottom layer: "your work" — dotted outline */}
+          {/* Bottom layer: "your work" - dotted outline */}
           <g>
             <rect
               x="14" y="14" width="240" height="180"
@@ -171,7 +171,7 @@ const installHref = `${base}/install`;
             >your.work</text>
           </g>
 
-          {/* Top layer: limnia overlay — cyan-tinted, with a hand-drawn arrow */}
+          {/* Top layer: limnia overlay - cyan-tinted, with a hand-drawn arrow */}
           <g>
             <rect
               x="58" y="80" width="240" height="180"
@@ -219,7 +219,7 @@ const installHref = `${base}/install`;
   </script>
 </section>
 
-{/* Stats strip — sits below hero, above first content section.
+{/* Stats strip - sits below hero, above first content section.
     Reads like a build manifest: small mono, dot separators. */}
 <div class="border-y border-line bg-surface-sunken/60">
   <div

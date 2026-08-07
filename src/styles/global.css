@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* Self-hosted variable fonts. Bundled by Vite, served from the same origin
-   — no Google Fonts roundtrip, no IP leak, no third-party DNS+TLS. */
+   - no Google Fonts roundtrip, no IP leak, no third-party DNS+TLS. */
 @import "@fontsource-variable/bricolage-grotesque";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
@@ -33,11 +33,11 @@
   --color-ink-faint: oklch(62% 0.012 240);
 
   /* ─── Type stack ────────────────────────────────────────
-     Display: Bricolage Grotesque (variable, optical sizes —
+     Display: Bricolage Grotesque (variable, optical sizes -
        gets characterful at poster scale, refined at body)
      Body:    Geist (clean, modern, distinctive)
-     Mono:    Geist Mono (real metadata only — versions, kbd,
-       hex codes — never as decorative texture) */
+     Mono:    Geist Mono (real metadata only - versions, kbd,
+       hex codes - never as decorative texture) */
   --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Geist Variable", "Geist", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono Variable", "Geist Mono", ui-monospace, "SF Mono", Consolas, monospace;
@@ -68,7 +68,7 @@
 
   a {
     text-decoration: none;
-    /* No color: inherit here — let utilities win */
+    /* No color: inherit here - let utilities win */
   }
 
   :focus-visible {
@@ -77,7 +77,7 @@
     border-radius: 2px;
   }
 
-  /* kbd — physical-key feel */
+  /* kbd - physical-key feel */
   kbd {
     display: inline-flex;
     align-items: center;
@@ -149,7 +149,7 @@
     animation: pulse 1.6s ease-out infinite;
   }
 
-  /* ─── FX overlay — laser trail, spotlight mask, ripple pulse ───
+  /* ─── FX overlay - laser trail, spotlight mask, ripple pulse ───
      Sits above the persistent draw canvas, cleared every frame.
      Never takes pointer input; the draw canvas below does. */
   .fx-canvas {
@@ -311,7 +311,7 @@
   }
   .draw-size[aria-pressed="true"] .dot { background: var(--color-ink); }
 
-  /* ─── Tools showcase — a mock "screen" the toolbar floats over ───
+  /* ─── Tools showcase - a mock "screen" the toolbar floats over ───
      Limnia is an overlay on top of whatever's below; the dot-grid stage
      makes that literal, and gives Classic ⇄ Orb a place to morph. */
   .tool-stage {
@@ -355,7 +355,7 @@
     pointer-events: auto;
   }
 
-  /* Classic tool button — color-tinted hover that nods to the tool color */
+  /* Classic tool button - color-tinted hover that nods to the tool color */
   .tool-chip:hover {
     border-color: color-mix(in oklch, currentColor 45%, transparent);
     background: color-mix(in oklch, currentColor 12%, transparent);
@@ -507,7 +507,7 @@
   .reveal-4 { animation-delay: 400ms; }
   .reveal-5 { animation-delay: 520ms; }
 
-  /* ─── Self-drawing strokes — the product's signature act, on load ───
+  /* ─── Self-drawing strokes - the product's signature act, on load ───
      Hero underline, then the schematic's arrow, then its emphasis ring. */
   .hero-underline path,
   .hero-schema-arrow,

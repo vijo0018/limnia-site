@@ -3,7 +3,7 @@
 // @astrojs/sitemap would work, but it wants to own `site` + `base` handling
 // and this site is mounted at a GitHub Pages subpath, which is exactly where
 // that integration's URL joining gets fiddly. Eight static routes don't
-// justify the dependency — the route list lives in lib/site.ts.
+// justify the dependency - the route list lives in lib/site.ts.
 
 import type { APIRoute } from 'astro';
 import { SITE_URL, ROUTES } from '../lib/site';

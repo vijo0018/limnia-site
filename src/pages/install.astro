@@ -13,13 +13,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const installerHref = `${base}/downloads/${INSTALLER.file}`;
 
 // The click-through path, written as literal UI strings so a user can match
-// them against what's on their screen. Keep these exact — paraphrasing the
+// them against what's on their screen. Keep these exact - paraphrasing the
 // button labels is what makes "just click More info" advice useless.
 const steps = [
   {
     n: '01',
     title: 'A blue window appears',
-    body: 'It says "Windows protected your PC" and offers a single "Don\'t run" button. It looks like a dead end. It isn\'t — the escape hatch is deliberately understated.',
+    body: 'It says "Windows protected your PC" and offers a single "Don\'t run" button. It looks like a dead end. It isn\'t: the escape hatch is deliberately understated.',
   },
   {
     n: '02',
@@ -75,13 +75,13 @@ const steps = [
               it&rsquo;s malicious. It checks whether it has seen this exact
               file before, from a publisher it recognises. Limnia is new and
               {INSTALLER_SIGNED ? ' recently signed' : ' not code-signed yet'},
-              so the answer is no &mdash; and &ldquo;unrecognised&rdquo; is
-              displayed with the same red urgency as &ldquo;dangerous.&rdquo;
+              so the answer is no. And &ldquo;unrecognised&rdquo; is displayed
+              with the same red urgency as &ldquo;dangerous.&rdquo;
             </p>
             <p>
-              A code-signing certificate costs roughly $110&ndash;180 a year,
+              A code-signing certificate costs roughly $110 to $180 a year,
               and since Microsoft&rsquo;s 2026 policy change it no longer buys
-              instant trust &mdash; even a signed installer keeps warning until
+              instant trust: even a signed installer keeps warning until
               enough people have downloaded it. So the certificate would soften
               the wording, not remove the wall. We&rsquo;d rather be straight
               with you about that than quietly pass the cost on.
@@ -121,7 +121,7 @@ const steps = [
           </ol>
         </section>
 
-        {/* ── Verification — the part that earns the trust ────────── */}
+        {/* ── Verification - the part that earns the trust ────────── */}
         <section>
           <h2
             class="font-display text-[24px] font-semibold tracking-[-0.02em] text-ink"
@@ -130,7 +130,7 @@ const steps = [
           </h2>
           <p class="mt-4 text-[16.5px] leading-[1.65] text-ink-muted">
             &ldquo;Trust me&rdquo; is not a security model. Check the file
-            against the hash below &mdash; if it matches, the installer you have
+            against the hash below. If it matches, the installer you have
             is byte-for-byte the one we published. If it doesn&rsquo;t,
             don&rsquo;t run it, and
             <a
@@ -190,7 +190,7 @@ const steps = [
           </p>
           <ul class="mt-4 space-y-2.5 text-[15.5px] leading-[1.6] text-ink-muted">
             {[
-              ['Program Files\\Limnia', 'limnia.exe is 1.2 MB, with no bundled runtime and no services. Next to it the installer drops its own 4 MB uninstaller, which is bigger than Limnia itself — that is Inno Setup, not us. Both go on uninstall.'],
+              ['Program Files\\Limnia', 'limnia.exe is 1.2 MB, with no bundled runtime and no services. Next to it the installer drops its own 4 MB uninstaller, which is bigger than Limnia itself. That is Inno Setup, not us. Both go on uninstall.'],
               ['%APPDATA%\\Limnia\\config.json', 'Your last-used tool, color, and brush size. Deleted on uninstall.'],
               ['Start menu + optional desktop shortcut', 'The desktop one is a checkbox you can decline.'],
               ['Optional "start with Windows" entry', 'One HKCU Run registry value, also a checkbox, also removed on uninstall.'],

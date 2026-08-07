@@ -42,7 +42,7 @@ const rawPath = path ?? Astro.url.pathname.replace(base, '') ?? '/';
 const cleanPath = rawPath === '' ? '/' : rawPath;
 const canonical = `${SITE_URL}${cleanPath === '/' ? '/' : cleanPath.replace(/\/$/, '')}`;
 
-// Social preview. This MUST be a raster image — X, LinkedIn, Facebook, Slack
+// Social preview. This MUST be a raster image - X, LinkedIn, Facebook, Slack
 // and Discord all silently refuse to render an SVG og:image, which is why
 // every Limnia link used to preview as a bare text card. Regenerate with
 // `bun run og` after editing public/og.svg.
@@ -50,7 +50,7 @@ const ogImage = `${SITE_URL}/og.png`;
 
 // Structured data. Tells search engines this is a downloadable Windows app
 // rather than a generic page, which is what earns the rich app result. Only
-// the two pages that are actually *about* the app claim it — emitting the
+// the two pages that are actually *about* the app claim it - emitting the
 // same SoftwareApplication block on /terms and /privacy dilutes the signal.
 const wantsAppSchema = cleanPath === '/' || cleanPath === '/install';
 
@@ -91,7 +91,7 @@ const jsonLd = {
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, follow" />}
 
-    {/* Per-page OG title — previously hardcoded, so all eight pages shared
+    {/* Per-page OG title - previously hardcoded, so all eight pages shared
         the homepage's preview card no matter what they were about. */}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -102,7 +102,7 @@ const jsonLd = {
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={`${SITE_NAME} — ${SITE_TAGLINE}`} />
+    <meta property="og:image:alt" content={`${SITE_NAME} - ${SITE_TAGLINE}`} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
@@ -124,7 +124,7 @@ const jsonLd = {
     <slot />
     <Footer />
 
-    {/* Interactive demo — a mini-Limnia. Ctrl+Shift+D toggles draw mode;
+    {/* Interactive demo - a mini-Limnia. Ctrl+Shift+D toggles draw mode;
         single keys switch tools, mirroring the product's real shortcuts.
         Two layers: draw-canvas persists strokes/shapes; fx-canvas redraws the
         laser trail / spotlight / shape preview / ripple pulse every frame.
@@ -384,7 +384,7 @@ const jsonLd = {
         fctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
         const t = now();
 
-        // Spotlight — dim everything, punch a soft hole at the cursor.
+        // Spotlight - dim everything, punch a soft hole at the cursor.
         if (tool === 'spotlight' && hasPointer) {
           fctx.save();
           fctx.fillStyle = 'rgba(6,6,8,0.62)';
@@ -402,7 +402,7 @@ const jsonLd = {
           fctx.restore();
         }
 
-        // Laser — glowing fading trail, never persisted.
+        // Laser - glowing fading trail, never persisted.
         if (tool === 'laser') {
           laserTrail = laserTrail.filter((p) => t - p.t < LASER_FADE);
           fctx.save();

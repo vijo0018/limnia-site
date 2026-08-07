@@ -1,6 +1,6 @@
 ---
 // Each tool group mirrors the actual Limnia toolbar layout.
-// Colors map to the tool's in-product color — the palette is the brand.
+// Colors map to the tool's in-product color - the palette is the brand.
 // `pro` marks a feature gated behind the one-time Pro unlock.
 type Tool = {
   id: string;
@@ -149,7 +149,7 @@ const groups = [
   { label: 'utilities', tools: utilities },
 ];
 
-// ── Orb geometry — the 12 drawing tools ring the hub; the 14-color palette
+// ── Orb geometry - the 12 drawing tools ring the hub; the 14-color palette
 // forms the outer ring. Positions are precomputed as percentages so the orb
 // scales fluidly. Angles start at the top (−90°) and go clockwise.
 const ringTools = [...freehand, ...shapes, ...text, ...live];
@@ -191,7 +191,7 @@ const orbColors = palette.map((c, i) => {
     </div>
   </header>
 
-  {/* Layout toggle — Classic ⇄ Orb. Above the stage, right-aligned. */}
+  {/* Layout toggle - Classic ⇄ Orb. Above the stage, right-aligned. */}
   <div class="mb-4 flex items-center justify-between gap-4">
     <span class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-faint">
       layout
@@ -207,7 +207,7 @@ const orbColors = palette.map((c, i) => {
     </div>
   </div>
 
-  {/* The stage — a mock "screen" the toolbar floats over, echoing the product:
+  {/* The stage - a mock "screen" the toolbar floats over, echoing the product:
       Limnia is an overlay on top of whatever's below. Classic and Orb crossfade
       within it. */}
   <div class="tool-stage" data-layout="classic">

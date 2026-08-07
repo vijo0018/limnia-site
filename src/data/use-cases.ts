@@ -2,7 +2,7 @@
 //
 // These exist for search intent the homepage can't serve: one page can't rank
 // for "annotate screen while presenting" AND "draw on screen while teaching"
-// AND "annotate stream live" — each needs its own H1 in the audience's own
+// AND "annotate stream live" - each needs its own H1 in the audience's own
 // vocabulary. See docs/MARKETING.md in the product repo for the target terms.
 //
 // Rule: no competitor is named on any of these pages, ever. Comparison copy
@@ -19,13 +19,13 @@ export type UseCase = {
   slug: string;
   /** Browser/tab title. */
   title: string;
-  /** Page H1 — this is the search-intent match, keep it literal. */
+  /** Page H1 - this is the search-intent match, keep it literal. */
   heading: string;
   /** Meta description. */
   description: string;
   /** Short label for the eyebrow. */
   eyebrow: string;
-  /** Opening paragraph — the problem, in their words. */
+  /** Opening paragraph - the problem, in their words. */
   intro: string;
   /** Screenshot from public/screenshots/. */
   shot: string;
@@ -34,7 +34,7 @@ export type UseCase = {
   steps: Step[];
   /** Why it fits this audience specifically. */
   points: { title: string; body: string }[];
-  /** Honest caveat. Every page has one — it's the brand. */
+  /** Honest caveat. Every page has one - it's the brand. */
   caveat: string;
 };
 
@@ -76,7 +76,7 @@ export const useCases: UseCase[] = [
       },
     ],
     caveat:
-      'Limnia draws on the screen, not into your slides — annotations are not saved back into the deck. Press Ctrl+Shift+S to keep one as a PNG before you clear it.',
+      'Limnia draws on the screen, not into your slides, so annotations are not saved back into the deck. Press Ctrl+Shift+S to keep one as a PNG before you clear it.',
   },
   {
     slug: 'teaching',
@@ -115,7 +115,7 @@ export const useCases: UseCase[] = [
       },
     ],
     caveat:
-      'Whiteboard and blackboard modes — a solid canvas to draw on rather than an overlay — are Pro. Drawing over what is already on screen is free.',
+      'Whiteboard and blackboard modes (a solid canvas to draw on rather than an overlay) are Pro. Drawing over what is already on screen is free.',
   },
   {
     slug: 'streaming',
@@ -125,7 +125,7 @@ export const useCases: UseCase[] = [
       'Draw over gameplay or a tutorial while you stream. Click-through means the overlay never eats an input, and it captures cleanly in OBS.',
     eyebrow: 'streaming',
     intro:
-      "Explaining something on stream usually means pointing with your mouse and hoping. Limnia lets you actually draw on it — then clear it and keep playing without the overlay ever swallowing a click.",
+      "Explaining something on stream usually means pointing with your mouse and hoping. Limnia lets you actually draw on it, then clear it and keep playing without the overlay ever swallowing a click.",
     shot: 'screenshots/in-video.png',
     shotAlt: 'Limnia circling a detail on a paused video frame, with its toolbar above',
     steps: [
@@ -142,7 +142,7 @@ export const useCases: UseCase[] = [
       },
       {
         title: 'It shows up in Display Capture',
-        body: 'Limnia composites onto the desktop, so OBS Display Capture picks it up with no extra setup. Game Capture hooks the game directly and will not include it — use a display or window source for the annotated view.',
+        body: 'Limnia composites onto the desktop, so OBS Display Capture picks it up with no extra setup. Game Capture hooks the game directly and will not include it, so use a display or window source for the annotated view.',
       },
       {
         title: 'No GPU cost',
@@ -154,7 +154,7 @@ export const useCases: UseCase[] = [
       },
     ],
     caveat:
-      'Limnia annotates — it does not stream. Screen recording to MP4 or GIF, and region capture, are Pro tools; for live streaming you still want OBS.',
+      'Limnia annotates; it does not stream. Screen recording to MP4 or GIF, and region capture, are Pro tools. For live streaming you still want OBS.',
   },
   {
     slug: 'code-review',
@@ -164,7 +164,7 @@ export const useCases: UseCase[] = [
       'Circle the line, draw the arrow, move on. A 2 MB Windows overlay in Rust that draws over any editor, terminal, or diff.',
     eyebrow: 'code review',
     intro:
-      '"The bug is on the line above the one you are looking at" is a sentence nobody should have to say. Draw on it instead — over your editor, a terminal, a diff in a browser, or someone else\'s shared screen.',
+      '"The bug is on the line above the one you are looking at" is a sentence nobody should have to say. Draw on it instead: over your editor, a terminal, a diff in a browser, or someone else\'s shared screen.',
     shot: 'screenshots/in-code.png',
     shotAlt: 'Limnia highlighting a line of code with an arrow pointing at it, toolbar above',
     steps: [
@@ -181,7 +181,7 @@ export const useCases: UseCase[] = [
       },
       {
         title: 'Click-through by construction',
-        body: 'A fullscreen layered window where alpha = 0 is genuinely transparent to input. Not a heuristic, not a hit-test hack — the compositor simply routes the click past it.',
+        body: 'A fullscreen layered window where alpha = 0 is genuinely transparent to input. Not a heuristic, not a hit-test hack: the compositor simply routes the click past it.',
       },
       {
         title: 'Nothing phones home',
@@ -193,6 +193,6 @@ export const useCases: UseCase[] = [
       },
     ],
     caveat:
-      'It draws on pixels, not on your code — there is no editor integration and no link back to a line number. That is the point: it works the same over vim, an IDE, a terminal, or a screenshot someone pasted in chat.',
+      'It draws on pixels, not on your code, so there is no editor integration and no link back to a line number. That is the point: it works the same over vim, an IDE, a terminal, or a screenshot someone pasted in chat.',
   },
 ];

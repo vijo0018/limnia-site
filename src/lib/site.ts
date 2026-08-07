@@ -42,7 +42,7 @@ export const APP_RELEASE_DATE = currentRelease?.date ?? '';
 /**
  * The installer as served from `public/downloads/`.
  *
- * `sha256` lets users verify the download themselves — the honest answer to
+ * `sha256` lets users verify the download themselves - the honest answer to
  * "Windows says this is unsafe, how do I know it's really you?". Regenerate
  * both fields whenever the binary is replaced:
  *
@@ -64,7 +64,7 @@ export const INSTALLER_SIZE = `${(INSTALLER.bytes / 1_000_000).toFixed(1)} MB`;
  * Flip to `true` only once `release.yml` is actually signing (see the product
  * repo's docs/CODE_SIGNING.md). The /install page reads this to decide
  * whether to explain the "Unknown publisher" wall or the milder
- * named-publisher prompt — getting it wrong makes the page dishonest, which
+ * named-publisher prompt - getting it wrong makes the page dishonest, which
  * is worse than not having the page.
  */
 export const INSTALLER_SIGNED = false;
