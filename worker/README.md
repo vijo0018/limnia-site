@@ -56,6 +56,21 @@ wrangler secret put LS_WEBHOOK_SECRET
 wrangler deploy
 ```
 
+## Going live
+
+Lemon Squeezy keeps test and live data completely separate. **Three values
+change** when the product is copied to live mode, and every one of them fails
+silently — orders succeed, then buyers cannot claim a key:
+
+| Value | Where | Symptom if stale |
+| --- | --- | --- |
+| `LS_VARIANT_ID` | `wrangler.toml` | `authorizeOrder` rejects every order as `not_claimable` |
+| `LS_API_KEY` | Worker secret | Order lookup returns nothing, so every claim is refused |
+| `CHECKOUT_URL` | `src/lib/store.ts` | Buyers land on a test checkout that takes no real money |
+
+Do them together, then buy once with a real card and refund yourself. Testing
+only in test mode proves the plumbing, not the live configuration.
+
 ## The signing seed
 
 This worker holds the private half of the key pair whose public half is
