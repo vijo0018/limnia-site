@@ -12,7 +12,9 @@ and a buyer who loses their key gets the identical one back.
 1. Buyer checks out on Lemon Squeezy.
 2. LS's receipt shows a button pointing at the site's claim page. The URL is
    built from [link variables](https://docs.lemonsqueezy.com/help/products/link-variables):
-   `…/claim?order={order_id}&id={order_identifier}`.
+   `…/claim?order=[order_id]&id=[order_identifier]`. Note the **square
+   brackets** — that is Lemon Squeezy's placeholder syntax, and curly braces
+   are rejected by its URL validator.
 3. The claim page calls `GET /key` on this worker with both values.
 4. The worker fetches the order from the LS API by its numeric id, then checks
    the UUID matches, the order is `paid`, and it is for the Pro variant.
